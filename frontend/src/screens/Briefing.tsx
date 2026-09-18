@@ -200,16 +200,20 @@ export function Briefing() {
                     </div>
                   </div>
                 </div>
-                {sceneOpen && scene ? (
-                  <div className="lacquer fade-in" style={{ marginTop: 8 }}>
-                    <SceneThumb preset={preset} className="rounded" style={{ width: '100%', height: 170, border: '1px solid var(--gold-500)' }} />
-                    <h4 className="label-caps label-caps--gold" style={{ margin: '10px 0 4px' }}>{scene.name}</h4>
-                    <p style={{ margin: 0, fontSize: 15 }}>{scene.description}</p>
-                    {ready.evidence.filter((e) => e.location === scene.id && e.state !== 'hidden').length ? (
-                      <p className="muted" style={{ margin: '6px 0 0', fontSize: 13 }}>
-                        Noted here: {ready.evidence.filter((e) => e.location === scene.id && e.state !== 'hidden').map((e) => e.name).join(', ')}
-                      </p>
-                    ) : null}
+                <Modal open={sceneOpen && !!scene} onClose={() => setSceneOpen(false)} title={`Crime scene: ${scene?.name ?? ''}`} width={560}>
+                  {scene ? (
+                    <div className="flex flex-col gap-3">
+                      <SceneThumb preset={preset} className="rounded" style={{ width: '100%', height: 200, border: '1px solid var(--gold-500)' }} />
+                      <p style={{ margin: 0, fontSize: 17 }}>{scene.description}</p>
+                      {ready.evidence.filter((e) => e.location === scene.id && e.state !== 'hidden').length ? (
+                        <p className="muted" style={{ margin: 0, fontSize: 14 }}>
+                          Noted here: {ready.evidence.filter((e) => e.location === scene.id && e.state !== 'hidden').map((e) => e.name).join(', ')}
+                        </p>
+                      ) : null}
+                      <p className="muted" style={{ margin: 0, fontSize: 13 }}>You can search this room during the investigation.</p>
+                    </div>
+                  ) : null}
+                </Modal>
                     <p className="muted" style={{ margin: '6px 0 0', fontSize: 12 }}>You can search this room during the investigation.</p>
                   </div>
                 ) : null}

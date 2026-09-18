@@ -5,18 +5,43 @@ together, and records the decisions taken at M0. Where this file and PLAN.md dif
 
 ## 0. Decisions taken at M0 (2026-09-18)
 
-1. **LLM mode.** `LLM_MODE=auto|claude|scripted`. `auto` (default) = `claude` when an Anthropic credential resolves
-   (ANTHROPIC_API_KEY in env or backend/.env), else `scripted`. `scripted` is a deterministic, rule-based performer
-   (`agents/scripted.py`) that plays every suspect from its case data alone, so the whole game is playable offline.
-   It obeys exactly the same isolation rules (it only ever sees its own suspect dict + its own state). `FAKE_LLM=1`
-   from PLAN.md is an alias for `LLM_MODE=scripted`. Tests run in scripted mode.
-2. **Models** (from the claude-api skill, 2026-06): `SUSPECT_MODEL=claude-sonnet-5` (suspects, Watson),
-   `AUTHOR_MODEL=claude-opus-5` (Author, Checker), `GUARD_MODEL=claude-haiku-4-5` (Leak Guard, motive judge,
-   fallback lines, summaries). Forced tool use (`tool_choice={"type":"tool","name":...}`) is supported on all three.
-   Do not send `thinking` or `temperature` params. Suspect/guard calls use `output_config={"effort":"low"}` to keep
-   latency down (Haiku 4.5 does not accept `output_config.effort` — omit it there). `max_tokens=1200` for
-   character/guard/judge calls, `16000` for Watson, streaming with `get_final_message()` for the Author (large output).
-   The SDK is `anthropic` 1.7 (async client `anthropic.AsyncAnthropic()`; it resolves the key from the environment).
+1. **LLM provider is Google Gemini, not Anthropic.** The owner supplied a Gemini API key (backend/.env, gitignored;
+   never print it, never commit it). `LLM_MODE=auto|gemini|scripted`. `auto` (default) = `gemini` when GEMINI_API_KEY
+   (or GOOGLE_API_KEY) is non-empty, else `scripted`. `scripted` is a deterministic, rule-based performer
+   (`agents/scripted.py`) that plays every suspect from its case data alone, so the whole game is playable offline and
+   in tests. It obeys exactly the same isolation rules. `FAKE_LLM=1` is an alias for `LLM_MODE=scripted`.
+   Everywhere PLAN.md says "Claude call" read "Gemini call"; the architecture (one call per suspect per turn, isolation,
+   structured output, leak guard, Watson) is unchanged.
+2. **Models** (verified against this key on 2026-09-18 — many models return 503 "high demand" or 429 on this key, so
+   the client MUST implement a fallback ladder): defaults `SUSPECT_MODEL=gemini-3.5-flash-lite` (suspects, Watson,
+   ~1.5–2.5 s per call), `GUARD_MODEL=gemini-3.5-flash-lite` (leak guard, motive judge, fallback lines, summaries),
+   `AUTHOR_MODEL=gemini-3.6-flash` (Author/Checker; slower, ~25 s; falls back to flash-lite). Ladder for every call:
+   [configured model, "gemini-3.5-flash-lite", "gemini-3.1-flash-lite"]. `gemini-2.5-*` are retired for this key
+   (404); `gemini-3.1-pro-preview`, `gemini-pro-latest` and the image models are quota-blocked (429) — do not use them.
+   `gemini-3.8-flash`, `3.7-flash`, `3.5-flash` mostly 503 — allowed as an env override only.
+   **SDK**: `google-genai` 2.24 (installed in backend/.venv). Usage that is verified to work:
+   ```python
+   from google import genai
+   from google.genai import types
+   client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])          # one client per process
+   cfg = types.GenerateContentConfig(
+       system_instruction=SYSTEM_TEXT,                 # Block A + Block B joined by a blank line (no caching on this tier)
+       response_mime_type="application/json",
+       response_json_schema=TOOL["input_schema"],      # a plain JSON-schema dict; the reply text is JSON matching it
+       max_output_tokens=1200,
+       thinking_config=types.ThinkingConfig(thinking_level="low"),   # 3.x models; on 400 INVALID_ARGUMENT retry without it
+       temperature=0.9)
+   r = await client.aio.models.generate_content(model=model, contents=contents, config=cfg)
+   data = json.loads(r.text)                           # validate required keys yourself; raise InvalidOutput otherwise
+   # contents = [types.Content(role="user"|"model", parts=[types.Part(text=...)]), ...]  ("assistant" → "model")
+   # errors: google.genai.errors.ClientError (4xx: .code), google.genai.errors.ServerError (5xx). Retry policy:
+   #   503/429 → sleep 1.5 s, retry once, then next model in the ladder; 400 with thinking_config → retry without it;
+   #   final failure → raise LLMUnavailable (the director then uses the scripted performer for that turn and records a
+   #   guard event kind "llm_fallback_scripted" so the Judge Panel shows it).
+   ```
+   Log model, latency_ms, prompt/candidates/thoughts token counts (r.usage_metadata). `call_tool(...)` in client.py keeps
+   the PLAN.md name/shape but takes `system_text: str` and `messages: list[{"role","content"}]` and a `tool` dict with
+   `name`, `description`, `input_schema`, and returns the parsed dict.
 3. **Brand.** The UI is titled "Murder Mystery Mayhem" (owner's mockups); package/repo name stays `alibi`.
 4. **Frontend stack as installed:** React 19, react-router-dom 7, Vite 8, TypeScript 6, Tailwind 4 via
    `@tailwindcss/vite` (no tailwind.config.js; use `@import "tailwindcss";` in CSS), Zustand 5, @xyflow/react 12,
@@ -93,7 +118,7 @@ World = {
   framing actions, and the clock. `player_signal` handling per §8.5. The performer is called at most once per
   suspect per turn (retries for leaks excepted).
 
-## 3. agents/ (the only package that imports anthropic)
+## 3. agents/ (the only package that imports google.genai)
 
 Performer protocol (both implementations return the raw `respond_as_character` dict, un-validated):
 ```python
@@ -110,28 +135,29 @@ PerformContext = {
   "difficulty": str, "suspect_ids": list[str], "cast_names": dict[str,str],   # ids/names of everyone (public info)
 }
 class Performer(Protocol):
-    mode: str                                            # "claude" | "scripted"
+    mode: str                                            # "gemini" | "scripted"
     async def perform(self, ctx: PerformContext) -> dict  # raw tool output; also sets ctx["system_blocks"] = [str,...]
 ```
-- `client.py` — `async def call_tool(model, system_blocks, messages, tool, *, max_tokens=1200, effort="low") -> dict`
-  (forced tool use, one retry on APIStatusError/timeout, raises `InvalidOutput`; logs model/latency/tokens);
-  `credential_available() -> bool`; `resolve_mode(settings) -> "claude"|"scripted"`.
+- `client.py` — `async def call_tool(model, system_text, messages, tool, *, max_tokens=1200, temperature=0.9) -> dict`
+  (Gemini structured JSON output per §0.2 incl. the model ladder and retries; raises `InvalidOutput` on bad JSON /
+  missing required keys and `LLMUnavailable` when every model fails; logs model/latency/tokens);
+  `credential_available() -> bool`; `resolve_mode(settings) -> "gemini"|"scripted"`.
 - `tools.py` — the JSON tool schemas: `RESPOND_AS_CHARACTER` (PLAN §7.3 verbatim), `LEAK_CHECK`, `NOTEBOOK_UPDATE`,
   `GRADE_MOTIVE`, `FALLBACK_LINES`, `SUMMARIZE`, `WRITE_CASE` (case schema), `SOLVE_CASE`, `ALTERNATIVE_CASE`, `GRADE_ALTERNATIVE`.
-- `suspect.py` — `build_system_blocks(ctx) -> list[dict]` (Block A cached + Block B) and `ClaudePerformer`.
+- `suspect.py` — `build_system_blocks(ctx) -> list[str]` ([Block A, Block B] texts) and `GeminiPerformer`.
 - `scripted.py` — `ScriptedPerformer` (see §5 below).
 - `performer.py` — `get_performer(settings) -> Performer`.
 - `leak_guard.py` — `async def check(spoken, locked_secrets: list[{id,text,key_phrases}], mode) -> {"leaked": [...], "reason": str}`
-  (always runs the `key_phrases` regex check; in claude mode also the Haiku call; union of both).
-- `watson.py` — `async def update(visible: dict, mode) -> NotebookEntry` (scripted mode: rule-based extraction).
+  (always runs the `key_phrases` regex check; in gemini mode also the GUARD_MODEL call; union of both).
+- `watson.py` — `async def update(visible: dict, mode) -> NotebookEntry` (scripted mode: rule-based extraction; gemini mode falls back to the rule-based notebook on LLMUnavailable).
 - `judge.py` — `async def grade_motive(motive_text, solution_motive, mode) -> {"points": 0|10|20, "note": str}`;
   `async def fallback_lines(case, mode) -> dict[sid, line]`; `async def summarize(messages, mode) -> str`.
-- `author.py` / `checker.py` — M6 (claude only); `checker.static_check(case) -> list[str]` is pure code (port of
+- `author.py` / `checker.py` — M6 (gemini only); `checker.static_check(case) -> list[str]` is pure code (port of
   scripts/validate_case.py) and is used by case loading in every mode.
 
 ## 4. app layer
 
-- `config.py` — pydantic-settings `Settings` reading `backend/.env`: ANTHROPIC_API_KEY, SUSPECT_MODEL, AUTHOR_MODEL,
+- `config.py` — pydantic-settings `Settings` reading `backend/.env`: GEMINI_API_KEY, SUSPECT_MODEL, AUTHOR_MODEL,
   GUARD_MODEL, DATABASE_URL, DEBUG_PANEL, OFFSCREEN_EVERY, LLM_MODE, FAKE_LLM, RNG_SEED, CORS_ORIGINS.
 - `models.py` — PLAN §5 tables (SQLAlchemy 2 async, JSON columns).
 - `schemas.py` — Pydantic models for every request/response in §6 below.
@@ -176,12 +202,12 @@ Deterministic (seeded by game id + turn) and isolation-safe: it sees only its ow
 
 ## 6. API (PLAN §9 plus these additions; all under /api)
 
-- `GET /health` → `{ok: true, llm_mode: "claude"|"scripted", debug_panel: bool, models: {suspect, author, guard}, cases: int}`
-- `POST /settings/api-key {api_key}` → `{llm_mode}` (writes backend/.env, updates process env; local dev convenience)
+- `GET /health` → `{ok: true, llm_mode: "gemini"|"scripted", debug_panel: bool, models: {suspect, author, guard}, cases: int}`
+- `POST /settings/api-key {api_key}` → `{llm_mode}` (a Gemini key; writes GEMINI_API_KEY into backend/.env, updates process env; local dev convenience)
 - `GET /cases` → `[{id, title, setting, generated, n_suspects, preset}]` (`preset` ∈ manor|liner|startup|dorm|room|other, derived from setting keywords)
 - `GET /cases/{id}/export` → the case JSON with `solution`, `timeline_truth`, secrets etc. included (it is a share seed)
 - `POST /cases/import` `{case: {...}}` → `{case_id}` after static_check
-- `POST /cases/generate` (claude only) → 202 `{job_id}`; `GET /cases/jobs/{job_id}` → `{status, progress: [str], case_id?, checker_report?}`
+- `POST /cases/generate` (gemini only) → 202 `{job_id}`; `GET /cases/jobs/{job_id}` → `{status, progress: [str], case_id?, checker_report?}`
 - `GET /games` → `[{game_id, case_id, case_title, setting, difficulty, status, turn, created_at, correct: bool|null, rank: str|null}]`
 - `POST /games`, `GET /games/{id}`, `POST /games/{id}/turn`, `POST /games/{id}/confront`, `POST /games/{id}/confront/interject {text}`,
   `POST /games/{id}/search`, `POST /games/{id}/accuse`, `GET /games/{id}/debrief`, `POST /games/{id}/rewind {turn}`,

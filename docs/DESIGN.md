@@ -66,7 +66,7 @@ Central parchment card titled `—◆— SETUP — NEW CASE —◆—`. Rows:
    (~180×110): *Manor 1923*, *Ocean liner*, *Startup office*, *Cornell dorm*, *Your room 📷*. Selected tile has a
    thick gold border and glow. Tiles are CSS-illustrated scenes (gradients + a silhouette SVG: a manor, a ship,
    an office window, a dorm building, a bedroom lamp). Tiles map to available cases; a tile whose case is not
-   installed shows a small "NEEDS API KEY" ribbon when LLM mode is scripted (procedural generation requires Claude).
+   installed shows a small "NEEDS API KEY" ribbon when LLM mode is scripted (procedural generation requires a Gemini key).
 2. **How many suspects?** (subtitle "MORE PEOPLE. MORE POSSIBILITIES.") — chips 3 / 4 / 5 (selected: gold).
 3. **Difficulty** (subtitle "SAME CRIMES. DEEPER SECRETS.") — Rookie / Detective / Inspector.
 4. **Accessibility options** (subtitle "MYSTERIES FOR EVERY MIND.") — four toggle pills with icons:
@@ -76,8 +76,8 @@ Central parchment card titled `—◆— SETUP — NEW CASE —◆—`. Rows:
    selected). Below it a lacquer strip with a typewriter icon and progress text:
    "Writing the cast… planting the evidence… checking it's solvable…" and a gold progress bar (shown while generating
    or while the game is being created).
-A small "Case Archive" link (top-right placard) goes to `/archive`. A subtle "Suspects: Live Claude / Scripted"
-status pill in the footer; clicking it opens a small modal to paste an Anthropic API key (stored only in backend/.env).
+A small "Case Archive" link (top-right placard) goes to `/archive`. A subtle "Suspects: Live Gemini / Scripted"
+status pill in the footer; clicking it opens a small modal to paste a Gemini API key (stored only in backend/.env).
 Left of the card: a CSS/SVG pixel-detective silhouette (fedora, trench coat) is a nice-to-have, not required.
 
 ### 5.2 Briefing — The Crime  (route `/game/:id/briefing`)

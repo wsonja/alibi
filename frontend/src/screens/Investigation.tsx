@@ -16,7 +16,7 @@ import JudgePanel from '@/components/judge/JudgePanel'
 import { PixelPortrait } from '@/components/portrait/PixelPortrait'
 import { cn } from '@/lib/cn'
 import { clockPhase, formatClock12 } from '@/lib/clock'
-import { describeTurn, selectExaminedEvidence, selectPrimarySuspect, selectSecondarySuspect, turnsForSuspect, useGame } from '@/store/game'
+import { describeTurn, selectPrimarySuspect, selectSecondarySuspect, turnsForSuspect, useGame } from '@/store/game'
 import { useUI, type ActionTab } from '@/store/ui'
 
 const TABS: Array<{ key: ActionTab; label: string; hint: string }> = [
@@ -91,7 +91,10 @@ export function Investigation() {
   const accuse = useGame((s) => s.accuse)
   const primary = useGame(selectPrimarySuspect)
   const secondary = useGame(selectSecondarySuspect)
-  const examined = useGame(selectExaminedEvidence)
+  // Computed locally (not via a store selector) because a selector that returns a freshly-filtered array on every
+  // call makes useSyncExternalStore see a "new" snapshot each render and loop forever (React: "Maximum update
+  // depth exceeded" / "getSnapshot should be cached").
+  const examined = useMemo(() => game?.evidence.filter((e) => e.state === 'examined') ?? [], [game])
 
   const tab = useUI((s) => s.actionTab)
   const setTab = useUI((s) => s.setActionTab)

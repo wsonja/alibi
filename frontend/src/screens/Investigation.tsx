@@ -486,43 +486,26 @@ export function Investigation() {
       </div>
 
       <Modal open={!!searchResult} onClose={() => setSearchResult(null)} title={`Searched: ${game.locations.find((l) => l.id === searchResult?.locationId)?.name ?? ''}`} width={560}>
-
         {searchResult ? (
-
           <div className="flex flex-col gap-3">
-
             <SceneThumb preset={presetFromSetting(game.case.setting)} className="rounded" style={{ width: '100%', height: 200, border: '1px solid var(--gold-500)' }} />
-
-            <p style={{ margin: 0, fontSize: 16 }}>{game.locations.find((l) => l.id === searchResult.locationId)?.description}</p>
-
+            <p style={{ margin: 0, fontSize: 16, color: 'var(--ink)' }}>{game.locations.find((l) => l.id === searchResult.locationId)?.description}</p>
             {searchResult.found.length ? (
-
-              <ul style={{ margin: 0, paddingLeft: 18 }}>
-
+              <div className="flex flex-col gap-2">
                 {searchResult.found.map((e) => (
-
-                  <li key={e.id} style={{ marginBottom: 6 }}>
-
-                    <strong>{e.name}</strong>
-
-                    {e.examined_detail ? <span className="muted"> — {e.examined_detail}</span> : null}
-
-                  </li>
-
+                  <div key={e.id} style={{ border: '2px solid var(--truth)', borderRadius: 6, padding: '10px 12px', background: 'rgba(63,163,77,.08)' }}>
+                    <div style={{ color: 'var(--truth)', fontSize: 11, letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: 2 }}>New evidence</div>
+                    <div style={{ fontWeight: 700, fontSize: 16, color: 'var(--ink)' }}>{e.name}</div>
+                    {e.examined_detail ? <div style={{ fontSize: 14, color: 'var(--ink-soft)', marginTop: 4 }}>{e.examined_detail}</div> : null}
+                  </div>
                 ))}
-
-              </ul>
-
+                <p style={{ margin: 0, fontSize: 13, color: 'var(--ink-soft)' }}>These are now in your notebook and can be presented to a suspect.</p>
+              </div>
             ) : (
-
-              <p className="muted" style={{ margin: 0 }}>Nothing new here.</p>
-
+              <p style={{ margin: 0, color: 'var(--ink-soft)' }}>Nothing new here. You already searched this room.</p>
             )}
-
           </div>
-
         ) : null}
-
       </Modal>
 
       <AccuseModal

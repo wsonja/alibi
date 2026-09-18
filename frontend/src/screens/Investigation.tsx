@@ -37,6 +37,25 @@ const SEND_LABEL: Record<ActionTab, string> = {
   search: 'SEARCH',
 }
 
+const TACTIC_LINES: Record<Tactic, string[]> = {
+  bluff: [
+    'I know more than you think, {name}. Someone saw you where you say you never were.',
+    'We found your fingerprints where they had no business being. Care to explain?',
+    'Another guest has already told me the truth about tonight. This is your chance to tell it yourself.',
+  ],
+  flatter: [
+    'You strike me as the only sensible person in this house, {name}. I could use your help.',
+    'You notice things other people miss. I would value your honest impression of tonight.',
+    'Between us, you are the one person here I am inclined to believe.',
+  ],
+  threaten: [
+    'I can make this very unpleasant for you, {name}. The police will be here at dawn.',
+    'If you keep lying to me, I will make sure the inspector hears every word of it.',
+    'You are one wrong answer away from being the only suspect I care about.',
+  ],
+  silence: [''],
+}
+
 function evidenceRank(e: PublicEvidence): number {
   if (e.state === 'examined') return 0
   if (e.state === 'known') return 1
@@ -411,12 +430,12 @@ export function Investigation() {
               <div className="flex flex-col gap-2">
                 <div className="flex gap-2 flex-wrap">
                   {TACTICS.map((tKind) => (
-                    <button key={tKind} type="button" className={cn('chip', selectedTactic === tKind && 'selected')} onClick={() => setSelectedTactic(tKind)}>
+                    <button key={tKind} type="button" className={cn('chip', selectedTactic === tKind && 'selected')} onClick={() => { setSelectedTactic(tKind); setTacticText(TACTIC_LINES[tKind][Math.floor(Math.random() * TACTIC_LINES[tKind].length)]!.replace('{name}', primary?.name ?? 'you')) }}>
                       {tKind[0]!.toUpperCase() + tKind.slice(1)}
                     </button>
                   ))}
                 </div>
-                <input type="text" className="field" placeholder="Optional line to say…" value={tacticText} onChange={(e) => setTacticText(e.target.value)} disabled={isPending} />
+                <input type="text" className="field" placeholder="Pick a tactic above, then edit the line you will say…" value={tacticText} onChange={(e) => setTacticText(e.target.value)} disabled={isPending} />
               </div>
             ) : null}
 

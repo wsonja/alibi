@@ -26,7 +26,7 @@ function SuspectCard({ suspect }: { suspect: PublicSuspect }) {
   const alibi = useMemo(() => extractAlibi(suspect.public_description), [suspect.public_description])
   return (
     <li className="relative group">
-      <article className={cn('lacquer lacquer--soft h-full flex flex-col items-center text-center gap-2 fade-in', pinned && 'glow-pulse')} style={{ padding: '14px 12px' }} aria-label={`${suspect.name}, ${suspect.role}`}>
+      <article className={cn('lacquer lacquer--soft flex flex-col items-center text-center gap-2 fade-in', pinned && 'glow-pulse')} style={{ padding: '14px 12px' }} aria-label={`${suspect.name}, ${suspect.role}`}>
         <PixelPortrait suspect={suspect} emotion={suspect.emotion} size={96} />
         <h3 className="display display--gold" style={{ fontSize: 13, margin: 0 }}>
           {suspect.name}
@@ -35,7 +35,7 @@ function SuspectCard({ suspect }: { suspect: PublicSuspect }) {
           {suspect.role}
         </p>
         <p style={{ margin: 0, fontSize: 13, lineHeight: 1.4, color: 'rgba(243,231,203,.85)' }}>{suspect.public_description}</p>
-        <button type="button" className="btn btn-black btn--sm mt-auto" onClick={() => setPinned((p) => !p)} aria-pressed={pinned} aria-label={`${pinned ? 'Hide' : 'Show'} the stated alibi of ${suspect.name}`}>
+        <button type="button" className="btn btn-black btn--sm" onClick={() => setPinned((p) => !p)} aria-pressed={pinned} aria-label={`${pinned ? 'Hide' : 'Show'} the stated alibi of ${suspect.name}`}>
           <span aria-hidden="true">🔍</span> Alibi
         </button>
       </article>
@@ -190,13 +190,21 @@ export function Briefing() {
                         📍 View location
                       </button>
                     </div>
-                    {sceneOpen && scene ? (
-                      <p className="muted fade-in" style={{ margin: '4px 0 0', fontSize: 13 }}>
-                        {scene.description}
-                      </p>
-                    ) : null}
                   </div>
                 </div>
+                {sceneOpen && scene ? (
+                  <div className="lacquer fade-in" style={{ marginTop: 8 }}>
+                    <SceneThumb preset={preset} className="rounded" style={{ width: '100%', height: 170, border: '1px solid var(--gold-500)' }} />
+                    <h4 className="label-caps label-caps--gold" style={{ margin: '10px 0 4px' }}>{scene.name}</h4>
+                    <p style={{ margin: 0, fontSize: 15 }}>{scene.description}</p>
+                    {ready.evidence.filter((e) => e.location === scene.id && e.state !== 'hidden').length ? (
+                      <p className="muted" style={{ margin: '6px 0 0', fontSize: 13 }}>
+                        Noted here: {ready.evidence.filter((e) => e.location === scene.id && e.state !== 'hidden').map((e) => e.name).join(', ')}
+                      </p>
+                    ) : null}
+                    <p className="muted" style={{ margin: '6px 0 0', fontSize: 12 }}>You can search this room during the investigation.</p>
+                  </div>
+                ) : null}
               </div>
             </div>
 

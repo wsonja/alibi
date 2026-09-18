@@ -1,0 +1,13 @@
+fastapi[standard]>=0.115
+uvicorn>=0.30
+sqlalchemy[asyncio]>=2.0
+aiosqlite
+pydantic>=2
+pydantic-settings
+google-genai>=2.24
+python-dotenv
+websockets
+pytest
+pytest-asyncio
+httpx
+ruff

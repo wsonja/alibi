@@ -1,11 +1,15 @@
 PY=backend/.venv/bin/python
-.PHONY: dev backend frontend test test-integration redteam smoke types reset-db ping-models lint
+.PHONY: setup dev backend frontend test test-integration redteam smoke types reset-db ping-models lint
+setup:
+	python3 -m venv backend/.venv && backend/.venv/bin/pip install -q -r backend/requirements.txt && cd frontend && npm install
+	cp -n backend/.env.example backend/.env || true
+	@echo "Setup done. Optional: put GEMINI_API_KEY=... in backend/.env for live suspects."
 dev:
 	@echo "Starting backend :8000 and frontend :5173"; \
-	(cd backend && .venv/bin/uvicorn app.main:app --reload --port 8000) & \
+	(cd backend && set -a && . ./.env && set +a && .venv/bin/uvicorn --app-dir ../scripts mock_api:app --port 8000) & \
 	(cd frontend && npm run dev -- --port 5173); wait
 backend:
-	cd backend && .venv/bin/uvicorn app.main:app --reload --port 8000
+	cd backend && set -a && . ./.env && set +a && .venv/bin/uvicorn --app-dir ../scripts mock_api:app --port 8000
 frontend:
 	cd frontend && npm run dev -- --port 5173
 test:

@@ -1814,3 +1814,21 @@ html[data-screen-reader] .pixel-portrait {
   right: 18px;
   top: 14px;
 }
+
+/* chips on dark (lacquer) panels: gold outline, cream text, gold fill when selected */
+.lacquer .chip:not(.selected),
+.dialogue-log .chip:not(.selected),
+.action-bar .chip:not(.selected) {
+  border-color: var(--gold-500);
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--paper-100);
+}
+.lacquer .chip:not(.selected):hover:not(:disabled),
+.action-bar .chip:not(.selected):hover:not(:disabled) {
+  background: rgba(201, 162, 75, 0.28);
+  color: #fff;
+}
+.lacquer .chip:disabled,
+.action-bar .chip:disabled {
+  opacity: 0.7;
+}

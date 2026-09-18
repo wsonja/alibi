@@ -14,6 +14,7 @@ import { Marquee } from '@/components/common/Marquee'
 import { SceneThumb } from '@/components/common/SceneThumb'
 import { SectionTitle } from '@/components/common/SectionTitle'
 import { Sticky } from '@/components/common/Sticky'
+import { Modal } from '@/components/common/Modal'
 import { PixelPortrait } from '@/components/portrait/PixelPortrait'
 import { cn } from '@/lib/cn'
 import { formatClock12 } from '@/lib/clock'
@@ -22,11 +23,11 @@ import { deriveCrimeScene, deriveDeathWindow, extractAlibi, numberWord } from '@
 import { useGame } from '@/store/game'
 
 function SuspectCard({ suspect }: { suspect: PublicSuspect }) {
-  const [pinned, setPinned] = useState(false)
+  const [open, setOpen] = useState(false)
   const alibi = useMemo(() => extractAlibi(suspect.public_description), [suspect.public_description])
   return (
-    <li className="relative group">
-      <article className={cn('lacquer lacquer--soft flex flex-col items-center text-center gap-2 fade-in', pinned && 'glow-pulse')} style={{ padding: '14px 12px' }} aria-label={`${suspect.name}, ${suspect.role}`}>
+    <li>
+      <article className="lacquer lacquer--soft flex flex-col items-center text-center gap-2 fade-in" style={{ padding: '14px 12px' }} aria-label={`${suspect.name}, ${suspect.role}`}>
         <PixelPortrait suspect={suspect} emotion={suspect.emotion} size={96} />
         <h3 className="display display--gold" style={{ fontSize: 13, margin: 0 }}>
           {suspect.name}
@@ -35,13 +36,20 @@ function SuspectCard({ suspect }: { suspect: PublicSuspect }) {
           {suspect.role}
         </p>
         <p style={{ margin: 0, fontSize: 13, lineHeight: 1.4, color: 'rgba(243,231,203,.85)' }}>{suspect.public_description}</p>
-        <button type="button" className="btn btn-black btn--sm" onClick={() => setPinned((p) => !p)} aria-pressed={pinned} aria-label={`${pinned ? 'Hide' : 'Show'} the stated alibi of ${suspect.name}`}>
+        <button type="button" className="btn btn-black btn--sm" onClick={() => setOpen(true)} aria-label={`Show the stated alibi of ${suspect.name}`}>
           <span aria-hidden="true">🔍</span> Alibi
         </button>
       </article>
-      <div className={cn('speech-bubble speech-bubble--top absolute left-2 right-2 -bottom-3 translate-y-full z-10 transition-opacity', pinned ? 'opacity-100' : 'opacity-0 pointer-events-none group-hover:opacity-100 group-focus-within:opacity-100')} role="note" aria-hidden={!pinned}>
-        <span className="speech-bubble__label">Alibi (public)</span>“{alibi}”
-      </div>
+      <Modal open={open} onClose={() => setOpen(false)} title={`${suspect.name} — alibi (public)`} width={520}>
+        <div className="flex gap-4 items-start">
+          <PixelPortrait suspect={suspect} emotion={suspect.emotion} size={96} />
+          <div>
+            <p className="muted" style={{ margin: '0 0 6px', fontStyle: 'italic' }}>{suspect.role}</p>
+            <p style={{ margin: 0, fontSize: 18, fontFamily: 'var(--font-hand, Caveat, cursive)' }}>“{alibi}”</p>
+            <p className="muted" style={{ margin: '10px 0 0', fontSize: 13 }}>This is what they told everyone. Whether it holds up is for you to find out.</p>
+          </div>
+        </div>
+      </Modal>
     </li>
   )
 }

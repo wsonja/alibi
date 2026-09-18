@@ -5,54 +5,51 @@ together, and records the decisions taken at M0. Where this file and PLAN.md dif
 
 ## 0. Decisions taken at M0 (2026-09-18)
 
-1. **LLM provider is Google Gemini, not Anthropic.** The owner supplied a Gemini API key (backend/.env, gitignored;
-   never print it, never commit it). `LLM_MODE=auto|gemini|scripted`. `auto` (default) = `gemini` when GEMINI_API_KEY
-   (or GOOGLE_API_KEY) is non-empty, else `scripted`. `scripted` is a deterministic, rule-based performer
-   (`agents/scripted.py`) that plays every suspect from its case data alone, so the whole game is playable offline and
-   in tests. It obeys exactly the same isolation rules. `FAKE_LLM=1` is an alias for `LLM_MODE=scripted`.
-   Everywhere PLAN.md says "Claude call" read "Gemini call"; the architecture (one call per suspect per turn, isolation,
-   structured output, leak guard, Watson) is unchanged.
-2. **Models** (verified against this key on 2026-09-18 — many models return 503 "high demand" or 429 on this key, so
-   the client MUST implement a fallback ladder): defaults `SUSPECT_MODEL=gemini-3.5-flash-lite` (suspects, Watson,
-   ~1.5–2.5 s per call), `GUARD_MODEL=gemini-3.5-flash-lite` (leak guard, motive judge, fallback lines, summaries),
-   `AUTHOR_MODEL=gemini-3.6-flash` (Author/Checker; slower, ~25 s; falls back to flash-lite). Ladder for every call:
-   [configured model, "gemini-3.5-flash-lite", "gemini-3.1-flash-lite"]. `gemini-2.5-*` are retired for this key
-   (404); `gemini-3.1-pro-preview`, `gemini-pro-latest` and the image models are quota-blocked (429) — do not use them.
-   `gemini-3.8-flash`, `3.7-flash`, `3.5-flash` mostly 503 — allowed as an env override only.
-   **SDK**: `google-genai` 2.24 (installed in backend/.venv). Usage that is verified to work:
-   ```python
-   from google import genai
-   from google.genai import types
-   client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])          # one client per process
-   cfg = types.GenerateContentConfig(
-       system_instruction=SYSTEM_TEXT,                 # Block A + Block B joined by a blank line (no caching on this tier)
-       response_mime_type="application/json",
-       response_json_schema=TOOL["input_schema"],      # a plain JSON-schema dict; the reply text is JSON matching it
-       max_output_tokens=1200,
-       thinking_config=types.ThinkingConfig(thinking_level="low"),   # 3.x models; on 400 INVALID_ARGUMENT retry without it
-       temperature=0.9)
-   r = await client.aio.models.generate_content(model=model, contents=contents, config=cfg)
-   data = json.loads(r.text)                           # validate required keys yourself; raise InvalidOutput otherwise
-   # contents = [types.Content(role="user"|"model", parts=[types.Part(text=...)]), ...]  ("assistant" → "model")
-   # errors: google.genai.errors.ClientError (4xx: .code), google.genai.errors.ServerError (5xx). Retry policy:
-   #   503/429 → sleep 1.5 s, retry once, then next model in the ladder; 400 with thinking_config → retry without it;
-   #   final failure → raise LLMUnavailable (the director then uses the scripted performer for that turn and records a
-   #   guard event kind "llm_fallback_scripted" so the Judge Panel shows it).
-   ```
-   Log model, latency_ms, prompt/candidates/thoughts token counts (r.usage_metadata). `call_tool(...)` in client.py keeps
-   the PLAN.md name/shape but takes `system_text: str` and `messages: list[{"role","content"}]` and a `tool` dict with
-   `name`, `description`, `input_schema`, and returns the parsed dict.
-3. **Brand.** The UI is titled "Murder Mystery Mayhem" (owner's mockups); package/repo name stays `alibi`.
-4. **Frontend stack as installed:** React 19, react-router-dom 7, Vite 8, TypeScript 6, Tailwind 4 via
+1. **LLM provider is Google Gemini, not Anthropic.** The owner asked for Gemini. PLAN.md says "Claude" everywhere;
+   read every "Claude call" in PLAN.md as "Gemini call". The architecture (one call per suspect per turn, strict
+   context isolation, structured output, Leak Guard, deterministic Director) is unchanged. `agents/` is the only
+   package that imports `google.genai` (SDK `google-genai` 2.24, installed in backend/.venv).
+2. **LLM mode.** `LLM_MODE=auto|gemini|scripted`. `auto` (default) = `gemini` when `GEMINI_API_KEY` (or
+   `GOOGLE_API_KEY`) is set, else `scripted`. `scripted` is a deterministic, rule-based performer
+   (`agents/scripted.py`) that plays every suspect from its case data alone, so the whole game is playable offline. It
+   obeys exactly the same isolation rules (it only ever sees its own suspect dict + its own state). `FAKE_LLM=1` from
+   PLAN.md is an alias for `LLM_MODE=scripted`. Tests run in scripted mode. In gemini mode, if a call fails after the
+   fallback ladder, the Director uses the scripted performer for that turn and records a guard event
+   `provider_fallback` (the game never stalls on the API).
+3. **Models** (verified against this key on 2026-09-18 with `GET /v1beta/models`): gemini-2.5-* are retired for new
+   keys (404); `gemini-3.1-pro-preview`, `gemini-pro-latest` and the image models are quota-blocked (429) on this key;
+   `gemini-3.8-flash` / `3.7-flash` / `3.5-flash` returned 503 "high demand" on every probe; `gemini-3.6-flash` works
+   but is slow (~25 s with thinking); `gemini-3.5-flash-lite` and `gemini-3.1-flash-lite` answer valid JSON in ~2 s.
+   Therefore each role has a **fallback ladder** (comma-separated env vars, first is preferred):
+   `SUSPECT_MODEL=gemini-3.5-flash-lite,gemini-3.1-flash-lite,gemini-3.6-flash` (suspects, Watson),
+   `AUTHOR_MODEL=gemini-3.6-flash,gemini-3.5-flash-lite,gemini-3.1-flash-lite` (Author, Checker),
+   `GUARD_MODEL=gemini-3.5-flash-lite,gemini-3.1-flash-lite` (Leak Guard, motive judge, fallback lines, summaries).
+   `client.py` tries each model in order; on 429/503/5xx/timeouts it retries once after 1.5 s then moves down the
+   ladder; on 400 INVALID_ARGUMENT it retries the same model once WITHOUT `thinking_config` (some models reject
+   `thinking_budget`), then moves on.
+4. **Structured output instead of forced tool use.** Every Gemini call uses
+   `GenerateContentConfig(system_instruction=<str>, response_mime_type="application/json", response_json_schema=<JSON
+   schema dict>, max_output_tokens=…, thinking_config=ThinkingConfig(thinking_level="low"))` and parses
+   `response.text` with `json.loads`; the Director validates every field exactly as PLAN §7.3 describes. The "tool"
+   JSON schemas in `agents/tools.py` are the same objects (name, description, input_schema); `input_schema` is what is
+   passed as `response_json_schema`. Do not use function calling. `max_output_tokens`: 1200 character/guard/judge,
+   8000 Watson, 60000 Author. Async client: `genai.Client(api_key=…).aio.models.generate_content(model=…, contents=…, config=…)`;
+   `contents` is a list of `types.Content(role="user"|"model", parts=[types.Part(text=…)])` — the suspect's stored
+   conversation maps assistant→"model". No explicit context caching (the stable block is below the cache minimum);
+   keep Block A byte-stable anyway so Gemini's implicit caching can hit.
+5. **Brand.** The UI is titled "Murder Mystery Mayhem" (owner's mockups); package/repo name stays `alibi`.
+6. **Frontend stack as installed:** React 19, react-router-dom 7, Vite 8, TypeScript 6, Tailwind 4 via
    `@tailwindcss/vite` (no tailwind.config.js; use `@import "tailwindcss";` in CSS), Zustand 5, @xyflow/react 12,
    howler, @mediapipe/tasks-vision, vitest. Path alias `@/` → `src/`.
-5. **Portraits** are procedural pixel art rendered client-side from `portrait_prompt` (public, cosmetic). PublicSuspect
+7. **Portraits** are procedural pixel art rendered client-side from `portrait_prompt` (public, cosmetic). PublicSuspect
    therefore carries `portrait_prompt`; `portrait_url` stays (null unless a generated image exists).
-6. **Confrontation interjection** is a separate endpoint (`POST /confront/interject`) consumed between rounds.
-7. **Database**: SQLite file `backend/alibi.db`; `Base.metadata.create_all` at startup. Tables per PLAN §5.
-8. **Clock** starts at 00:15 (night of the murder); dawn (05:00+) is cosmetic only.
-9. **Extra cases** live in `backend/app/cases/*.json`; every file there is loaded at startup and validated with the
-   same rules as `scripts/validate_case.py`; a case that fails validation is skipped with a logged error.
+8. **Confrontation interjection** is a separate endpoint (`POST /confront/interject`) consumed between rounds.
+9. **Database**: SQLite file `backend/alibi.db`; `Base.metadata.create_all` at startup. Tables per PLAN §5.
+10. **Clock** starts at 00:15 (night of the murder); dawn (05:00+) is cosmetic only.
+11. **Extra cases** live in `backend/app/cases/*.json`; every file there is loaded at startup and validated with the
+    same rules as `scripts/validate_case.py`; a case that fails validation is skipped with a logged error.
+12. **UI wording**: the status pill says "Suspects: Live Gemini" or "Suspects: Scripted"; the settings modal asks for a
+    Gemini API key; `POST /settings/api-key` writes `GEMINI_API_KEY`.
 
 ## 1. Shared state shapes (plain dicts; JSON-serialisable; these ARE the snapshot)
 
@@ -229,7 +226,7 @@ Briefing       = {game_id, title, setting, briefing, victim, timeline_public, ca
 NotebookEntry  = PLAN §7.5 + {turn}
 Debrief        = PLAN §9 Debrief + {game_id, case_title, cast: PublicSuspect[], turns: PublicTurn[],
                   truth: {murderer, murderer_name, method, motive, timeline_truth, red_herrings, cause_of_death_truth}}
-DebugState     = {llm_mode, turn, clock, suspects: {sid: {name, stress, thresholds, unlocked, locked, revealed,
+DebugState     = {llm_mode, models: {suspect, author, guard}, turn, clock, suspects: {sid: {name, stress, thresholds, unlocked, locked, revealed,
                   secrets: [{id,tier,text,status}], heard_log, outbox, emotion, last_honesty, last_internal_reasoning,
                   last_accuses, system_blocks: [str], silenced_until}}, evidence: {eid: state}, guard_events: [...],
                   world_events: [...], fired_framing_actions: [...], cross_contamination: [{suspect_id, found: str}]}

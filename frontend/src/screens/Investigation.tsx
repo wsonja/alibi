@@ -529,7 +529,7 @@ function AccuseModal({ open, onClose, cast, examined, pending, onAccuse }: Accus
     setEvidenceIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]))
   }
 
-  const canAccuse = !!suspectId && evidenceIds.length > 0 && motive.trim().length > 0 && !pending
+  const canAccuse = !!suspectId && !pending  // evidence and motive are optional: they only add points
 
   return (
     <Modal open={open} onClose={onClose} title="☞ ✦ Accuse ✦ — it all comes down to this" width={720}>
@@ -554,7 +554,7 @@ function AccuseModal({ open, onClose, cast, examined, pending, onAccuse }: Accus
           </h3>
           {examined.length === 0 ? (
             <p className="ink-soft" style={{ margin: 0 }}>
-              No evidence examined yet.
+              No evidence examined yet. You can still accuse, but the method scores 0 until you present examined evidence.
             </p>
           ) : (
             <div className="flex gap-2 flex-wrap">

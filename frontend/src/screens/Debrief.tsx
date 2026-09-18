@@ -9,6 +9,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import type { Honesty, PublicSuspect, ReelNode } from '@/api/types'
+import { PlayerAvatar } from '@/components/avatar/PlayerAvatar'
 import { ButtonLink, Button } from '@/components/common/Button'
 import { ErrorNotice } from '@/components/common/ErrorNotice'
 import { Marquee } from '@/components/common/Marquee'
@@ -163,15 +164,18 @@ export function Debrief() {
         <p className={cn('display', d.correct ? '' : '')} style={{ fontSize: 16, color: d.correct ? 'var(--truth)' : 'var(--lie)', margin: '6px 0' }}>
           {d.correct ? 'CORRECT! YOU FOUND THE TRUTH.' : 'WRONG. THE TRUTH WAS ELSEWHERE.'}
         </p>
-        <p className="muted" style={{ margin: 0 }}>
-          Rank: <strong className="gold">{d.rank}</strong>
-          {d.confidence_badge ? (
-            <>
-              {' '}
-              · <span className="chip chip--dark selected">{d.confidence_badge}</span>
-            </>
-          ) : null}
-        </p>
+        <div className="flex items-center justify-center gap-3">
+          <PlayerAvatar size={48} silhouette={false} title="You" />
+          <p className="muted" style={{ margin: 0 }}>
+            Rank: <strong className="gold">{d.rank}</strong>
+            {d.confidence_badge ? (
+              <>
+                {' '}
+                · <span className="chip chip--dark selected">{d.confidence_badge}</span>
+              </>
+            ) : null}
+          </p>
+        </div>
         <div className="flex justify-center gap-6 mt-3 flex-wrap mono" style={{ fontSize: 13 }}>
           <span>Murderer {d.score.murderer}</span>
           <span>Method {d.score.method}</span>

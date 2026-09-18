@@ -9,6 +9,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api, errorMessage, isApiError } from '@/api/client'
 import type { CasePreset, CaseSummary, Difficulty, Health } from '@/api/types'
+import { AvatarCapture } from '@/components/avatar/AvatarCapture'
+import { PlayerAvatar } from '@/components/avatar/PlayerAvatar'
 import { ApiKeyModal } from '@/components/common/ApiKeyModal'
 import { Button } from '@/components/common/Button'
 import { ErrorNotice } from '@/components/common/ErrorNotice'
@@ -20,6 +22,7 @@ import { ConsentGate } from '@/components/sensors/ConsentGate'
 import { cn } from '@/lib/cn'
 import { PRESET_TILES, casesForPreset, presetFromSetting } from '@/lib/presets'
 import { truncate } from '@/lib/text'
+import { useAvatar } from '@/store/avatar'
 import { useGame } from '@/store/game'
 import { useSensors } from '@/store/sensors'
 import { A11Y_OPTIONS, useUI } from '@/store/ui'
@@ -46,6 +49,8 @@ export function NewCase() {
   const accessibilityPayload = useUI((s) => s.accessibilityPayload)
   const consent = useSensors((s) => s.consent)
   const setConsent = useSensors((s) => s.setConsent)
+  const hasAvatar = useAvatar((s) => s.grid !== null)
+  const [captureOpen, setCaptureOpen] = useState(false)
 
   const [cases, setCases] = useState<CaseSummary[] | null>(null)
   const [health, setHealth] = useState<Health | null>(null)
@@ -366,10 +371,21 @@ export function NewCase() {
 
           <hr className="hr-wood" />
 
-          {/* 5. Camera consent */}
+          {/* 5. Camera: your avatar + the sensors consent */}
           <SectionTitle as="h2" align="left" subtitle="Your face. A new clue.">
             Camera
           </SectionTitle>
+          <div className="flex items-center gap-4 mb-3">
+            <PlayerAvatar size={72} />
+            <div className="min-w-0">
+              <p className="ink" style={{ margin: 0, fontSize: 15 }}>
+                {hasAvatar ? 'Your detective. Looking sharp.' : 'Take a photo and become the detective: a pixel portrait, made in your browser and never uploaded.'}
+              </p>
+              <Button variant="black" size="sm" className="mt-1" onClick={() => setCaptureOpen(true)} disabled={busy} title="Only a 36×42 grid of palette colours is kept; the photo itself is discarded.">
+                📷 {hasAvatar ? 'Retake photo' : 'Take your photo'}
+              </Button>
+            </div>
+          </div>
           <ConsentGate checked={consent} onChange={setConsent} disabled={busy} />
 
           <hr className="hr-gold" />
@@ -398,6 +414,7 @@ export function NewCase() {
       </footer>
 
       <ApiKeyModal open={apiKeyOpen} onClose={() => setApiKeyOpen(false)} currentMode={llmMode} onSaved={() => void loadCatalog()} />
+      <AvatarCapture open={captureOpen} onClose={() => setCaptureOpen(false)} />
     </div>
   )
 }

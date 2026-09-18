@@ -33,6 +33,11 @@ make frontend         # game on http://localhost:5173
 
 Open http://localhost:5173, pick a case, press Begin.
 
+**Your photo as your detective.** On the setup page, "Take your photo" turns a webcam frame (or an uploaded picture)
+into a pixel-art avatar in the suspects' style; it then appears beside your lines in the dialogue log and on Case
+Closed. The picture is reduced to a 36×42 grid of palette colours in the browser and only that grid is kept
+(localStorage); the photo itself is never stored or uploaded.
+
 ## Cases
 
 Four hand-written cases live in `backend/app/cases/`: Death at Vane Hall (manor, 1923), Death on the RMS Caledonia

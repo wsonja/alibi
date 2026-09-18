@@ -5,6 +5,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { TACTICS, type PublicEvidence, type PublicSuspect, type Tactic } from '@/api/types'
+import { PlayerAvatar } from '@/components/avatar/PlayerAvatar'
 import { Button } from '@/components/common/Button'
 import { ClockFace } from '@/components/common/ClockFace'
 import { ErrorNotice } from '@/components/common/ErrorNotice'
@@ -382,7 +383,16 @@ export function Investigation() {
             {logRows.length === 0 ? <p className="mono muted">No conversation yet with {primary.name}.</p> : null}
             {logRows.map((r) => (
               <div key={r.id} className="dialogue-log__row speaker-0">
-                <span className="dialogue-log__who">{r.speaker === 'you' ? 'You' : primary.name}</span>
+                <span className="dialogue-log__who">
+                  {r.speaker === 'you' ? (
+                    <>
+                      <PlayerAvatar size={18} silhouette={false} className="align-middle mr-1" title="You" />
+                      You
+                    </>
+                  ) : (
+                    primary.name
+                  )}
+                </span>
                 <span className="dialogue-log__text">{r.text}</span>
                 <span className="dialogue-log__time">{r.clock}</span>
               </div>

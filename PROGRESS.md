@@ -19,3 +19,13 @@
   on every attempt; 3.6-flash works but slow (~25 s); 3.5-flash-lite / 3.1-flash-lite ~2 s with valid JSON.
   → model ladders in backend/.env.example; suspects default to gemini-3.5-flash-lite.
 - Structured JSON output (response_json_schema) replaces forced tool use. Scripted performer remains the offline/fallback path.
+
+## 2026-09-18 — player avatar from a photo
+- New: the player can turn a webcam photo (or an uploaded picture) into a pixel-art detective avatar drawn in the
+  suspects' style (frontend/src/lib/avatar.ts, store/avatar.ts, components/avatar/). The frame is cropped to a 6:7
+  face guide, box-filtered to 36×42, auto-levelled, vignetted and quantised (redmean) onto the portrait palette, then
+  rendered by the existing PortraitGrid renderers. Only the grid is kept (localStorage `mmm.avatar.v1`, ~9 KB); the
+  photo is discarded — consistent with PLAN §11 "video never leaves your device". Shown on the setup page, beside
+  "You" in the dialogue log and on Case Closed. No API change; the sensors pipeline is untouched.
+- Decided against sending the photo to Gemini for a drawn portrait (new consent line + backend endpoint); can be
+  added later as a "redraw in game style" option.

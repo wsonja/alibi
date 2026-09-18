@@ -77,7 +77,7 @@ World = {
 
 `engine/snapshot.py`: `take(world) -> dict` (deep copy) and `restore(snapshot) -> World`.
 
-## 2. engine/ (deterministic; never imports anthropic or app.agents)
+## 2. engine/ (deterministic; never imports google.genai or app.agents)
 
 - `conditions.py` — `class ConditionError(ValueError)`; `evaluate(expr: str, ctx: dict) -> bool` where
   `ctx = {"examined": set, "known": set, "revealed": set, "stress": int, "flatter_count": int, "threaten_count": int,

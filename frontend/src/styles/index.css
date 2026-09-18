@@ -1,0 +1,5 @@
+/* Murder Mystery Mayhem — stylesheet entry point.
+   Tailwind utilities are used for layout only; every "material" (parchment, lacquer, placards…)
+   lives in theme.css and is documented there. */
+@import "tailwindcss";
+@import "./theme.css";

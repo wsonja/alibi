@@ -1,120 +1,86 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+/**
+ * App — the layout every route renders inside: room backdrop, skip link, the screen (<Outlet/>), toasts,
+ * and the aria-live region that receives every dialogue line and event (DESIGN §8).
+ * The a11y <html data-*> attributes are applied by the UI store at module load and on every change.
+ */
+import { Component, Suspense, type ErrorInfo, type ReactNode } from 'react'
+import { Outlet, ScrollRestoration } from 'react-router-dom'
+import { RoomBackdrop } from '@/components/common/RoomBackdrop'
+import { Toaster } from '@/components/common/Toast'
+import { useGame } from '@/store/game'
+import { useUI } from '@/store/ui'
 
-function App() {
-  const [count, setCount] = useState(0)
+class ScreenErrorBoundary extends Component<{ children: ReactNode }, { error: Error | null }> {
+  state = { error: null as Error | null }
 
+  static getDerivedStateFromError(error: Error) {
+    return { error }
+  }
+
+  componentDidCatch(error: Error, info: ErrorInfo) {
+    console.error('[screen] render error', error, info.componentStack)
+  }
+
+  render() {
+    if (this.state.error) {
+      return (
+        <div className="screen">
+          <section className="parchment" role="alert" style={{ maxWidth: 640, margin: '40px auto' }}>
+            <h1 className="display ink" style={{ fontSize: 18, marginTop: 0 }}>
+              The lamp went out
+            </h1>
+            <p>Something in this screen failed to render. Reload the page to relight it.</p>
+            <pre className="mono ink-soft" style={{ whiteSpace: 'pre-wrap', fontSize: 12 }}>
+              {this.state.error.message}
+            </pre>
+            <button type="button" className="btn btn-red" onClick={() => window.location.reload()}>
+              Reload
+            </button>
+          </section>
+        </div>
+      )
+    }
+    return this.props.children
+  }
+}
+
+function LiveRegion() {
+  const message = useGame((s) => s.liveMessage)
+  const verbose = useUI((s) => s.a11y.screenReader)
+  return (
+    <div className="sr-only" aria-live={verbose ? 'assertive' : 'polite'} aria-atomic="true" role="status" id="live-region">
+      {message}
+    </div>
+  )
+}
+
+function ScreenFallback() {
+  return (
+    <div className="screen" aria-busy="true">
+      <div className="lacquer mono muted" style={{ maxWidth: 420, margin: '60px auto', textAlign: 'center' }}>
+        Lighting the lamps…
+      </div>
+    </div>
+  )
+}
+
+export function App() {
   return (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+      <a href="#main" className="skip-link">
+        Skip to content
+      </a>
+      <RoomBackdrop />
+      <main id="main" tabIndex={-1}>
+        <ScreenErrorBoundary>
+          <Suspense fallback={<ScreenFallback />}>
+            <Outlet />
+          </Suspense>
+        </ScreenErrorBoundary>
+      </main>
+      <Toaster />
+      <LiveRegion />
+      <ScrollRestoration />
     </>
   )
 }

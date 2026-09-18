@@ -1,0 +1,316 @@
+{
+  "id": "startup_pitch_2024",
+  "title": "The Pitch That Kills",
+  "setting": "Tessera, a glass-walled startup office on the fourth floor of a science-park building, on a stormy night this year — the night before the final investor pitch.",
+  "briefing": "Julian Ashby, founder and CEO of Tessera, was found on the boardroom floor at four minutes past midnight by the office manager bringing in the printed decks. An open can of energy drink stood at his place at the head of the table; the pitch that was supposed to close a fourteen-million Series A at ten this morning is still frozen on the screen behind him. Bea Kowalski did CPR for eight minutes. Two paramedics who waded in through the flooded underpass pronounced him dead at 00:12 and said it looked like his heart — he had been living on those cans and four hours' sleep for a fortnight. You are the fractional CFO Julian hired last month to tidy the books before the pitch, and, in a previous life, a fraud-squad detective. Four people were in the building all evening, and each of them needed something from Julian before ten o'clock. The storm has put the river over the only road into the science park; the police and the coroner cannot get a vehicle through until the water drops at dawn. You have until six.",
+  "victim": {
+    "name": "Julian Ashby",
+    "description": "Founder and CEO of Tessera, 34. Charismatic, ruthless, a founder who believed the numbers would be true by the time anyone checked. Ran the company from the boardroom on energy drinks and no sleep. Owned 31 per cent of it.",
+    "cause_of_death_public": "Collapsed in the boardroom between about ten to midnight and four minutes past, alone behind frosted glass. Two paramedics pronounced him dead at 00:12 and said it looked like cardiac arrest — he had been living on Voltage Zero and four hours' sleep for a fortnight. Cause not established.",
+    "cause_of_death_truth": "About fifteen grams of pure caffeine powder — Bea Kowalski's, from the kitchen cupboard — tipped into his open can of Voltage Zero in the boardroom at 23:19 by Marcus Odell while Julian was on the roof. A fatal overdose: seizure, then cardiac arrest."
+  },
+  "timeline_public": [
+    {"time": "21:30", "event": "The third rehearsal ends in the boardroom. Julian tells everyone to stay for a final run at midnight."},
+    {"time": "21:45", "event": "Julian calls Ines Ferreira into his office and shuts the door. She comes out ten minutes later and goes back to reception."},
+    {"time": "22:05", "event": "Marcus Odell goes into Julian's office. Raised voices behind the glass. He comes out at about twenty past."},
+    {"time": "22:15", "event": "Theo Lindqvist says he is going to the kitchen to take calls from his partners in San Francisco."},
+    {"time": "22:30", "event": "Bea Kowalski says she is going to her desk to rebuild the growth slides."},
+    {"time": "23:02", "event": "Marcus badges into the server room to rebuild the demo environment."},
+    {"time": "23:14", "event": "Julian badges up to the roof terrace to vape and take a call."},
+    {"time": "23:28", "event": "Julian comes back down to the boardroom and frosts the glass."},
+    {"time": "23:36", "event": "Julian posts in the pitch channel that his energy drink 'tastes like battery acid'."},
+    {"time": "23:40", "event": "Theo takes the term sheet into the boardroom, and leaves at about ten to twelve."},
+    {"time": "00:04", "event": "Ines, bringing the printed decks, finds Julian on the boardroom floor. Bea starts CPR."},
+    {"time": "00:12", "event": "Two paramedics pronounce him dead and say it looks like cardiac arrest."}
+  ],
+  "timeline_truth": [
+    {"time": "21:30", "event": "The third rehearsal ends. Julian: 'Again at midnight. Nobody goes home.'"},
+    {"time": "21:45", "event": "Julian fires Ines behind his closed door: he knows she printed the Slack messages. She is to clear her desk after the pitch. She goes back to reception and says nothing."},
+    {"time": "22:05", "event": "Julian shows Marcus the lawyers' cap-table memo and the commit printout: sign at the pitch or be out, and 'the commit has your name on it'. Theo, at the boardroom table, watches the argument through the glass and hears 'four per cent' when the door opens."},
+    {"time": "22:20", "event": "Marcus leaves Julian's office and decides."},
+    {"time": "22:31", "event": "Bea badges up to the roof terrace. Theo follows at 22:34. Under the awning, as the rain starts, they talk about the anonymous tip Halcyon received and about ending things before the deal closes."},
+    {"time": "22:45", "event": "Marcus goes to the kitchen, takes a paper cup, spoons about fifteen grams of Bea's caffeine powder into it with a kitchen tablespoon and drops the spoon back into the bag. Bea's desk is empty as he crosses the floor. Theo is not in the kitchen."},
+    {"time": "22:50", "event": "Bea and Theo come down from the roof separately. Bea's hair clip stays on the bench. Ines sees Theo come in from the stairwell with rain on his shoulders."},
+    {"time": "23:02", "event": "Marcus badges into the server room with the cup and waits."},
+    {"time": "23:12", "event": "Ines, seeing Julian head for the roof door, slips into his office to photograph the cap-table memo and the commit printout for Halcyon's compliance team."},
+    {"time": "23:14", "event": "Julian badges up to the roof to vape and take a call from his lawyer."},
+    {"time": "23:17", "event": "Marcus leaves the server room — no badge is needed to get out."},
+    {"time": "23:19", "event": "Marcus enters the boardroom, tips the powder into Julian's open can, stirs it with a pen, and is out by 23:21 with the crushed cup in his fist. Through the glass of Julian's office he sees Ines at the desk with her phone. She sees him."},
+    {"time": "23:24", "event": "Marcus badges back into the server room and drops the cup in the bin under the rack."},
+    {"time": "23:25", "event": "Ines goes back to reception and does not look at Marcus again."},
+    {"time": "23:28", "event": "Julian comes down, frosts the boardroom glass, and drinks."},
+    {"time": "23:36", "event": "Julian posts in #pitch-war-room that the can tastes like battery acid. He finishes it anyway."},
+    {"time": "23:40", "event": "Theo takes the term sheet in. Julian is sweating and tapping his foot and says he is fine. Theo leaves at 23:47 to take a real call in the kitchen."},
+    {"time": "23:52", "event": "Julian has a seizure and goes into cardiac arrest, alone behind frosted glass."},
+    {"time": "00:04", "event": "Ines finds him. Bea starts CPR. Theo calls the ambulance."},
+    {"time": "00:12", "event": "Two paramedics who waded through the flooded underpass pronounce him dead and say cardiac arrest."}
+  ],
+  "locations": [
+    {"id": "boardroom", "name": "The Boardroom", "description": "A glass box at the far end of the floor, its walls frosted at the flick of a switch. The deck is frozen on the screen at slide 14, 'Traction'. A whiteboard of arrows. One chair pushed back from the head of the table.", "evidence_ids": ["energy_can"]},
+    {"id": "ceo_office", "name": "Julian's Office", "description": "The corner office, glass on two sides, looking across the open floor to the boardroom. A standing desk, a tray of papers, a shredder, the company's first dollar in a frame.", "evidence_ids": ["cap_table_memo", "deleted_commit"]},
+    {"id": "kitchen", "name": "The Kitchen", "description": "A long counter, two fridges full of energy drinks, a cupboard of protein tubs above the microwave. A recycling bin under the counter.", "evidence_ids": ["caffeine_tub", "burner_phone"]},
+    {"id": "server_room", "name": "The Server Room", "description": "Badge-locked, cold and loud. Two racks, a workbench, a sign on the door in Marcus's hand: NO FOOD OR DRINK. A waste bin under the rack.", "evidence_ids": ["paper_cup"]},
+    {"id": "roof_terrace", "name": "The Roof Terrace", "description": "Through a badge-locked fire door at the top of the stairwell. A bench under a small awning. Everything outside the awning is soaked.", "evidence_ids": ["hair_clip"]},
+    {"id": "open_floor", "name": "The Open-Plan Floor", "description": "Thirty desks, most of them empty since the last layoffs. Reception by the lift, with the badge console under the desk. Bea's desk is the one nearest the boardroom.", "evidence_ids": ["badge_log", "slack_export"]}
+  ],
+  "evidence": [
+    {"id": "energy_can", "name": "The energy drink can", "location": "boardroom", "initially_known": true, "description": "A 500ml can of Voltage Zero at Julian's place at the head of the boardroom table, nearly empty. A ring of white crust has dried on the rim.", "examined_detail": "Gritty white residue inside the rim and along the bottom, and a bitter, chemical smell that is not the drink's. It is one of the four-pack Ines bought yesterday; the other three cans in the kitchen fridge are sealed and clean. Whatever went in went in after it was opened.", "points_to": ["poisoning"], "key_evidence": true},
+    {"id": "caffeine_tub", "name": "Bea's caffeine powder", "location": "kitchen", "initially_known": true, "description": "Bea's bag of pure caffeine powder, which the whole office has been told never to touch, lives in the kitchen cupboard above the microwave.", "examined_detail": "A 250-gram bag of caffeine anhydrous behind the protein tubs, a skull sticker on the front and in Bea's marker: 'BEA'S — DO NOT TOUCH. ONE SCOOP = 200MG. A TABLESPOON WILL STOP YOUR HEART.' Her micro-scoop is inside. So is a kitchen tablespoon, dusted white, that has no business being there. Her weight log on the label says 190g on Sunday; the bag weighs about 175 now.", "points_to": ["poisoning", "kowalski"], "key_evidence": true},
+    {"id": "paper_cup", "name": "A crushed paper cup", "location": "server_room", "initially_known": false, "description": "A kitchen paper cup, crushed, in the waste bin under the server rack.", "examined_detail": "White powder caked in the seam and the same bitter smell as the can. Nobody eats or drinks in the server room — the sign on the door is Marcus's, and Marcus is the one who badges in there. It went into this bin tonight: Ines emptied every bin at eight.", "points_to": ["odell", "poisoning"], "key_evidence": true},
+    {"id": "badge_log", "name": "The badge log", "location": "open_floor", "initially_known": false, "description": "The day's door events, printed from the access console under the reception desk.", "examined_detail": "Roof terrace door: B. Kowalski 22:31, T. Lindqvist (visitor) 22:34, J. Ashby 23:14. Server room door: M. Odell 23:02, M. Odell 23:24. Main entrance: nothing after 21:10. The readers log entries only, and nobody badges into a room they are already in.", "points_to": ["odell", "kowalski", "lindqvist"], "key_evidence": true},
+    {"id": "cap_table_memo", "name": "The cap-table memo", "location": "ceo_office", "initially_known": false, "description": "A stapled memo from the company's lawyers in the tray on Julian's desk, marked PRIVILEGED.", "examined_detail": "The pro-forma cap table for the Series A, dated Tuesday. A 'founder re-vest and option refresh' clause: J. Ashby stays at 31 per cent; M. Odell goes from 22 per cent to 4, the difference moving into a pool Julian controls. A sticky note in Julian's hand: 'M signs at the pitch or M goes. Either way.'", "points_to": ["odell"], "key_evidence": true},
+    {"id": "deleted_commit", "name": "A printed git commit", "location": "ceo_office", "initially_known": false, "description": "A printout folded twice in the top drawer of Julian's desk.", "examined_detail": "A commit recovered from the repository's reflog after it was deleted from history. Author: Marcus Odell, 14 March. Message: 'analytics: apply growth adjustment factor to merchant counts (per JA)'. The diff multiplies active-merchant counts by 4.6. Across the top, in Julian's marker: 'Discovered Monday. Unilateral. Show Halcyon if they push.' Which is not what '(per JA)' means.", "points_to": ["odell", "faked_metrics"]},
+    {"id": "slack_export", "name": "A printed Slack export", "location": "open_floor", "initially_known": false, "description": "A printout in the top drawer of the reception desk, under the spare visitor badges.", "examined_detail": "Direct messages between Julian Ashby and Bea Kowalski, 2 March, printed from the Slack admin console. JA: 'dashboard needs to say 40k+ merchants by the deck freeze. I don't care how.' BK: 'the real number is 9,100. if I do this it's on you.' JA: 'It's on me. Do it.' The footer shows the admin login and a print time of 23:48 on Sunday. Only the office manager uses the admin login.", "points_to": ["kowalski", "ferreira", "faked_metrics"], "red_herring": true},
+    {"id": "hair_clip", "name": "A tortoiseshell hair clip", "location": "roof_terrace", "initially_known": false, "description": "Something tortoiseshell on the bench under the awning.", "examined_detail": "Bea's hair clip — she wore her hair up at the rehearsal and it is down now. It is dry, which under this awning means it was put down before the rain started at about a quarter to eleven. Bea says she was at her desk from half past ten.", "points_to": ["kowalski", "lindqvist"], "red_herring": true},
+    {"id": "burner_phone", "name": "A prepaid phone", "location": "kitchen", "initially_known": false, "description": "A cheap prepaid phone in the recycling bin under the kitchen counter.", "examined_detail": "Wiped but not reset. One sent email, Monday 07:12, to Halcyon Ventures' compliance address, subject 'Tessera metrics — you are being lied to', with three photos of printed Slack messages attached. The SIM receipt is still in the case: the petrol station on the corner, Sunday, paid with the office petty-cash card.", "points_to": ["ferreira", "lindqvist"], "red_herring": true}
+  ],
+  "dynamic_evidence": [
+    {"id": "log_wiped", "name": "The badge console, wiped", "location": "open_floor", "initially_known": false, "description": "The access console under the reception desk shows an empty event list.", "examined_detail": "Today's badge events have been cleared from the console — 'clear log' was run from the admin account within the last few minutes. Two people know the admin password: Ines, who has been at reception in full view, and Marcus, who installed the system.", "points_to": ["odell"]},
+    {"id": "shredder_strips", "name": "Strips in the shredder bin", "location": "ceo_office", "initially_known": false, "description": "The shredder in Julian's office is warm and its bin is a third full.", "examined_detail": "Fresh strips on top of old ones. Enough survives to read '...Odell 22.0% → 4.0%...', '...founder re-vest...', and in marker '...at the pitch or M goes...'. Somebody fed the cap-table memo through the shredder within the hour.", "points_to": ["odell"]}
+  ],
+  "suspects": [
+    {
+      "id": "odell",
+      "name": "Marcus Odell",
+      "role": "Co-founder and CTO",
+      "public_description": "Co-founder and CTO; built the product and owns twenty-two per cent of it. Says he badged into the server room at two minutes past eleven to rebuild the demo environment and was there until Ines screamed.",
+      "persona": "Thirty-six, precise, tired: the engineer who built everything and owns a shrinking slice of it. Wrote the fake-metrics commit in March because Julian told him to, and kept '(per JA)' in the message as insurance. Found out on Tuesday the insurance was worthless. Decided tonight, at twenty past ten. He is not sorry; he is doing arithmetic.",
+      "speech_quirk": "Precise and flat. Corrects the detective's terminology ('it's a commit, not a file'). Gives times to the minute and numbers to the decimal. Starts a sentence with 'Look —' when he is about to lie. When threatened he goes cold and puts 'with respect' in front of every sentence.",
+      "portrait_prompt": "present-day startup CTO, mid-thirties, dark hair cropped short, short beard, spectacles, grey hoodie over a t-shirt, pale skin, tired eyes, flat expression, pixel portrait, cold office lighting",
+      "personality": {"nervous": 0.2, "proud": 0.8, "loyal": 0.1, "greedy": 0.6, "guilt_prone": 0.1},
+      "goals": [
+        "Avoid arrest.",
+        "Steer suspicion toward Bea — the powder is hers, the dashboard is hers, and her desk was empty.",
+        "Get the cap-table memo and the commit printout out of Julian's office, and the badge log out of the console, before anyone reads them.",
+        "Keep Ines quiet without ever admitting he saw her — because he could only have seen her from outside the server room."
+      ],
+      "knowledge": [
+        "At a quarter to eleven he went to the kitchen, took a paper cup, and spooned about fifteen grams of Bea's caffeine powder into it with a kitchen tablespoon, which he dropped back into the bag. Bea's desk was empty when he crossed the floor, and Theo was not in the kitchen.",
+        "At nineteen minutes past eleven, while Julian was on the roof, he went into the boardroom, tipped the powder into Julian's open can of Voltage Zero, stirred it with a pen, and was out within two minutes. He crushed the cup and later dropped it in the server-room bin.",
+        "He badged into the server room at two minutes past eleven and again at twenty-four minutes past. The readers log every entry and the log prints from the console at reception. He installed the system and knows the admin password; so does Ines.",
+        "Coming out of the boardroom he saw Ines Ferreira standing at Julian's desk with her phone out. She saw him. Neither of them has said a word about it.",
+        "On Tuesday Julian showed him the lawyers' cap-table memo: his 22 per cent becomes 4 per cent at the Series A. Tonight at ten Julian told him to sign at the pitch or be out, and that the analytics commit 'has your name on it'. Marcus wrote that commit in March because Julian told him to.",
+        "Bea Kowalski built the investor dashboard to show 41,000 merchants; the real figure is about 9,000. Everyone in the company knows the powder in the kitchen is hers and what a tablespoon of it does — she wrote it on the bag.",
+        "Julian had been living on Voltage Zero and four hours' sleep for a fortnight. The paramedics said cardiac arrest, and half the office will believe it.",
+        "Ines was called into Julian's office at a quarter to ten and came out white. Julian said on Tuesday that he would 'find the leak'."
+      ],
+      "secrets": [
+        {"id": "o1", "tier": 1, "text": "He was not in the server room the whole time. He left it at about a quarter past eleven and badged back in at twenty-four minutes past.", "cover_story": "He badged into the server room at two minutes past eleven and was rebuilding the demo environment until he heard Ines scream; the badge log will show him going in.", "key_phrases": "(?<!never )(?<!n't )(?<!not )left (it|the server room)|badged back in|came back (in|into the server room)|twenty-four minutes past|23:24|(stepped|came|went) out of the server room"},
+        {"id": "o2", "tier": 2, "text": "Julian was going to cut him from 22 per cent to 4 per cent at the Series A, and if Halcyon pushed on the numbers, to tell them the analytics commit was Marcus's own idea — it carries his name — and push him out.", "cover_story": "The re-vest is standard at a Series A and he and Julian had agreed it weeks ago; what they argued about at ten was the demo environment, not shares.", "key_phrases": "4 per ?cent|four per ?cent|22 (per ?cent|%)|dilut|(?<!not )(?<!never )scapegoat|(blame|pin) (it|the numbers|the fraud|the commit|everything) on me|push(ed|ing)? (me|him) out|(my|his) name on (it|the commit)|carries (his|my) name|cut (me|him) (out|down|to|from)"},
+        {"id": "o3", "tier": 3, "text": "He tipped about fifteen grams of Bea's caffeine powder into Julian's open can in the boardroom at nineteen minutes past eleven, while Julian was on the roof, stirred it with a pen, and dropped the crushed cup in the server-room bin.", "is_confession": true, "key_phrases": "(I|he) (tipped|poured|put|stirred|emptied) (about|the (powder|caffeine)|fifteen|it into|three|Bea's)|I killed|I did it|I poisoned|fifteen grams|nineteen minutes past|stirred it with a pen|crushed cup"}
+      ],
+      "stress_sensitivity": {"evidence": 4, "threaten": 0, "flatter": 0, "bluff": 1, "silence": 1},
+      "crack_thresholds": [5, 9, 14],
+      "special_unlocks": {
+        "o1": {"requires_any": ["evidence:badge_log", "evidence:log_wiped", "revealed:f3"]},
+        "o2": {"requires_any": ["evidence:cap_table_memo", "evidence:deleted_commit", "evidence:shredder_strips", "revealed:f3"]},
+        "o3": {"requires_any": ["evidence:paper_cup", "evidence:caffeine_tub"], "requires_revealed": ["o2"]}
+      },
+      "shutdown_rules": {},
+      "deflections": [
+        "Points out, to be precise, that the powder in the kitchen is Bea's, that she labelled the bag herself with what a tablespoon does, and that everyone in the building has read that label.",
+        "Mentions that Bea's desk was empty at a quarter to eleven when he went to the kitchen for water, whatever she says about slides.",
+        "Wonders why Theo Lindqvist, who says he was in the kitchen on calls all night, was not in the kitchen at a quarter to eleven.",
+        "Says the paramedics called it cardiac arrest, and gives the number of cans Julian drank per day, to the decimal."
+      ],
+      "framing_actions": [
+        {"id": "wipe_badge_log", "trigger": "turn>=8 and not evidence:badge_log", "probability": 0.7, "effect": {"remove_evidence": "badge_log", "add_evidence_id": "log_wiped"}, "ticker": "Marcus was seen crouched at the reception desk, and the badge console's screen went dark."},
+        {"id": "shred_memo", "trigger": "turn>=12 and not searched:ceo_office", "probability": 0.5, "effect": {"remove_evidence": "cap_table_memo", "add_evidence_id": "shredder_strips"}, "ticker": "The shredder in Julian's office ran for half a minute, then stopped."}
+      ],
+      "tells": {"nervous": "takes his glasses off and cleans them on his hoodie", "angry": "goes very still and starts every sentence with 'with respect'", "cracking": "stops giving times and numbers altogether"},
+      "guilty": true,
+      "relationships": {
+        "kowalski": {"type": "leverage", "trust": 0.2},
+        "lindqvist": {"type": "dislikes", "trust": 0.1},
+        "ferreira": {"type": "threatens", "trust": 0.0}
+      },
+      "voice": {"webspeech_index": 2, "base_pitch": 0.85}
+    },
+    {
+      "id": "kowalski",
+      "name": "Bea Kowalski",
+      "role": "Head of Growth",
+      "public_description": "Head of Growth, eighteen months in; runs the numbers and the deck. Says she was at her desk on the open floor from half past ten until midnight fixing the growth slides.",
+      "persona": "Twenty-nine, fast-talking, allergic to silence. Faked the dashboard because the alternative was the company dying with her name on the deck. Sleeping with the investor's associate, which she knows is the stupidest thing she has ever done. Innocent of the murder, and she looks guiltier than anyone in the building — it was her powder.",
+      "speech_quirk": "Talks fast, in fragments, in startup slang ('north star', 'runway', 'zero to one'). Says 'honestly' before a lie. Laughs at the wrong moments. When cornered she gets sarcastic and asks the detective whether they have ever shipped anything.",
+      "portrait_prompt": "present-day startup head of growth, late twenties, auburn hair worn down and messy, olive skin, hoop earrings, black turtleneck, sharp bright eyes, quick half-smile, pixel portrait, cold office lighting",
+      "personality": {"nervous": 0.7, "proud": 0.6, "loyal": 0.5, "greedy": 0.4, "guilt_prone": 0.6},
+      "goals": [
+        "Not be blamed for a death caused by her own powder.",
+        "Keep the relationship with Theo out of it — it kills the deal and ends his career.",
+        "Keep the faked dashboard out of it; if it has to come out, it comes out as Julian's order, with the messages to prove it."
+      ],
+      "knowledge": [
+        "She was on the roof terrace with Theo from just after half past ten until about ten to eleven, under the awning while the rain started. They talked about the anonymous tip Halcyon had received and about whether to end things before the deal closed.",
+        "The bag of caffeine powder in the kitchen cupboard is hers. She measures 200 milligrams with a micro-scoop and has told the whole office that a tablespoon would stop a heart. She last logged the bag at 190 grams on Sunday.",
+        "In March Julian told her over Slack to make the dashboard say 40,000-plus merchants and that it was 'on him'. The real active-merchant number is about 9,100. She built it; Marcus changed the pipeline so the numbers matched.",
+        "Julian and Marcus were shouting in Julian's office at ten. She heard Marcus say 'you'll bury me' as the door opened.",
+        "At 23:36 Julian posted in the pitch channel that his Voltage tasted like battery acid; she told him to drink water for once. Everyone in the office was in that channel.",
+        "Ines was called into Julian's office at a quarter to ten and came out white. Ines has the Slack admin login, which is how anyone would print private messages.",
+        "Her hair clip is missing. She had it in on the roof.",
+        "She did CPR on Julian for eight minutes. His skin was hot and he had bitten his tongue."
+      ],
+      "secrets": [
+        {"id": "k1", "tier": 1, "text": "She was not at her desk between half past ten and ten to eleven. She was up on the roof terrace.", "cover_story": "She was at her desk nearest the boardroom from half past ten until Ines screamed, rebuilding the growth slides — honestly.", "key_phrases": "(?<!never )(?<!didn't )(was|went|sat|stood) (up )?(on|to|at) the (roof|terrace)|(?<!not )(?<!wasn't )(?<!never )on the (roof|terrace)|was(n't| not) at (my|her) desk"},
+        {"id": "k2", "tier": 2, "text": "She built the investor dashboard to show 41,000 active merchants when the real number is about 9,100, because Julian told her over Slack to make it say forty thousand plus and that it was on him.", "key_phrases": "41,?000|forty[- ]one thousand|9,?100|nine thousand|(?<!didn't )(?<!never )(?<!not )(?<!nobody )(fake|faked|inflated|made up) (the |our )?(numbers|metrics|dashboard|merchant)|(Julian|he) (told|ordered|made) (me|her) (to )?(do|make|build|fake)|it('s| was| is) on (him|Julian)"},
+        {"id": "k3", "tier": 3, "text": "She was on the roof with Theo Lindqvist. They have been sleeping together since June, which is a conflict of interest that would kill the deal and end his career.", "key_phrases": "sleeping (with|together)|Theo and I|seeing (Theo|him)|(?<!not in a )relationship with|(?<!not )(?<!no )affair|in love|conflict of interest"}
+      ],
+      "stress_sensitivity": {"evidence": 3, "threaten": 1, "flatter": 2, "bluff": 2, "silence": 3},
+      "crack_thresholds": [4, 8, 12],
+      "special_unlocks": {
+        "k2": {"requires_any": ["evidence:slack_export", "evidence:deleted_commit", "revealed:l2", "stress>=10"]},
+        "k3": {"requires_any": ["evidence:hair_clip", "evidence:badge_log", "revealed:l3"]}
+      },
+      "shutdown_rules": {},
+      "deflections": [
+        "Says Julian ran on Voltage and four hours' sleep and the paramedics said his heart — honestly, look at the man's runway.",
+        "Points out that Ines was called into Julian's office at a quarter to ten and came out white, and that Ines has the admin login to everything, including the doors.",
+        "Asks why Marcus was 'rebuilding the demo environment' in the server room for an hour when the demo has been frozen since Monday.",
+        "Asks the detective whether they have ever shipped anything, and whether they know what runway means."
+      ],
+      "framing_actions": [],
+      "tells": {"nervous": "laughs, once, at nothing", "angry": "crosses her arms and looks at the frozen deck on the screen instead of at you", "cracking": "her voice goes small and the slang stops"},
+      "guilty": false,
+      "relationships": {
+        "odell": {"type": "rival", "trust": 0.3},
+        "lindqvist": {"type": "lover", "trust": 0.9},
+        "ferreira": {"type": "dislikes", "trust": 0.2}
+      },
+      "voice": {"webspeech_index": 0, "base_pitch": 1.15}
+    },
+    {
+      "id": "lindqvist",
+      "name": "Theo Lindqvist",
+      "role": "Associate at Halcyon Ventures, the lead investor",
+      "public_description": "Associate at Halcyon Ventures, the lead investor; brought the term sheet over for Julian to initial. Says he was in the kitchen from a quarter past ten until nearly midnight on calls with his partners in San Francisco.",
+      "persona": "Thirty-one, polished, first deal as lead, terrified of his partners. Sat on a whistle-blower tip for three days because reporting it meant losing the deal and, once his relationship with Bea came out, his job. Would rather be thought lazy than dishonest, and is both.",
+      "speech_quirk": "Smooth and formal; investor vocabulary ('diligence', 'downstream', 'alignment'). Calls the detective 'Detective' in every sentence. Answers a hard question with a longer, softer question. Goes silent for a beat before saying anything true.",
+      "portrait_prompt": "present-day venture capital associate, early thirties, blonde hair slicked back, fair skin, clean-shaven, navy suit jacket with no tie, open collar, smooth composed face, pixel portrait, cold office lighting",
+      "personality": {"nervous": 0.6, "proud": 0.7, "loyal": 0.6, "greedy": 0.5, "guilt_prone": 0.5},
+      "goals": [
+        "Protect the deal and his job.",
+        "Keep Bea out of it, and keep himself out of Bea's story.",
+        "Never admit he sat on the tip; if it comes out, it must look as if he was verifying it."
+      ],
+      "knowledge": [
+        "He was on the roof terrace with Bea from 22:34 until about ten to eleven. He did not take a single call in that time; his partners in San Francisco were in a board meeting until midnight anyway.",
+        "On Monday an anonymous email with three photos of printed Slack messages reached Halcyon's compliance inbox and was forwarded to him as deal lead. He has not told his partners. He told Bea.",
+        "At ten o'clock he watched Julian and Marcus arguing in Julian's office through the glass. Julian was holding a printout. When the door opened he heard the words 'four per cent'.",
+        "On Tuesday, when he asked Julian as routine diligence how the merchant counts were computed, Julian laughed and said 'if anyone ever pushes on that, the commit has Marcus's name on it'. Theo took it as a joke.",
+        "He took the term sheet into the boardroom at twenty to midnight. Julian was sweating and tapping his foot and said the drink was foul but that he was fine. Theo left at about ten to twelve to take a real call in the kitchen.",
+        "The paramedics said cardiac arrest. Julian drank five or six of those cans a day and slept at the office.",
+        "Ines Ferreira has the Slack admin login; Julian mentioned it on Tuesday when he said he would 'find the leak'.",
+        "His visitor badge has roof access because he asked to see the view on his first visit in June, and Ines set it up."
+      ],
+      "secrets": [
+        {"id": "l1", "tier": 1, "text": "He was not in the kitchen on calls the whole time. He went up to the roof terrace at twenty-five to eleven.", "cover_story": "He was in the kitchen from a quarter past ten until nearly midnight on calls with his partners in San Francisco — the time difference, Detective — and then took the term sheet in to Julian.", "key_phrases": "(?<!never )(?<!didn't )(went|was|sat|stood) (up )?(on|to|at) the (roof|terrace)|(?<!not )(?<!wasn't )(?<!never )on the (roof|terrace)|was(n't| not) in the kitchen|(took|made) no calls|not a single call"},
+        {"id": "l2", "tier": 2, "text": "On Monday an anonymous email with photos of printed Slack messages saying Tessera's numbers were faked reached Halcyon's compliance inbox and was forwarded to him. He told nobody at Halcyon; he told Bea, and sat on it so the deal would close.", "key_phrases": "anonymous (email|tip|message|complaint)|compliance (inbox|team|address)|sat on it|forwarded to me|I (kept|sat on|buried) (it|the tip|the email)|(?<!not )(?<!never )knew (the numbers|they were|it was) (were )?(fake|faked|inflated)"},
+        {"id": "l3", "tier": 3, "text": "He has been sleeping with Bea Kowalski since the diligence began in June. If Halcyon knew, he would be fired and the deal would be dead; that is why he never reported the tip.", "key_phrases": "sleeping with|Bea and I|seeing (Bea|her)|(?<!not in a )relationship with|(?<!not )(?<!no )affair|in love with|since June"}
+      ],
+      "stress_sensitivity": {"evidence": 3, "threaten": 2, "flatter": 1, "bluff": 1, "silence": 2},
+      "crack_thresholds": [4, 7, 11],
+      "special_unlocks": {
+        "l2": {"requires_any": ["evidence:burner_phone", "evidence:slack_export", "revealed:f2"]},
+        "l3": {"requires_any": ["evidence:hair_clip", "evidence:badge_log", "revealed:k3"]}
+      },
+      "shutdown_rules": {},
+      "deflections": [
+        "Talks about Julian's five cans a day and the fortnight without sleep, Detective, and about what that does to a heart.",
+        "Observes that Marcus and Julian were shouting at ten, and that Marcus came out looking like a man who had just lost something.",
+        "Asks, Detective, whether anyone has asked the office manager why she came out of Julian's office white at ten o'clock.",
+        "Redirects to the term sheet, and how much Halcyon believed in Julian, and how much diligence was done."
+      ],
+      "framing_actions": [],
+      "tells": {"nervous": "straightens a cuff that is already straight", "angry": "stops saying 'Detective' and goes clipped and formal", "cracking": "the pause before he speaks gets longer and longer"},
+      "guilty": false,
+      "relationships": {
+        "kowalski": {"type": "lover", "trust": 0.9},
+        "odell": {"type": "acquaintance", "trust": 0.4},
+        "ferreira": {"type": "acquaintance", "trust": 0.3}
+      },
+      "voice": {"webspeech_index": 1, "base_pitch": 0.95}
+    },
+    {
+      "id": "ferreira",
+      "name": "Ines Ferreira",
+      "role": "Office manager",
+      "public_description": "Office manager, two years in; does the badges, the printing and the petty cash. Says she was at reception all evening printing decks, and found Julian at four minutes past midnight.",
+      "persona": "Twenty-four, quiet, notices everything. Sent the anonymous tip because she was tired of watching them lie. Fired tonight for it. Saw something at nineteen minutes past eleven that she is too afraid to say aloud, because the man she saw looked straight back at her.",
+      "speech_quirk": "Polite, quiet, minimal — 'yes', 'no', 'I wouldn't know'. Ends sentences with 'sorry' when nervous. Kindness makes her talk; pressure makes her stop. When she finally speaks plainly, she does not stop.",
+      "portrait_prompt": "present-day office manager, mid-twenties, black hair pinned up in a bun, brown skin, small round spectacles, oversized cardigan, lanyard with a badge, watchful tired eyes, pixel portrait, cold office lighting",
+      "personality": {"nervous": 0.9, "proud": 0.4, "loyal": 0.5, "greedy": 0.1, "guilt_prone": 0.7},
+      "goals": [
+        "Not be blamed.",
+        "Not be found to be the whistle-blower — she thinks it will look like a motive.",
+        "Stay out of Marcus's way. He saw her, and she saw him, and she is more afraid of him than of the police."
+      ],
+      "knowledge": [
+        "Julian fired her at a quarter to ten tonight, in his office with the door shut: he knew she had printed the messages. She is to clear her desk after the pitch and say nothing to the others.",
+        "She printed the Slack messages between Julian and Bea from the admin console on Sunday night and sent photos of them to Halcyon's compliance address on Monday morning from a prepaid phone she bought with the petty-cash card. The phone is in the kitchen recycling.",
+        "At about twelve minutes past eleven, after Julian went up to the roof, she went into his office and photographed the lawyers' cap-table memo — Marcus goes from 22 per cent to 4 — and the commit printout with Julian's note on it.",
+        "At about nineteen minutes past eleven, through the glass of Julian's office, she saw Marcus cross the open floor carrying a kitchen paper cup and go into the boardroom, and come out a minute later with the cup crushed in his fist. He looked straight at her. She went back to reception and has not looked at him since.",
+        "Bea's desk was empty from half past ten until about ten to eleven with the laptop locked, though Bea says she was there the whole time. Theo came in from the stairwell at ten to eleven with rain on his shoulders, and the kitchen has no stairs.",
+        "The badge log prints from the access console under the reception desk. Marcus installed the system and is the only other person who knows the admin password.",
+        "She found Julian at four minutes past midnight on the boardroom floor. His face was purple and there was foam on his lips.",
+        "Bea is the only person in the office trained in first aid; she did CPR until the paramedics came, and cried while she did it."
+      ],
+      "secrets": [
+        {"id": "f1", "tier": 1, "text": "Julian fired her at a quarter to ten tonight — he knew she had printed the messages — and told her to clear her desk after the pitch.", "cover_story": "Julian was demanding but fair to her; he called her in at a quarter to ten to go over the printing for the morning, and she was at reception all evening.", "key_phrases": "(?<!not )(?<!never )(?<!wasn't )(?<!nobody )(fired|sacked|dismissed) (me|her)|let (me|her) go|clear (my|her) desk|lost (my|her) job|given (my|her) notice"},
+        {"id": "f2", "tier": 2, "text": "She is the whistle-blower. She printed the Slack messages between Julian and Bea from the admin console on Sunday night and sent photos of them to Halcyon's compliance address on Monday from a prepaid phone she bought with the petty-cash card.", "key_phrases": "whistle|(I|she) (sent|emailed|printed) (it|them|the (photos|messages|tip|email|export|Slack))|compliance (address|inbox|team)|prepaid|burner|petty[- ]cash|admin console"},
+        {"id": "f3", "tier": 3, "text": "She was in Julian's office at twenty past eleven photographing the cap-table memo that cuts Marcus to four per cent, and through the glass she saw Marcus cross the floor to the boardroom carrying a kitchen paper cup and come out a minute later with it crushed in his fist. He looked straight at her.", "key_phrases": "paper cup|saw Marcus|Marcus (cross|crossed|go|went|come|came|walk|walked|carr)|photograph(ed|ing)? the|crushed in his fist"}
+      ],
+      "stress_sensitivity": {"evidence": 2, "threaten": 2, "flatter": 4, "bluff": 1, "silence": 2},
+      "crack_thresholds": [2, 4, 7],
+      "special_unlocks": {
+        "f2": {"requires_any": ["evidence:burner_phone", "evidence:slack_export", "revealed:l2"]},
+        "f3": {"requires_any": ["flatter_count>=2", "revealed:o1", "evidence:cap_table_memo"]}
+      },
+      "shutdown_rules": {"threaten": "I do the badges and the printing. I don't know anything. Please stop."},
+      "deflections": [
+        "Says she does the badges and the printing, sorry, and doesn't know what the founders talk about.",
+        "Mentions that Bea's desk was empty from half past ten and her laptop was locked, then looks as if she wishes she hadn't.",
+        "Says Mr Lindqvist came in from the stairs at ten to eleven with rain on his shoulders, and the kitchen doesn't have stairs.",
+        "Says the paramedics said it was his heart, sorry, and that he drank six of those a day."
+      ],
+      "framing_actions": [],
+      "tells": {"nervous": "says 'sorry' and looks at the floor", "angry": "goes silent and stares at the boardroom glass", "cracking": "the words come out all at once, faster than she can breathe"},
+      "guilty": false,
+      "relationships": {
+        "odell": {"type": "fears", "trust": 0.0},
+        "kowalski": {"type": "acquaintance", "trust": 0.3},
+        "lindqvist": {"type": "trusts", "trust": 0.6}
+      },
+      "voice": {"webspeech_index": 3, "base_pitch": 1.1}
+    }
+  ],
+  "solution": {
+    "murderer": "odell",
+    "method": "About fifteen grams of Bea's pure caffeine powder, taken from the kitchen cupboard at 22:45 with a kitchen tablespoon and tipped into Julian's open can of Voltage Zero in the boardroom at 23:19 while Julian was on the roof. The crushed cup went into the server-room bin.",
+    "method_evidence_ids": ["caffeine_tub", "energy_can", "paper_cup"],
+    "motive": "Julian was about to cut Marcus's stake from 22 per cent to 4 at the Series A and, if Halcyon's diligence pushed on the inflated merchant numbers, to hand them Marcus as the sole author of the fraud — the deleted commit carried his name. Marcus would lose the company he built and take the blame for a lie he had been ordered to tell.",
+    "motive_evidence_ids": ["cap_table_memo", "deleted_commit", "shredder_strips"],
+    "proof_paths": [
+      ["evidence:badge_log", "revealed:o1", "revealed:f3", "evidence:paper_cup", "revealed:o2", "revealed:o3"],
+      ["evidence:cap_table_memo", "evidence:deleted_commit", "revealed:o2", "evidence:caffeine_tub", "revealed:o3"],
+      ["evidence:log_wiped", "revealed:f3", "revealed:o1", "evidence:shredder_strips", "revealed:o2", "evidence:paper_cup", "revealed:o3"]
+    ]
+  },
+  "red_herrings": [
+    "Bea and Theo both lie about where they were between half past ten and ten to eleven. It looks like collusion in murder; it is collusion in a conflict of interest.",
+    "The caffeine powder is Bea's, labelled in her own handwriting with exactly what a tablespoon of it does, and her desk was empty.",
+    "Ines was fired tonight, is the whistle-blower, and bought the prepaid phone on the petty-cash card — a fresh motive and a lie about where she was.",
+    "The Slack export shows Julian ordering the fake dashboard and telling Bea it was 'on him' — it reads like Bea's motive and is actually Julian's.",
+    "The paramedics' 'cardiac arrest' and a fortnight of energy drinks make a natural death plausible for the first few turns."
+  ],
+  "rumor_seeds": [
+    {"holder": "odell", "text": "Bea's desk was empty from half past ten to ten to eleven and her laptop was locked. Whatever she says about the slides, the deck's version history didn't change until midnight.", "spreads_to": ["ferreira", "lindqvist"], "intent": "redirect"},
+    {"holder": "kowalski", "text": "The tip came from the admin account, so it's Ines. If anyone finds a phone, we know nothing about it.", "spreads_to": ["lindqvist"], "intent": "align"}
+  ],
+  "ticker_lines": [
+    "Someone's phone buzzes on the open floor and is silenced fast.",
+    "The kitchen light goes on, then off again.",
+    "Two people talk in low voices by the lift, then separate.",
+    "The server room door clicks shut.",
+    "Rain against the glass. The deck is still frozen on the boardroom screen."
+  ]
+}

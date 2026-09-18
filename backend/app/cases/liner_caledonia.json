@@ -1,0 +1,367 @@
+{
+  "id": "liner_caledonia_1927",
+  "title": "Death on the Caledonia",
+  "setting": "RMS Caledonia, an ocean liner four hundred miles west of Southampton, bound for New York. The second night out, April 1927. First class; a rolling sea.",
+  "briefing": "Cornelius Whitlock, the American financier, was found at a quarter to midnight on the floor of stateroom B-14, his head against the brass rail of the washstand and a bottle's worth of whisky soaking the carpet. His wife's maid found him. Dr. Ferris, the ship's surgeon, took one look, smelled the whisky, and said the old man had fallen. The Captain is not so sure — and neither, once you have looked at the back of the head, are you. You are a retired Scotland Yard man going home on a pension, and the only passenger the Captain can trust with this. Five people were on B deck, or near it, between eleven and midnight: the young wife, the ship's second officer, a passenger who calls himself Major, the wife's maid, and an American newspaperwoman who has been asking about Whitlock since Southampton. The Caledonia is four hundred miles from any policeman. The Captain will not wire New York until he knows what to say, and has given you until eight bells of the morning watch. After that the stateroom is sealed, the wireless goes out, and five people have six days at sea to get their stories straight.",
+  "victim": {
+    "name": "Cornelius J. Whitlock",
+    "description": "American financier, 61. Senior partner of Whitlock & Steere, New York. Made one fortune in copper before the war and lost other people's in it; made a second selling Florida land that is now under water. Walks with a heavy silver-knobbed cane since a stroke two years ago. Drinks a bottle a night. Married Delphine, an Englishwoman thirty-three years younger, fourteen months ago.",
+    "cause_of_death_public": "Found on the floor of stateroom B-14 at a quarter to midnight, the back of his head against the brass rail of the washstand, whisky spilled around him. Dr. Ferris, the ship's surgeon, says he was drunk, fell backward and struck his head. Cause not established.",
+    "cause_of_death_truth": "Two blows to the back of the skull with the silver knob of his own cane at about twenty-five to midnight. The cane was wiped and returned to the rack, the body laid against the washstand rail and whisky poured over it to pass as a drunken fall."
+  },
+  "timeline_public": [
+    {"time": "20:00", "event": "Dinner in the first-class saloon. Whitlock drinks heavily and is short with his wife in front of the table."},
+    {"time": "22:00", "event": "Dinner ends. Whitlock, Major Calloway and two other passengers go to the smoking room for cards. Mrs. Whitlock goes to the lounge to hear the orchestra. Miss Kell goes up to the wireless room to file her copy."},
+    {"time": "22:50", "event": "Raised voices at Whitlock's card table. The smoking-room steward hears the word 'cheat'."},
+    {"time": "23:00", "event": "Whitlock leaves the smoking room with a bottle, for his stateroom. Mrs. Whitlock leaves the lounge with a headache, she says, to lie down."},
+    {"time": "23:20", "event": "The B-deck pantry steward hears glass break in B-14."},
+    {"time": "23:38", "event": "Mrs. Whitlock returns to the lounge, unable to sleep, she says."},
+    {"time": "23:45", "event": "Ivy Pruett, going to turn down Mrs. Whitlock's bed, finds the connecting door open and Whitlock dead on the floor of B-14."},
+    {"time": "23:50", "event": "Dr. Ferris pronounces him dead and says he fell."}
+  ],
+  "timeline_truth": [
+    {"time": "18:30", "event": "Whitlock sends a marconigram to Steere in New York: get the Ledger off the Florida story with a libel threat today; instruct the lawyers to draw the new will leaving Delphine nothing."},
+    {"time": "20:00", "event": "At dinner Whitlock tells Delphine, quietly, that he has known about the lieutenant since Tuesday and that the new will is drawn. He also tells her, laughing, that 'the newspaper woman' is Danny Kellerman's sister and that he has 'fixed her paper'. He tells Harriet Kell she has her brother's eyes."},
+    {"time": "22:30", "event": "Harriet Kell files her copy from the wireless room."},
+    {"time": "22:40", "event": "Her editor's reply arrives: the Ledger will not run the story; drop it and come home. She reads it twice and says nothing."},
+    {"time": "22:50", "event": "Whitlock catches Calloway shading the cards and tells him, quietly: two thousand dollars by morning, or the purser searches his cabin at eight bells and the New York police meet the ship."},
+    {"time": "23:00", "event": "Whitlock leaves for B-14 with a bottle, sending a note by the steward to Miss Kell: 'B-14, half past eleven. I have a proposition. C.W.' Delphine goes to the promenade deck, aft, port side, where Marlow is waiting by No. 7 boat."},
+    {"time": "23:10", "event": "Calloway leaves the smoking room."},
+    {"time": "23:20", "event": "Calloway goes to B-14 to bargain. Whitlock, drunk on the bed, throws a tumbler at him; it breaks against the door."},
+    {"time": "23:24", "event": "Whitlock slumps back on the bed. Calloway takes the pocket-book from the open dressing-table drawer and leaves."},
+    {"time": "23:25", "event": "Ivy, in the pantry doorway, sees Calloway come out of B-14 with his hand inside his coat. In the B-deck corridor Calloway passes Miss Kell going the other way."},
+    {"time": "23:30", "event": "Kell enters B-14. Whitlock offers her five thousand dollars to go home and says every Kellerman has a price. Delphine and Marlow part at the promenade door; she goes to the ladies' retiring room to tidy the mist out of her hair."},
+    {"time": "23:35", "event": "Whitlock turns to the washstand to pour. Kell takes up his cane and strikes him twice on the back of the head. Marlow, walking forward alone past the hooked-open window of B-14, hears the blow, the fall, and a woman's voice. He does not stop."},
+    {"time": "23:36", "event": "Kell wipes the knob of the cane with a hand towel, puts the cane back in the rack, tips the whisky over him and lays him against the washstand rail."},
+    {"time": "23:38", "event": "Delphine sits down in the lounge with a magazine. The writing alcove is empty."},
+    {"time": "23:40", "event": "Kell leaves by the service door at the end of the corridor and pushes the towel down the linen chute. Ivy, on her way to the linen store, sees her. 'Good night, Pruett. You were in the pantry all evening, I think.' Kell goes up the service stair to the boat deck."},
+    {"time": "23:45", "event": "Ivy goes through to B-16 to turn down the bed, finds the connecting door open and Whitlock on the floor. The dressing-table drawer is open and the pocket-book gone."},
+    {"time": "23:50", "event": "Dr. Ferris pronounces him dead and says he fell. Kell comes into the lounge by the deck door, looking cold."},
+    {"time": "23:55", "event": "Marlow is sent for as officer of the coming watch, sees the wound is on the back of the head, and says nothing."}
+  ],
+  "locations": [
+    {"id": "stateroom", "name": "The Whitlock Suite (B-14 and B-16)", "description": "Two staterooms on B deck joined by a connecting door. His: a bed, a washstand with a brass rail, a dressing table with its drawer pulled open, a cane-rack by the door. The window onto the enclosed promenade is on the hook. Whisky on the carpet. Hers, beyond the door, is untouched.", "evidence_ids": ["cane", "broken_glass", "passenger_list"]},
+    {"id": "smoking_room", "name": "The First-Class Smoking Room", "description": "Leather and mahogany, empty at this hour. The card table where Whitlock and the Major played has been cleared, but not well.", "evidence_ids": ["marked_deck"]},
+    {"id": "promenade", "name": "The Promenade Deck", "description": "Open aft, enclosed forward where it runs past the B-deck stateroom windows. Wet, dark, rolling. No. 7 boat hangs in its davits on the port side; a sand fire-bucket stands beneath it.", "evidence_ids": ["cigarette_ends"]},
+    {"id": "wireless_room", "name": "The Wireless Room", "description": "A cramped cabin on the boat deck: the Marconi set, a bunk, a spike of flimsies. Mr. Teague, the operator, keeps a carbon of everything sent and received.", "evidence_ids": ["kell_cable", "whitlock_cable"]},
+    {"id": "service_corridor", "name": "The B-Deck Service Corridor", "description": "A narrow passage behind the staterooms: the pantry, the linen store, a service stair up to the boat deck, and the linen chute that drops to the laundry. One service door opens into B-16 and another into the passenger corridor.", "evidence_ids": ["towel"]},
+    {"id": "lounge", "name": "The First-Class Lounge", "description": "Palms, gilt, the orchestra's empty chairs. A writing alcove at the aft end with two desks; the night steward serves coffee until one.", "evidence_ids": ["typewriter"]}
+  ],
+  "evidence": [
+    {"id": "cane", "name": "Mr. Whitlock's cane", "location": "stateroom", "initially_known": true, "description": "A Malacca cane with a heavy chased silver knob, standing in the rack by the door.", "examined_detail": "The knob is chased with vine leaves. Something dark has dried in the chasing and two grey hairs are caught in it; the shaft has been wiped, and the wiping stops an inch below the knob. The rubber ferrule is bone-dry — it has not been on a wet deck tonight — and the rack is three steps from where he lay. A man who falls with his cane does not put it back.", "points_to": ["blow", "staged"], "key_evidence": true},
+    {"id": "broken_glass", "name": "A broken tumbler", "location": "stateroom", "initially_known": true, "description": "Shards of a whisky tumbler on the carpet inside the door.", "examined_detail": "Thrown, not dropped: the glass struck the door panel at head height and there is a dried spray of whisky on the paint. The pantry steward heard it break at about twenty past eleven. Whoever it was thrown at was standing in the doorway, and ducked.", "points_to": ["calloway"], "red_herring": true},
+    {"id": "passenger_list", "name": "An annotated passenger list", "location": "stateroom", "initially_known": false, "description": "The ship's printed first-class list, folded into his dispatch case, pencilled all over.", "examined_detail": "Against 'Miss H. Kell, New York': 'Kellerman. Danny K's sister — the eyes. Settle her.' Against 'Major R. Calloway': 'No such regt. Purser, 8 bells.' At the foot, in the same pencil: 'Pruett £5 Tues. — Lt. M. — aft, port side, every night.' Whitlock knew exactly who was aboard and what each of them was.", "points_to": ["kell", "calloway", "ivy", "delphine"], "key_evidence": true},
+    {"id": "marked_deck", "name": "The deck from Whitlock's table", "location": "smoking_room", "initially_known": false, "description": "A deck of cards in the card-table drawer, where the steward swept it.", "examined_detail": "Vine-pattern backs. Under the lamp, a soft pencil has shaded one leaf on every court card and ace — a sharp's work, and fresh. The steward says this was the deck in play at Whitlock's table and that the Major brought it aboard himself.", "points_to": ["calloway"], "red_herring": true},
+    {"id": "cigarette_ends", "name": "Cigarette ends by No. 7 boat", "location": "promenade", "initially_known": false, "description": "Several cigarette ends in the lee of the boat, out of the wind.", "examined_detail": "Four Navy Cut — the brand the line issues to its officers — and two gold-tipped Egyptian ovals, one marked with pale lipstick. Dry under the boat, so smoked after the ten o'clock squall. Two people stood here together for some time tonight.", "points_to": ["marlow", "delphine"], "red_herring": true},
+    {"id": "kell_cable", "name": "The cable to Miss Kell", "location": "wireless_room", "initially_known": false, "description": "A carbon on the operator's spike, received 22:40, addressed to Miss Kell.", "examined_detail": "'KELL CALEDONIA — LEDGER WILL NOT RUN FLORIDA STOP WHITLOCK COUNSEL THREATENS SUIT PUBLISHER WILL NOT FIGHT STOP DROP IT COME HOME — HAGGARD.' Mr. Teague says she read it twice and said nothing at all, which he thought odd in a newspaperwoman.", "points_to": ["kell"], "key_evidence": true},
+    {"id": "whitlock_cable", "name": "Whitlock's cable to New York", "location": "wireless_room", "initially_known": false, "description": "A carbon of an outgoing message, sent 18:30, signed C.W.", "examined_detail": "'STEERE NY — KELLERMAN GIRL ABOARD AS PRESS UNDER NAME KELL STOP GET LEDGER OFF WITH SUIT TODAY STOP INSTRUCT DRAKE NEW WILL AS DISCUSSED DELPHINE NOTHING SIGN ON ARRIVAL — C.W.' He killed the newspaper story at half past six. He meant to disinherit his wife on the pier.", "points_to": ["kell", "delphine"], "key_evidence": true},
+    {"id": "typewriter", "name": "Miss Kell's typewriter", "location": "lounge", "initially_known": false, "description": "A Corona portable in its case, left in the writing alcove with a page in the machine.", "examined_detail": "Purple ribbon, newly changed; the spools are still tacky. Under them, a folded clipping from the New York Ledger, October 1921: 'COPPER CLERK HANGS HIMSELF IN TOMBS — Daniel Kellerman, 26, of Toledo... left a note maintaining his innocence and naming his employer.' The page in the machine ends: '...and the last of the men who hanged Danny Kellerman is asleep on B deck, and no paper in New York will print his name.'", "points_to": ["kell"], "key_evidence": true},
+    {"id": "towel", "name": "A towel in the linen chute", "location": "service_corridor", "initially_known": false, "description": "A stateroom hand towel, caught on the lip of the linen chute at the top.", "examined_detail": "B-deck linen, damp, stained brownish-red down one side where something metal was wiped in it. Along the hem, four clear fingermarks in purple — typewriter-ribbon ink. Of everyone in the first class, only Miss Kell travels with a typewriter, and she changed its ribbon tonight.", "points_to": ["kell"], "key_evidence": true}
+  ],
+  "dynamic_evidence": [
+    {"id": "burnt_flimsy", "name": "Charred paper in the fire bucket", "location": "promenade", "initially_known": false, "description": "Burnt paper in the sand bucket under No. 7 boat.", "examined_detail": "A marconigram flimsy, burned in the sand. A corner survives: '...WILL NOT RUN ... STOP DROP IT COME HOME'. Mr. Teague's carbon of the message to Miss Kell has gone from his spike; he says she asked to 'check a word' in it and he turned his back.", "points_to": ["kell"]}
+  ],
+  "suspects": [
+    {
+      "id": "delphine",
+      "name": "Mrs. Delphine Whitlock",
+      "role": "The victim's wife",
+      "public_description": "English, twenty-eight, married to Whitlock fourteen months. Says she left the lounge at eleven with a headache, took a powder and lay down in her own stateroom, B-16, heard nothing through the connecting door, and came back to the lounge at twenty to midnight because she could not sleep.",
+      "persona": "Twenty-eight, fair, very composed; a Kensington solicitor's daughter who married a rich man thirty-three years older because her family needed it, and has spent fourteen months learning what she sold. In love with Hugh Marlow and not ashamed of it, only careful. She did not kill her husband. She is aware that she is the person who most obviously should have, that she was supposed to be next door when it happened, and that she was not.",
+      "speech_quirk": "Very still, very level; short sentences that trail off with '…I expect.' Calls her husband 'Mr. Whitlock' rather than 'Cornelius' whenever she is lying. Answers an awkward question with a question about the detective's manners ('Is that how it is done at the Yard?'). Never raises her voice.",
+      "portrait_prompt": "1920s English woman, late twenties, fair blonde hair in a sleek bob, pearl necklace and pearl earrings, pale skin, silver evening dress, composed and watchful, painterly portrait, ship's lamplight",
+      "personality": {"nervous": 0.5, "proud": 0.9, "loyal": 0.6, "greedy": 0.3, "guilt_prone": 0.4},
+      "goals": [
+        "Keep Hugh out of it — his berth and his name.",
+        "Keep the new will out of it; a wife about to be disinherited is the first person anyone looks at.",
+        "Let the Major carry it, if someone must. He was shouting at Cornelius over cards, and she was not."
+      ],
+      "knowledge": [
+        "She was on the promenade deck, aft on the port side by No. 7 boat, with Lieutenant Marlow from eleven until half past. They parted at the promenade door; she went to the ladies' retiring room off the lounge to tidy the mist out of her hair, and was in the lounge from about twenty to midnight until the steward fetched her.",
+        "At dinner Cornelius told her, quietly, that he had known about the lieutenant since Tuesday, that his lawyer had a new will drawn leaving her nothing, and that he would sign it the morning they docked.",
+        "He also said, laughing, that the newspaper woman was 'Danny Kellerman's sister' and that he had 'fixed her paper' that afternoon by wireless. She did not know who Danny Kellerman was.",
+        "Passing the smoking room at eleven she heard Cornelius shouting at Major Calloway, and the word 'cheat'.",
+        "Cornelius drank a bottle of whisky most nights since the stroke and had fallen twice in London; Dr. Ferris knew it and had said so.",
+        "Cornelius kept his papers in a brown dispatch case in B-14 and his pocket-book in the dressing-table drawer. He carried the silver-knobbed cane everywhere; he could not walk without it.",
+        "When she came into the lounge at about twenty to midnight the writing alcove was empty — Miss Kell's typewriter was there with a page in it, but not Miss Kell. Miss Kell came in by the deck door at ten to midnight, looking cold, and sat down at once.",
+        "Ivy Pruett has been with her only since London — Cornelius engaged her, which was unlike him. She has been oddly attentive to the post."
+      ],
+      "secrets": [
+        {"id": "d1", "tier": 1, "text": "She did not lie down in B-16. She was on the promenade deck, aft, from eleven until half past, and then in the ladies' retiring room off the lounge until twenty to midnight.", "cover_story": "She left the lounge at eleven with a headache, took a powder, and lay down in B-16 in the dark; she heard nothing through the connecting door, and came back to the lounge at twenty to midnight because she could not sleep.", "key_phrases": "(was|went|stayed|stood|smoked) (out )?(on|up on|to|along) the (promenade|deck|boat deck)|was not in (bed|B-16|my stateroom)|wasn't in (bed|B-16|my stateroom)|did not lie down|didn't lie down|never lay down"},
+        {"id": "d2", "tier": 2, "text": "She was on the promenade deck with Lieutenant Marlow. They fell in love on the outbound crossing last April and he has written to her every week since; she meant to leave her husband in New York and go with him.", "key_phrases": "Hugh|with (Lieutenant |Mr\\.? )?Marlow (from eleven|until|tonight|in the lee)|(was|stood|walked|smoked|sat) (out )?(on|by|at|under|in) [^.]{0,60} with (Lieutenant |Mr\\.? )?Marlow|Marlow and I|fell in love|in love with him|I love him|my lover|leave (my husband|Cornelius|him) (in|for)|written to me every|his letters"},
+        {"id": "d3", "tier": 3, "text": "At dinner Cornelius told her, quietly, that he had known about the lieutenant since Tuesday, that his lawyer had a new will drawn that left her nothing, and that he would sign it the morning they docked. He also said, laughing, that the newspaper woman was 'Danny Kellerman's sister' and that he had 'fixed her paper' that afternoon. She has told no one, because a wife about to be left with nothing is a wife with a reason.", "key_phrases": "(a |the )?new will (drawn|leaving|that left)|had a new will|cut me (off|out)|le(ft|ave) me nothing|(knew|known|found out) about (the lieutenant|Hugh|us|Marlow)|Kellerman's sister|fixed her paper|sign it (the morning|on arrival|when we dock)"}
+      ],
+      "stress_sensitivity": {"evidence": 3, "threaten": 1, "flatter": 1, "bluff": 2, "silence": 3},
+      "crack_thresholds": [5, 9, 13],
+      "special_unlocks": {
+        "d2": {"requires_any": ["evidence:cigarette_ends", "revealed:m1", "revealed:m2", "revealed:i1", "stress>=11"]},
+        "d3": {"requires_any": ["evidence:whitlock_cable", "evidence:passenger_list", "revealed:i2"]}
+      },
+      "shutdown_rules": {},
+      "deflections": [
+        "Asks whether the detective has spoken to Major Calloway yet, who was shouting at Mr. Whitlock over cards when she passed the smoking room at eleven.",
+        "Says Mr. Whitlock drank a bottle most nights and had fallen twice in London, and that Dr. Ferris will say so.",
+        "Remarks that Miss Kell has followed her husband about this ship with a notebook since Southampton, and asks what sort of woman does that.",
+        "Wonders, quite mildly, why a lady's maid was in the corridor at that hour at all."
+      ],
+      "framing_actions": [],
+      "tells": {"nervous": "turns her wedding ring round and round", "angry": "smiles, very slightly, and looks at the door", "cracking": "her hands stop moving altogether and she stares at them"},
+      "guilty": false,
+      "relationships": {
+        "marlow": {"type": "lover", "trust": 0.9},
+        "calloway": {"type": "acquaintance", "trust": 0.3},
+        "ivy": {"type": "employer", "trust": 0.5},
+        "kell": {"type": "dislikes", "trust": 0.2}
+      },
+      "voice": {"webspeech_index": 0, "base_pitch": 1.1}
+    },
+    {
+      "id": "marlow",
+      "name": "Lieutenant Hugh Marlow, R.N.R.",
+      "role": "Second Officer of the Caledonia",
+      "public_description": "Thirty-four, Royal Naval Reserve, four years with the line. Keeps the middle watch. Says he turned in at half past ten to sleep before his watch, told his steward not to knock, and was sent for by the surgeon at five to midnight.",
+      "persona": "Thirty-four, steady, decent, and in over his head. Torpedoed twice in the war; nothing since has frightened him until tonight. Loves Delphine Whitlock with the whole of a simple heart, would resign his berth for her tomorrow, and would lie to the Captain for her — which is not a small thing for him. Since twenty-five to midnight he has been afraid that the woman he heard in B-14 was her.",
+      "speech_quirk": "Speaks in ship's time and ship's terms ('at six bells', 'the port side', 'below'). Ends nearly every sentence to the detective with 'sir'. When lying, adds needless precision ('at ten thirty-two exactly'). Goes clipped and monosyllabic when angry.",
+      "portrait_prompt": "1920s British merchant navy officer, mid-thirties, dark brown hair, clean-shaven, weathered fair skin, dark uniform with brass buttons and peaked cap, steady tired eyes, painterly portrait, deck lamplight",
+      "personality": {"nervous": 0.4, "proud": 0.7, "loyal": 0.95, "greedy": 0.05, "guilt_prone": 0.7},
+      "goals": [
+        "Protect Mrs. Whitlock before himself, his berth, or his name.",
+        "Keep the Captain from learning he was off his own deck with a passenger's wife.",
+        "Find out, without asking anyone, whether the woman he heard in B-14 was Delphine."
+      ],
+      "knowledge": [
+        "He was on the promenade deck, aft on the port side, with Mrs. Whitlock from eleven until half past; they smoked in the lee of No. 7 boat. Nobody else came aft along the port side in that half hour; he would have seen them.",
+        "He walked forward alone along the enclosed promenade at about twenty-five to midnight, to go below by the officers' ladder. Passing the hooked-open window of B-14 he heard a heavy blow, a fall, and a woman's voice, low and steady. He did not stop.",
+        "Sent for at five to midnight, he saw the body: on its back, head against the washstand rail, and the wound at the back of the skull, not the temple. He said nothing to the surgeon.",
+        "The purser warned the officers before Southampton that 'Major' Calloway was on the Cunard blacklist for card-sharping and was to be watched in the smoking room.",
+        "Miss Kell asked him on Tuesday for an interview about 'wireless and the sea'; she asked mostly about which passengers sent messages and what hours the operator kept.",
+        "The enclosed promenade runs past the B-deck stateroom windows. Whitlock kept his window on the hook for air; the steward complained of it.",
+        "Whitlock was rude to Mrs. Whitlock at dinner in front of the whole table; he saw her face from the officers' table.",
+        "He had never been inside B-14 until he was sent for."
+      ],
+      "secrets": [
+        {"id": "m1", "tier": 1, "text": "He was not in his cabin. He was on the promenade deck, aft on the port side by No. 7 boat, from eleven until half past, and walked forward along the enclosed promenade at about twenty-five to midnight.", "cover_story": "He turned in at half past ten to get an hour's sleep before the middle watch, as he does every night, and told his steward not to knock; he was sent for at five to midnight.", "key_phrases": "(was|stood|stayed|went|smoked|walked) (out )?(on|up on|to|along|forward along) the (promenade|deck|boat deck|enclosed)|was not in (my|his) (cabin|bunk)|wasn't in my (cabin|bunk)|(nobody|no one) (else )?came aft|never turned in|did not turn in|didn't turn in"},
+        {"id": "m2", "tier": 2, "text": "He was on deck with Mrs. Whitlock. They fell in love on the outbound crossing last April; he has written to her every week since. She meant to leave Whitlock in New York, and he meant to resign his berth and go with her.", "key_phrases": "Delphine|with (Mrs\\.? Whitlock|her) (from eleven|until half past|tonight|in the lee)|(was|stood|walked|smoked|sat) (out )?(on|by|at|under|in) [^.]{0,60} with (Mrs\\.? Whitlock|her)|Mrs\\.? Whitlock and I|fell in love|in love with her|I love her|resign my berth|written to her|my letters|go with her"},
+        {"id": "m3", "tier": 3, "text": "At about twenty-five to midnight, walking forward alone along the enclosed promenade past the hooked-open window of B-14, he heard a heavy blow, a fall, and a woman's voice, low and steady. He did not stop. He has said nothing because he cannot say where he was — and because Mrs. Whitlock had gone in five minutes before him, and until he knows who the woman was he is afraid of the answer.", "key_phrases": "heard (a|the) (heavy )?(blow|fall|thud)|heard (a|some|the) woman|woman's voice, low|heard (her|a woman) (speak|say)|through the (hooked|open|hooked-open) window|past the (hooked-open )?window of B-14"}
+      ],
+      "stress_sensitivity": {"evidence": 3, "threaten": 2, "flatter": 0, "bluff": 1, "silence": 2},
+      "crack_thresholds": [5, 8, 12],
+      "special_unlocks": {
+        "m2": {"requires_any": ["evidence:cigarette_ends", "revealed:d1", "revealed:d2", "revealed:i1", "stress>=10"]},
+        "m3": {"requires_revealed": ["m1"], "requires_any": ["evidence:cane", "revealed:d1", "revealed:d2"]}
+      },
+      "shutdown_rules": {"threaten": "You will address any threats to the Captain, sir. I have a watch to keep."},
+      "deflections": [
+        "Says the deck was wet and the ship was rolling, and a drunk man with a stick falls, sir.",
+        "Mentions that the purser had his eye on Major Calloway before they cleared the Needles.",
+        "Reminds the detective that he keeps the middle watch and the Captain's leave is needed for any of this, sir.",
+        "Observes that the American newspaperwoman has been asking the wireless operator a great many questions about other people's messages."
+      ],
+      "framing_actions": [],
+      "tells": {"nervous": "checks his watch against the ship's clock", "angry": "comes to attention, hands behind his back", "cracking": "takes off his cap and turns it round in his hands"},
+      "guilty": false,
+      "relationships": {
+        "delphine": {"type": "lover", "trust": 0.9},
+        "calloway": {"type": "dislikes", "trust": 0.2},
+        "ivy": {"type": "kind_to", "trust": 0.5},
+        "kell": {"type": "acquaintance", "trust": 0.4}
+      },
+      "voice": {"webspeech_index": 1, "base_pitch": 0.85}
+    },
+    {
+      "id": "calloway",
+      "name": "Major Rex Calloway",
+      "role": "Fellow passenger — a retired major, he says",
+      "public_description": "Forty-six, florid, popular in the smoking room. Says he was at the card table from ten until the room closed at midnight, apart from a turn on deck for air, and that Whitlock left early because he was drunk and losing.",
+      "persona": "Forty-six, born Reginald Cole in Bermondsey; 'Major Calloway' since 1919, when he found that a moustache and a story about Mesopotamia opened every smoking room on the Atlantic. Charming, quick, cowardly, and a thief. He did not kill Whitlock, but he was in the man's stateroom a quarter of an hour before it happened, he came out with the man's pocket-book, and he knows exactly how that reads.",
+      "speech_quirk": "Expansive and clubbable; calls the detective 'old man' and everyone else 'my dear fellow'. Army slang and stories about Basra that never quite have a regiment in them. Says 'honestly' before a lie. When frightened the Major drops away and he talks fast and flat, like a man from Bermondsey.",
+      "portrait_prompt": "1920s English gentleman gambler, mid-forties, red auburn hair slicked back, waxed moustache, ruddy fair skin, dinner jacket with a red carnation, cigar, easy confident smile, painterly portrait, smoking-room lamplight",
+      "personality": {"nervous": 0.4, "proud": 0.6, "loyal": 0.1, "greedy": 0.9, "guilt_prone": 0.2},
+      "goals": [
+        "Get off this ship at New York without a policeman on the pier.",
+        "Keep the pocket-book, and keep the marked deck out of the detective's hands.",
+        "Point the detective at the widow, or at the newspaperwoman, or at anyone who is not a card-sharp with a grievance."
+      ],
+      "knowledge": [
+        "He has made his living at cards since 1919 and has never held a commission. He had taken eighteen hundred dollars off Whitlock over two nights, against an IOU.",
+        "At ten to eleven Whitlock caught him shading the deck with a pencil and told him, quietly: two thousand dollars by morning, or the purser searches his cabin at eight bells and the New York police meet the ship.",
+        "He went to B-14 at twenty past eleven to bargain. Whitlock was drunk, sitting on the bed with the bottle; he threw a tumbler that broke against the door. Calloway left at twenty-five past.",
+        "On his way out he took Whitlock's brown leather pocket-book from the open dressing-table drawer — eight hundred dollars and his own IOU. It is sewn into the lining of his overcoat.",
+        "Coming away along the B-deck corridor at twenty-five past he passed Miss Kell going the other way, toward B-14, with a folded note in her hand. She did not look at him.",
+        "The maid Pruett was in the pantry doorway as he came out of B-14; she saw him.",
+        "Whitlock walked with a heavy silver-knobbed cane and had a temper when drunk; he raised the cane at a steward on Tuesday.",
+        "The purser has been watching him since Southampton and the ship's officers know what he is; the second officer cut him dead on Tuesday."
+      ],
+      "secrets": [
+        {"id": "c1", "tier": 1, "text": "He is not a major and has never held a commission; 'Major Calloway' is a name he has used since 1919. He makes his living at cards.", "cover_story": "Sixteenth Lancers, retired in '22 after Mesopotamia; he would rather not talk about it, old man, it was a bad business.", "key_phrases": "(is|am|'m) not a major|never (held|had) a commission|no such regiment|since 1919|my real name|born (Reginald |Reg )?Cole|make(s)? (my|his) living at cards|I('m| am) a (professional|card.?sharp|gambler)"},
+        {"id": "c2", "tier": 2, "text": "At ten to eleven Whitlock caught him shading the deck and told him, quietly: two thousand dollars by morning, or the purser searches his cabin at eight bells and the New York police meet the ship. He went to B-14 at twenty past eleven to bargain. Whitlock, drunk on the bed, threw a tumbler at him; it broke on the door. He left at twenty-five past, and in the corridor passed Miss Kell going the other way.", "key_phrases": "caught (me|him) (shading|marking)|I (shaded|marked) the (deck|cards)|two thousand dollars by morning|I went to (B-14|his (stateroom|cabin|room))|went to (B-14|his (stateroom|cabin|room)) (at|to bargain)|(threw|flung) a (glass|tumbler) at (me|him)|(came|come|coming) out of (B-14|his (stateroom|cabin|room))|(came|coming) away (along|from B-14)|passed Miss Kell (going|in the|on B)|left at twenty-five past"},
+        {"id": "c3", "tier": 3, "text": "As he left B-14 he took Whitlock's brown leather pocket-book from the open dressing-table drawer — eight hundred dollars and his own IOU for eighteen hundred. It is sewn into the lining of his overcoat.", "key_phrases": "eight hundred dollars and|(I|he) took [^.]{0,30}pocket-?book|my IOU|lining of (my|his) (over)?coat|sewn into|from the (open )?dressing.table drawer"}
+      ],
+      "stress_sensitivity": {"evidence": 3, "threaten": 1, "flatter": 2, "bluff": 1, "silence": 1},
+      "crack_thresholds": [4, 8, 12],
+      "special_unlocks": {
+        "c1": {"requires_any": ["evidence:passenger_list", "evidence:marked_deck", "stress>=6"]},
+        "c2": {"requires_any": ["evidence:marked_deck", "evidence:broken_glass", "evidence:passenger_list"]},
+        "c3": {"requires_revealed": ["c2"], "requires_any": ["flatter_count>=2", "threaten_count>=2", "stress>=12"]}
+      },
+      "shutdown_rules": {},
+      "deflections": [
+        "Laughs and asks, old man, whether the detective has seen the size of the whisky bill in B-14.",
+        "Says the little maid Pruett was in and out of that corridor all night like a ferret, my dear fellow, and asks who pays a lady's maid to be everywhere at once.",
+        "Tells a long story about a colonel in Basra who fell down a companionway stone cold sober and was dead before he reached the bottom.",
+        "Remarks that the young wife did not look much like a grieving widow when they fetched her from the lounge, old man, and that a wife inherits and a card partner doesn't.",
+        "Says the American newspaperwoman was up in the wireless room half the night, and one wonders what a lady finds so interesting about other people's cables."
+      ],
+      "framing_actions": [
+        {"id": "pocket_deck", "trigger": "turn>=7 and not searched:smoking_room", "probability": 0.5, "effect": {"remove_evidence": "marked_deck"}, "ticker": "The Major was seen at the smoking-room card table, long after the stewards had cleared it."}
+      ],
+      "tells": {"nervous": "twists the moustache twice and laughs a beat too early", "angry": "the accent slips east of the Tower", "cracking": "the 'old man' stops, and so does the smiling"},
+      "guilty": false,
+      "relationships": {
+        "delphine": {"type": "acquaintance", "trust": 0.3},
+        "marlow": {"type": "dislikes", "trust": 0.2},
+        "ivy": {"type": "acquaintance", "trust": 0.4},
+        "kell": {"type": "fears", "trust": 0.1}
+      },
+      "voice": {"webspeech_index": 2, "base_pitch": 0.95}
+    },
+    {
+      "id": "ivy",
+      "name": "Ivy Pruett",
+      "role": "Lady's maid to Mrs. Whitlock",
+      "public_description": "Twenty-four, engaged in London two months ago. Says she was in the B-deck service pantry all evening pressing madam's dress for tomorrow, went through to turn down madam's bed at a quarter to midnight, and found the connecting door open and Mr. Whitlock on the floor.",
+      "persona": "Twenty-four, from Deptford, clever and frightened. Took five pounds a week from Whitlock to report on his wife because five pounds a week is more than her mother earns in a month, and has hated herself for it since Tuesday, when what she told him made him laugh. She found the body. She also saw the murderer, and was told, very pleasantly, that she hadn't.",
+      "speech_quirk": "Says 'sir' in every sentence; calls Mrs. Whitlock 'madam' and the victim 'the master'. Answers exactly what is asked and then adds one small thing about somebody else. When nervous, repeats the last three words of the detective's question before answering it. Kindness undoes her faster than pressure.",
+      "portrait_prompt": "1920s English lady's maid, early twenties, brown hair pinned up under a small white cap, pale skin, black dress with white collar and apron, wary eyes, painterly portrait, corridor lamplight",
+      "personality": {"nervous": 0.9, "proud": 0.3, "loyal": 0.5, "greedy": 0.5, "guilt_prone": 0.9},
+      "goals": [
+        "Keep her place with madam — which means madam must never learn who paid Ivy, or what for.",
+        "Not be blamed. A maid in the corridor is the easiest person on the ship to blame.",
+        "Stay out of Miss Kell's way. Miss Kell said 'good night' to her as if it were a warning, and she took it as one."
+      ],
+      "knowledge": [
+        "She was in the B-deck service pantry from half past ten, pressing madam's grey dress for tomorrow; Dobbs, the pantry steward, was in and out.",
+        "At twenty past eleven she heard glass break in B-14 and, at twenty-five past, saw Major Calloway come out of B-14 into the corridor, very quick, with his hand inside his coat.",
+        "At twenty to midnight, going along the service corridor to the linen store, she saw Miss Kell come through the service door from the passenger corridor, push a hand towel down the linen chute, and go up the service stair. Miss Kell saw her and said, 'Good night, Pruett. You were in the pantry all evening, I think.'",
+        "At a quarter to midnight she went through the service door into B-16 to turn down madam's bed. Madam was not there. The connecting door to B-14 stood open; the master lay on the floor by the washstand with whisky all over him, and the dressing-table drawer was open and the brown pocket-book gone.",
+        "Mr. Whitlock engaged her in London and has paid her five pounds a week, on top of her wages, to tell him where madam goes and who writes to her. On Tuesday she told him about the lieutenant's letters, and he laughed.",
+        "Madam and Lieutenant Marlow meet on the promenade deck, aft, port side, most nights after eleven; she has read his letters, which madam keeps in the jewel case.",
+        "Miss Kell gave her a dollar on Tuesday to say which cabin the Major had, and asked whether the master received many wireless messages.",
+        "The master had a temper when he had been drinking. He struck a steward with his cane on Tuesday and nobody said a word."
+      ],
+      "secrets": [
+        {"id": "i1", "tier": 1, "text": "She has read Lieutenant Marlow's letters to madam — they are kept in the jewel case — and knows that madam and the lieutenant meet on the promenade deck most nights after eleven.", "cover_story": "She knows nothing of madam's private affairs, sir; a lady's maid doesn't read, she presses.", "key_phrases": "read (his|the|madam's|the lieutenant's|Lieutenant Marlow's) letters|in the jewel case|meet on the promenade|most nights after eleven|madam and the lieutenant meet"},
+        {"id": "i2", "tier": 2, "text": "Mr. Whitlock engaged her in London and paid her five pounds a week, on top of her wages, to tell him where madam went and who wrote to her. On Tuesday she told him about the lieutenant's letters. She is ashamed, and afraid madam will find out.", "key_phrases": "five pounds a week|paid (me|her) (five|to)|on top of (my|her) wages|told (him|the master|Mr\\.? Whitlock) about (the|madam|her|the lieutenant)|where madam (goes|went)|who (writes|wrote) to her|tell (him|the master) where"},
+        {"id": "i3", "tier": 3, "text": "At twenty to midnight, going along the service corridor to the linen store, she saw Miss Kell come through the service door from the passenger corridor, push a hand towel down the linen chute, and go up the service stair. Miss Kell saw her and said, 'Good night, Pruett. You were in the pantry all evening, I think.' She has said nothing because she was afraid — and because she is the one who has been paid to tell tales, and who believes a paid tale-bearer?", "key_phrases": "I saw Miss Kell|saw Miss Kell (come|coming|push|go|at twenty)|Miss Kell (came|come|coming|went|going) (out|up|along|through)|(dropped|pushed|put|stuffed) (a |the |something |it )?(hand )?(towel )?(down|into) the (linen )?chute|towel down the chute|Good night, Pruett"}
+      ],
+      "stress_sensitivity": {"evidence": 2, "threaten": 2, "flatter": 4, "bluff": 1, "silence": 2},
+      "crack_thresholds": [2, 5, 8],
+      "special_unlocks": {
+        "i2": {"requires_any": ["evidence:passenger_list", "revealed:d3", "flatter_count>=1", "stress>=7"]},
+        "i3": {"requires_any": ["flatter_count>=2", "evidence:towel", "revealed:k1"]}
+      },
+      "shutdown_rules": {"threaten": "I don't know anything, sir. I only do madam's hair. I don't know anything at all."},
+      "deflections": [
+        "Says she only does madam's hair and her dresses, sir, and knows nothing of what the gentlemen do.",
+        "Mentions that the Major came out of the master's room at twenty-five past eleven and went off very quick, sir, with his hand inside his coat — then looks at her own hands.",
+        "Says madam went to lie down with a headache, sir, and asks whether the detective has spoken to madam, and whether madam is all right.",
+        "Asks whether Miss Kell is a real newspaper lady, sir, because she gave Ivy a dollar to say which cabin the Major had."
+      ],
+      "framing_actions": [],
+      "tells": {"nervous": "smooths her apron flat, again and again", "angry": "her chin comes up and she looks straight at you for the first time", "cracking": "whispers, and looks at the door as if someone were standing behind it"},
+      "guilty": false,
+      "relationships": {
+        "delphine": {"type": "employer", "trust": 0.6},
+        "marlow": {"type": "trusts", "trust": 0.6},
+        "calloway": {"type": "acquaintance", "trust": 0.4},
+        "kell": {"type": "fears", "trust": 0.1}
+      },
+      "voice": {"webspeech_index": 3, "base_pitch": 1.2}
+    },
+    {
+      "id": "kell",
+      "name": "Miss Harriet Kell",
+      "role": "Financial journalist, the New York Ledger",
+      "public_description": "Thirty-eight, American, travelling alone with a typewriter. Has been writing about Whitlock's Florida land company since Southampton. Says she was in the lounge writing alcove until about twenty past eleven, then walked the promenade deck alone to clear her head, and came in by the deck door at ten to midnight.",
+      "persona": "Thirty-eight, dry, precise, unafraid of anyone alive. Born Harriet Kellerman in Toledo, Ohio; her brother Daniel was the Whitlock & Steere clerk who took the charge for Whitlock's 1921 Copper fraud and hanged himself in the Tombs before trial. She has spent six years building the case the law would not, and at twenty to eleven tonight learned that no paper would print it. At half past eleven Whitlock offered to buy her. She is not sorry. She intends to reach New York a journalist, not a prisoner.",
+      "speech_quirk": "Fast, dry, American; calls the detective 'Inspector' in every sentence whether or not it fits. Talks in headlines and column inches ('that's a two-line story, Inspector'). Says 'strictly for the record' before a lie. Never uses the victim's first name — 'Whitlock', flatly, every time.",
+      "portrait_prompt": "1920s American woman journalist, late thirties, dark hair in a severe bob, round spectacles, olive skin, grey tweed suit with a man's tie, ink-stained fingers, sharp unsmiling face, painterly portrait, lounge lamplight",
+      "personality": {"nervous": 0.2, "proud": 0.8, "loyal": 0.7, "greedy": 0.0, "guilt_prone": 0.3},
+      "goals": [
+        "Not hang for Whitlock. Danny already did.",
+        "Steer the detective to the Major — the card-sharp with the grievance — or to the widow and her officer.",
+        "Get the carbon of her editor's cable out of the wireless room and the clipping out of the typewriter case before anyone looks."
+      ],
+      "knowledge": [
+        "Her name is Harriet Kellerman. Her brother Daniel was a clerk at Whitlock & Steere; in 1921 Whitlock let him take the charge for the Copper fraud, and Daniel hanged himself in the Tombs before trial, leaving a note that named Whitlock. She has written for the Ledger as 'H. Kell' since 1922 and has followed Whitlock for six years. The 1921 clipping about Daniel's death is in her typewriter case under the ribbon spools, with a draft page she should never have left in the machine.",
+        "At twenty to eleven, in the wireless room, she received her editor's reply: the Ledger would not run the Florida story, Whitlock's counsel had threatened suit, drop it and come home. The operator, Teague, keeps a carbon on his spike.",
+        "Whitlock recognised her at dinner — 'you have your brother's eyes' — and at eleven sent her a note by the steward: 'B-14, half past eleven. I have a proposition. C.W.' She burned the note in the sand bucket on the promenade.",
+        "At half past eleven she went below to B-14. Whitlock was drunk on the bed with the cane beside him. He offered her five thousand dollars to go home and said every Kellerman had a price. When he stood and turned to the washstand to pour, she took up the cane and struck him twice on the back of the head. He fell against the washstand rail.",
+        "She wiped the knob of the cane with a hand towel, put the cane back in the rack, tipped the whisky over him, and left by the service door at the end of the corridor at twenty to midnight. She pushed the towel down the linen chute. The maid Pruett was in the service corridor and saw her; she said good night to her, and reminded her where she had been all evening.",
+        "Her fingers are stained purple with ribbon ink; she changed the ribbon on her Corona at ten, at the writing desk, and the night steward saw her do it. She has typed most of the evening, and ink is what typing looks like.",
+        "At ten to eleven, from the smoking-room doorway, she watched Whitlock take the Major by the wrist over the cards and heard 'purser' and 'eight bells'. At twenty-five past, in the B-deck corridor, she passed the Major coming away from B-14, white and fast, with his hand inside his coat.",
+        "The second officer, Marlow, and Mrs. Whitlock are lovers; she saw them together by No. 7 boat on Tuesday night, and again tonight at eleven from the wireless-room ladder. She has told no one."
+      ],
+      "secrets": [
+        {"id": "k1", "tier": 1, "text": "She did not walk the promenade deck after eleven. She went below to B deck, to Whitlock's stateroom, and came back up by the service stair.", "cover_story": "Strictly for the record, Inspector: she was in the writing alcove until about twenty past eleven, then walked the promenade deck alone, starboard side, to clear her head, and came into the lounge by the deck door at ten to midnight.", "key_phrases": "went (down )?(below|to B deck|to B-14|down to B)|(was|went) (in|into|inside|to) (his|the|Whitlock's|Mr\\.? Whitlock's) (stateroom|suite|cabin)|(by|up|through) the service (stair|door)|B-deck corridor|(never|didn't|did not) walk(ed)? the (promenade|deck)|I passed the Major"},
+        {"id": "k2", "tier": 2, "text": "Her name is Harriet Kellerman. Her brother Daniel was the clerk at Whitlock & Steere whom Whitlock let take the charge for the 1921 Copper fraud; he hanged himself in the Tombs before trial, leaving a note that named Whitlock. She has followed Whitlock for six years under the byline Kell. Tonight at dinner he recognised her — 'you have your brother's eyes'.", "key_phrases": "(I am|I'm|name is) (Harriet )?Kellerman|born (a )?Kellerman|(my|our|her) brother|the Tombs|hanged himself|brother's eyes|under (the )?(name|byline) Kell"},
+        {"id": "k3", "tier": 3, "text": "At half past eleven she went to B-14 at his invitation. He offered her five thousand dollars to go home and said every Kellerman had a price. When he turned to the washstand to pour, she took up his cane and struck him twice on the back of the head. She wiped the knob with a hand towel, put the cane back in the rack, tipped the whisky over him, laid him against the washstand rail, and dropped the towel down the linen chute on her way up the service stair.", "is_confession": true, "key_phrases": "I (struck|hit) him|struck him (twice|on the back)|I killed|I did it|took up (his|the) cane|(his|the) cane and struck|wiped the (knob|cane)|tipped the whisky|down the (linen )?chute|every Kellerman|he offered me"}
+      ],
+      "stress_sensitivity": {"evidence": 4, "threaten": 0, "flatter": 0, "bluff": 1, "silence": 2},
+      "crack_thresholds": [6, 10, 15],
+      "special_unlocks": {
+        "k1": {"requires_any": ["evidence:towel", "revealed:i3", "revealed:c2"]},
+        "k2": {"requires_any": ["evidence:passenger_list", "evidence:typewriter", "evidence:whitlock_cable", "revealed:d3"]},
+        "k3": {"requires_any": ["evidence:cane", "evidence:towel"], "requires_revealed": ["k2"]}
+      },
+      "shutdown_rules": {"flatter": "Save it, Inspector. I have been buttered by better men than you, and I still didn't print what they wanted."},
+      "deflections": [
+        "Says, Inspector, that the Major's regiment does not exist, and that a sharp caught with a marked deck has a two-thousand-dollar reason to be angry with the man who caught him.",
+        "Says the widow is twenty-eight and the will is the story, Inspector, if there is a story; ask who inherits before you ask who was where.",
+        "Asks what kind of ship's officer is 'resting' with his door locked and his steward told to go away, Inspector, on a night he isn't on watch.",
+        "Talks column inches: the Florida land bust, the widows Whitlock made in Tampa, and how many people on this ship would have shaken the hand of the man who did it.",
+        "Observes that the maid was in that corridor all night, Inspector, and that servants who see everything usually saw something."
+      ],
+      "framing_actions": [
+        {"id": "burn_cable", "trigger": "turn>=9 and not searched:wireless_room", "probability": 0.7, "effect": {"remove_evidence": "kell_cable", "add_evidence_id": "burnt_flimsy"}, "ticker": "Miss Kell was seen coming down from the wireless room. The operator looked unhappy about something."}
+      ],
+      "tells": {"nervous": "takes off her spectacles and polishes them on her tie", "angry": "stops calling you Inspector and starts calling you 'friend'", "cracking": "her ink-stained fingers press flat on the table until the knuckles go white"},
+      "guilty": true,
+      "relationships": {
+        "delphine": {"type": "dislikes", "trust": 0.2},
+        "marlow": {"type": "acquaintance", "trust": 0.4},
+        "calloway": {"type": "leverage", "trust": 0.2},
+        "ivy": {"type": "threatens", "trust": 0.1}
+      },
+      "voice": {"webspeech_index": 4, "base_pitch": 0.9}
+    }
+  ],
+  "solution": {
+    "murderer": "kell",
+    "method": "Two blows to the back of the head with the silver knob of Whitlock's own cane at about 23:35, in B-14. The cane was wiped with a hand towel and returned to the rack, the body laid against the washstand rail and whisky poured over it to pass as a drunken fall; the towel went down the linen chute.",
+    "method_evidence_ids": ["cane", "towel"],
+    "motive": "Harriet Kell is Harriet Kellerman, sister of the clerk Whitlock let hang for the 1921 Copper fraud. She hunted him for six years as a journalist. That evening Whitlock had her exposé killed by threatening the Ledger with a libel suit, recognised her at dinner, and at half past eleven offered to buy her off in his stateroom. With the press silenced and the law never interested, she took the only justice left.",
+    "motive_evidence_ids": ["kell_cable", "whitlock_cable", "passenger_list", "typewriter"],
+    "proof_paths": [
+      ["evidence:towel", "revealed:i3", "evidence:typewriter", "revealed:k2", "evidence:cane", "revealed:k3"],
+      ["evidence:kell_cable", "evidence:whitlock_cable", "revealed:k2", "evidence:broken_glass", "revealed:c2", "revealed:k1", "evidence:towel", "revealed:k3"],
+      ["evidence:cigarette_ends", "revealed:m1", "revealed:d2", "revealed:m3", "evidence:passenger_list", "revealed:d3", "revealed:k2", "evidence:cane", "revealed:k3"]
+    ]
+  },
+  "red_herrings": [
+    "Major Calloway quarrelled with Whitlock over marked cards, had a glass thrown at him in B-14 at 23:20, was seen leaving the stateroom at 23:25, and took the pocket-book on his way out. A sharp and a thief, and the most obvious suspect for the first several turns — but not a murderer.",
+    "Delphine and Marlow both lie about where they were. The cigarette ends, Whitlock's cable about the new will and the pencilled passenger list make her look like a wife with a motive and an accomplice in uniform; it is collusion in adultery, not in murder.",
+    "Ivy Pruett was paid by the victim to spy on his wife and was in the corridor all evening. A bought servant with a guilty conscience reads, for a while, as a guilty servant.",
+    "Dr. Ferris's verdict of a drunken fall, and Whitlock's bottle-a-night habit and two earlier falls in London, keep an accident plausible until the cane is examined."
+  ],
+  "rumor_seeds": [
+    {"holder": "kell", "text": "Whitlock threw the Major off his table for cheating at ten to eleven, and a steward saw the Major on B deck at twenty past with his hand inside his coat. Whatever he says about bridge until midnight, the smoking-room steward knows better.", "spreads_to": ["ivy", "marlow"], "intent": "redirect"}
+  ],
+  "ticker_lines": [
+    "Someone is walking the promenade deck, slowly, in the rain.",
+    "The wireless room's lamp is still lit. A key is tapping.",
+    "Two people were seen talking quietly at the foot of the boat-deck ladder.",
+    "A stateroom door on B deck closed very softly.",
+    "The orchestra's chairs have been stacked. The lounge is empty."
+  ]
+}

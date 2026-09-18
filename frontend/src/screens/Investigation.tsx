@@ -11,10 +11,12 @@ import { ErrorNotice } from '@/components/common/ErrorNotice'
 import { EvidenceIcon } from '@/components/common/EvidenceIcon'
 import { Marquee } from '@/components/common/Marquee'
 import { Modal } from '@/components/common/Modal'
+import { SceneThumb } from '@/components/common/SceneThumb'
 import { SectionTitle } from '@/components/common/SectionTitle'
 import JudgePanel from '@/components/judge/JudgePanel'
 import { PixelPortrait } from '@/components/portrait/PixelPortrait'
 import { cn } from '@/lib/cn'
+import { presetFromSetting } from '@/lib/presets'
 import { clockPhase, formatClock12 } from '@/lib/clock'
 import { describeTurn, selectPrimarySuspect, selectSecondarySuspect, turnsForSuspect, useGame } from '@/store/game'
 import { useUI, type ActionTab } from '@/store/ui'
@@ -101,6 +103,7 @@ export function Investigation() {
   const toggleJudge = useUI((s) => s.toggleJudge)
 
   const [askText, setAskText] = useState('')
+  const [searchResult, setSearchResult] = useState<{ locationId: string; found: PublicEvidence[] } | null>(null)
   const [selectedEvidence, setSelectedEvidence] = useState<string | null>(null)
   const [selectedTactic, setSelectedTactic] = useState<Tactic | null>(null)
   const [tacticText, setTacticText] = useState('')
@@ -178,7 +181,8 @@ export function Investigation() {
       await confront(t, 3)
     } else if (tab === 'search') {
       if (!selectedLocation) return
-      await search(selectedLocation)
+      const res = await search(selectedLocation)
+      if (res) setSearchResult({ locationId: selectedLocation, found: res.evidence ?? [] })
     }
   }
 
@@ -480,6 +484,46 @@ export function Investigation() {
           </div>
         </div>
       </div>
+
+      <Modal open={!!searchResult} onClose={() => setSearchResult(null)} title={`Searched: ${game.locations.find((l) => l.id === searchResult?.locationId)?.name ?? ''}`} width={560}>
+
+        {searchResult ? (
+
+          <div className="flex flex-col gap-3">
+
+            <SceneThumb preset={presetFromSetting(game.case.setting)} className="rounded" style={{ width: '100%', height: 200, border: '1px solid var(--gold-500)' }} />
+
+            <p style={{ margin: 0, fontSize: 16 }}>{game.locations.find((l) => l.id === searchResult.locationId)?.description}</p>
+
+            {searchResult.found.length ? (
+
+              <ul style={{ margin: 0, paddingLeft: 18 }}>
+
+                {searchResult.found.map((e) => (
+
+                  <li key={e.id} style={{ marginBottom: 6 }}>
+
+                    <strong>{e.name}</strong>
+
+                    {e.examined_detail ? <span className="muted"> — {e.examined_detail}</span> : null}
+
+                  </li>
+
+                ))}
+
+              </ul>
+
+            ) : (
+
+              <p className="muted" style={{ margin: 0 }}>Nothing new here.</p>
+
+            )}
+
+          </div>
+
+        ) : null}
+
+      </Modal>
 
       <AccuseModal
         open={accuseOpen}

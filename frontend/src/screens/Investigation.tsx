@@ -20,6 +20,7 @@ import { presetFromSetting } from '@/lib/presets'
 import { clockPhase, formatClock12 } from '@/lib/clock'
 import { describeTurn, selectPrimarySuspect, selectSecondarySuspect, turnsForSuspect, useGame } from '@/store/game'
 import { useUI, type ActionTab } from '@/store/ui'
+import { speak } from '@/voice'
 
 const TABS: Array<{ key: ActionTab; label: string; hint: string }> = [
   { key: 'ask', label: '💬 Ask', hint: 'Ask a question' },
@@ -120,6 +121,18 @@ export function Investigation() {
   const tab = useUI((s) => s.actionTab)
   const setTab = useUI((s) => s.setActionTab)
   const toggleJudge = useUI((s) => s.toggleJudge)
+  const voiceOn = useUI((s) => s.a11y.voice)
+  const spokenRef = useRef<string>('')
+  useEffect(() => {
+    if (!voiceOn || !game) return
+    const last = [...game.turns].reverse().find((t) => t.spoken && t.actor !== 'detective' && t.actor !== 'director')
+    if (!last) return
+    const key = `${last.turn}:${last.seq}`
+    if (spokenRef.current === key) return
+    spokenRef.current = key
+    const who = game.cast.find((c) => c.id === last.actor)
+    if (who) speak(who, last.spoken!, last.stress_pct ?? 0)
+  }, [voiceOn, game])
 
   const [askText, setAskText] = useState('')
   const [searchResult, setSearchResult] = useState<{ locationId: string; found: PublicEvidence[] } | null>(null)

@@ -1777,3 +1777,38 @@ html[data-screen-reader] .pixel-portrait {
   overflow-x: auto;
   scrollbar-width: thin;
 }
+
+
+/* ---- painted backdrops (public/art/*.jpg) ------------------------------------------------ */
+.room-bg--art {
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-color: #1a0f0a;
+}
+.room-bg--art::before,
+.room-bg--art::after {
+  display: none;
+}
+.room-bg__dim {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 30%, rgba(20, 10, 6, 0.55) 0%, rgba(14, 7, 4, 0.82) 70%, rgba(10, 5, 3, 0.9) 100%);
+  backdrop-filter: blur(3px);
+}
+/* the setup card sits over the card painted in the artwork, leaving the detective and marquee visible */
+.setup-card--art {
+  max-width: none;
+}
+@media (min-width: 1024px) {
+  .setup-card--art {
+    width: 62vw;
+    margin-left: 20vw;
+    margin-top: 22vh;
+  }
+}
+.setup-card--art .archive-link {
+  position: absolute;
+  right: 18px;
+  top: 14px;
+}

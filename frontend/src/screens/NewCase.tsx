@@ -12,11 +12,9 @@ import type { CasePreset, CaseSummary, Difficulty, Health } from '@/api/types'
 import { ApiKeyModal } from '@/components/common/ApiKeyModal'
 import { Button } from '@/components/common/Button'
 import { ErrorNotice } from '@/components/common/ErrorNotice'
-import { Marquee } from '@/components/common/Marquee'
 import { Placard } from '@/components/common/Placard'
 import { SceneThumb } from '@/components/common/SceneThumb'
 import { SectionTitle } from '@/components/common/SectionTitle'
-import { Sticky } from '@/components/common/Sticky'
 import { TypewriterProgress } from '@/components/common/TypewriterProgress'
 import { ConsentGate } from '@/components/sensors/ConsentGate'
 import { cn } from '@/lib/cn'
@@ -39,34 +37,6 @@ const CREATE_LINES = ['Opening the case file…', 'Seating the suspects…', 'Li
 const GENERATE_SEED_LINES = ['Commissioning a new case…', 'Writing the cast…', 'Planting the evidence…', "Checking it's solvable…"]
 const POLL_MS = 1500
 const GENERATE_TIMEOUT_MS = 12 * 60 * 1000
-
-function DetectiveSilhouette() {
-  return (
-    <svg viewBox="0 0 120 200" className="w-full max-w-[160px] mx-auto" aria-hidden="true" focusable="false" style={{ filter: 'drop-shadow(0 8px 12px rgba(0,0,0,.6))' }}>
-      <ellipse cx="60" cy="190" rx="44" ry="6" fill="rgba(0,0,0,.45)" />
-      {/* hat */}
-      <path d="M16 46 h88 v6 h-88 z" fill="#15100c" />
-      <path d="M30 46 v-18 q30 -12 60 0 v18 z" fill="#15100c" />
-      <rect x="30" y="38" width="60" height="5" fill="#7e1414" />
-      {/* face shadow */}
-      <path d="M38 52 h44 v22 q-22 10 -44 0 z" fill="#3b2116" />
-      <rect x="46" y="60" width="8" height="3" fill="#f0d48a" opacity=".8" />
-      <rect x="66" y="60" width="8" height="3" fill="#f0d48a" opacity=".8" />
-      {/* trench coat */}
-      <path d="M22 84 q38 -16 76 0 l10 96 h-96 z" fill="#5a331c" />
-      <path d="M52 84 l8 -10 l8 10 l-4 90 h-8 z" fill="#3b2116" />
-      <path d="M22 84 l-6 56 h14 z M98 84 l6 56 h-14 z" fill="#4a2a16" />
-      <rect x="34" y="118" width="52" height="5" fill="#2a1610" />
-      <circle cx="44" cy="100" r="2.2" fill="#c9a24b" />
-      <circle cx="44" cy="112" r="2.2" fill="#c9a24b" />
-      <circle cx="76" cy="100" r="2.2" fill="#c9a24b" />
-      <circle cx="76" cy="112" r="2.2" fill="#c9a24b" />
-      {/* magnifier */}
-      <circle cx="104" cy="134" r="11" fill="rgba(243,231,203,.3)" stroke="#c9a24b" strokeWidth="3" />
-      <path d="M96 142 l-10 12" stroke="#7a4b22" strokeWidth="5" strokeLinecap="round" />
-    </svg>
-  )
-}
 
 export function NewCase() {
   const navigate = useNavigate()
@@ -247,24 +217,14 @@ export function NewCase() {
   const pillLabel = offline ? 'Suspects: Offline' : llmMode === 'gemini' ? 'Suspects: Live Gemini' : llmMode === 'scripted' ? 'Suspects: Scripted' : 'Suspects: …'
 
   return (
-    <div className="screen">
-      <header className="relative flex flex-col items-center gap-3 pt-2">
-        <Marquee />
-        <div className="md:absolute md:right-0 md:top-3">
-          <Placard to="/archive" aria-label="Open the case archive">
-            Case Archive
-          </Placard>
-        </div>
-      </header>
-
-      <div className="grid gap-6 items-start mt-6 lg:grid-cols-[200px_minmax(0,1fr)]">
-        <aside className="hidden lg:flex flex-col items-center gap-5 pt-6">
-          <DetectiveSilhouette />
-          <Placard wide>People lie. Details don't.</Placard>
-          <Sticky right>A fresh case awaits. Bring coffee.</Sticky>
-        </aside>
-
-        <section className="parchment slide-up" aria-labelledby="setup-title">
+    <div className="screen screen--setup-art">
+      <div>
+        <section className="parchment slide-up setup-card--art relative" aria-labelledby="setup-title">
+          <div className="archive-link">
+            <Placard to="/archive" aria-label="Open the case archive">
+              Case Archive
+            </Placard>
+          </div>
           <SectionTitle id="setup-title" as="h1">
             Setup — New Case
           </SectionTitle>

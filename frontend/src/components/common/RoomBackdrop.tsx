@@ -3,7 +3,28 @@
  * Layered CSS gradients (.room-bg in theme.css) plus a little inline-SVG garnish on the desk:
  * a stack of books (INTERROGATE / OBSERVE / CONNECT / SOLVE), the mug, and the CONFIDENTIAL folder.
  */
+import { useLocation } from 'react-router-dom'
+
+/** Which painted backdrop (frontend/public/art/*.jpg, the owner's mockups) a route uses. */
+export function artForPath(pathname: string): string {
+  if (pathname === '/') return 'setup'
+  if (pathname.startsWith('/archive')) return 'archive'
+  if (pathname.endsWith('/briefing')) return 'briefing'
+  if (pathname.endsWith('/debrief')) return 'debrief'
+  if (pathname.startsWith('/game/')) return 'investigation'
+  return 'setup'
+}
+
 export function RoomBackdrop() {
+  const { pathname } = useLocation()
+  const art = artForPath(pathname)
+  if (art) {
+    return (
+      <div className={`room-bg room-bg--art${art === 'setup' ? ' room-bg--setup' : ''}`} aria-hidden="true" style={{ backgroundImage: `url(/art/${art}.jpg)` }}>
+        {art !== 'setup' ? <div className="room-bg__dim" /> : null}
+      </div>
+    )
+  }
   return (
     <div className="room-bg" aria-hidden="true">
       <svg

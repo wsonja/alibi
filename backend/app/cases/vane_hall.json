@@ -1,0 +1,288 @@
+{
+  "id": "vane_hall_1923",
+  "title": "Death at Vane Hall",
+  "setting": "Vane Hall, an English country house, on a wet night in November 1923. A dinner party for four guests.",
+  "briefing": "Sir Reginald Vane, industrialist and host, was found dead at his study desk at twenty to midnight by the housemaid bringing coffee. A decanter of brandy stood at his elbow. Dr. Crane, a guest, pronounced him dead and said something about his heart. The storm has taken the telephone line to the village; the police cannot reach the house before morning. You are the guest nobody quite placed at dinner — a retired inspector, as it happens. Four people were in the house with the means and the opportunity. You have until dawn.",
+  "victim": {
+    "name": "Sir Reginald Vane",
+    "description": "Industrialist, 58. Host. Senior partner of Vane & Pell. Amateur photographer with a darkroom in the east wing. Known for a temper and a weak heart.",
+    "cause_of_death_public": "Collapsed at his desk at approximately 11:35pm. Dr. Crane pronounced him dead at 11:45 and remarked on his heart. Cause not established.",
+    "cause_of_death_truth": "Potassium cyanide added to the brandy decanter in his study at about 11:20pm."
+  },
+  "timeline_public": [
+    {"time": "22:30", "event": "Dinner ends. The party moves to the drawing room."},
+    {"time": "22:45", "event": "Sir Reginald retires to his study with a decanter of brandy, as is his habit."},
+    {"time": "23:00", "event": "Lady Margaret excuses herself with a headache."},
+    {"time": "23:05", "event": "Dr. Crane leaves to telephone a patient in the village."},
+    {"time": "23:20", "event": "Mr. Pell leaves the billiard room to fetch his cigars."},
+    {"time": "23:40", "event": "Ada Finch, bringing coffee, finds Sir Reginald dead at his desk."},
+    {"time": "23:45", "event": "Dr. Crane examines the body and says it looks like his heart."}
+  ],
+  "timeline_truth": [
+    {"time": "22:45", "event": "Sir Reginald retires to the study with the decanter."},
+    {"time": "22:50", "event": "Thomas Pell enters the darkroom on the pretext of admiring new prints and, wearing gloves, takes a measure of potassium cyanide in a folded paper. He smokes while he does it."},
+    {"time": "23:00", "event": "Lady Margaret goes to the garden, not to bed."},
+    {"time": "23:05", "event": "Dr. Crane joins her in the garden. They talk about leaving for France in the spring."},
+    {"time": "23:10", "event": "Pell, at the billiard room window, sees Margaret and Crane together on the garden bench."},
+    {"time": "23:15", "event": "Sir Reginald leaves the study for the lavatory."},
+    {"time": "23:18", "event": "Ada Finch slips into the servants' corridor beside the study to retrieve her torn reference from the study wastebasket."},
+    {"time": "23:20", "event": "Pell enters the empty study, empties the paper into the decanter, and leaves within a minute."},
+    {"time": "23:21", "event": "Ada sees Pell leave the study pulling off gloves. He sees her. Neither speaks."},
+    {"time": "23:25", "event": "Sir Reginald returns and pours a second glass."},
+    {"time": "23:30", "event": "Margaret's necklace breaks on the garden bench. She and Crane return to the house separately."},
+    {"time": "23:35", "event": "Sir Reginald collapses."},
+    {"time": "23:40", "event": "Ada finds the body."},
+    {"time": "23:45", "event": "Dr. Crane examines the body, recognizes cyanide at once, and tells the room it was his heart."}
+  ],
+  "locations": [
+    {"id": "study", "name": "The Study", "description": "Book-lined, a fire burning low. The desk faces the door. A decanter and one glass.", "evidence_ids": ["decanter", "solicitor_letter", "ledger"]},
+    {"id": "darkroom", "name": "The Darkroom", "description": "A converted pantry in the east wing. Trays, bottles, a red lamp. Sir Reginald forbade smoking here.", "evidence_ids": ["cyanide_jar", "cigar_ash"]},
+    {"id": "garden", "name": "The Garden", "description": "A terrace and a bench under a yew. Everything is soaked.", "evidence_ids": ["necklace_clasp"]},
+    {"id": "billiard_room", "name": "The Billiard Room", "description": "Where the men went after dinner. A window looks onto the garden bench.", "evidence_ids": ["cigar_case"]},
+    {"id": "servants_corridor", "name": "The Servants' Corridor", "description": "A narrow passage running behind the study, with a door to the study and one to the kitchen.", "evidence_ids": ["torn_reference"]},
+    {"id": "drawing_room", "name": "The Drawing Room", "description": "Where the party gathered after dinner. Nothing seems out of place.", "evidence_ids": []}
+  ],
+  "evidence": [
+    {"id": "decanter", "name": "The brandy decanter", "location": "study", "initially_known": true, "description": "Half empty, on the desk beside one used glass.", "examined_detail": "A faint smell of bitter almonds. Residue on the glass. Only Sir Reginald's glass was used.", "points_to": ["poisoning"], "key_evidence": true},
+    {"id": "solicitor_letter", "name": "An unsent letter to his solicitor", "location": "study", "initially_known": false, "description": "In the locked desk drawer. The key is on his watch chain.", "examined_detail": "Dated today. 'I intend to confront T.P. at breakfast regarding the discrepancies in the Manchester accounts. Prepare the papers for dissolution of the partnership, and speak to the police if he will not make restitution.'", "points_to": ["pell"], "key_evidence": true},
+    {"id": "ledger", "name": "The partnership ledger", "location": "study", "initially_known": false, "description": "Open on the desk.", "examined_detail": "Several entries in the Manchester accounts are altered in a different ink. Taken together the alterations conceal about four thousand pounds over three years.", "points_to": ["pell"]},
+    {"id": "cyanide_jar", "name": "A jar of potassium cyanide", "location": "darkroom", "initially_known": false, "description": "On the shelf with the fixing chemicals.", "examined_detail": "Used in photographic fixing. The lid is not fully screwed on. The level is below the mark Sir Reginald pencilled on the label last week.", "points_to": ["poisoning", "darkroom_access"], "key_evidence": true},
+    {"id": "cigar_ash", "name": "Cigar ash on the darkroom floor", "location": "darkroom", "initially_known": false, "description": "Grey ash by the workbench.", "examined_detail": "Fresh. Sir Reginald did not smoke and forbade it in the darkroom. Of the guests, only Mr. Pell smokes cigars.", "points_to": ["pell"]},
+    {"id": "cigar_case", "name": "Mr. Pell's cigar case", "location": "billiard_room", "initially_known": false, "description": "On the billiard room mantelpiece.", "examined_detail": "Silver, monogrammed T.P., three cigars inside. It has been on the mantelpiece all evening — the footman set it there at ten. Mr. Pell did not need to fetch his cigars from anywhere.", "points_to": ["pell"], "key_evidence": true},
+    {"id": "necklace_clasp", "name": "A broken necklace clasp", "location": "garden", "initially_known": false, "description": "Something gold on the bench.", "examined_detail": "A gold clasp engraved M.V., damp with rain. Lady Margaret was wearing a pearl necklace at dinner and is not wearing it now.", "points_to": ["margaret", "crane"], "red_herring": true},
+    {"id": "torn_reference", "name": "A torn letter of reference", "location": "servants_corridor", "initially_known": false, "description": "Paper on the floor by the study door.", "examined_detail": "Half of a letter of reference for Ada Finch in Sir Reginald's hand, torn through. Dated this morning. The other half is missing.", "points_to": ["ada"], "red_herring": true}
+  ],
+  "dynamic_evidence": [
+    {"id": "ashes_in_grate", "name": "Burned papers in the study grate", "location": "study", "initially_known": false, "description": "Fresh ash in the grate, on top of the coals.", "examined_detail": "Someone burned papers here within the hour. A charred corner survives: '...the Manchester acc... dissolution of the partn...'", "points_to": ["pell"]}
+  ],
+  "suspects": [
+    {
+      "id": "margaret",
+      "name": "Lady Margaret Vane",
+      "role": "The victim's wife",
+      "public_description": "Married to Sir Reginald for twenty years. Says she went up to bed with a headache at eleven and heard nothing until the commotion.",
+      "persona": "Forty-six, elegant, brittle. Married Reginald for security and has regretted it for fifteen years. Proud; hates being pitied more than being suspected. She did not kill her husband and is privately relieved he is dead, which frightens her.",
+      "speech_quirk": "Short, clipped sentences. Says 'one' instead of 'I' when uncomfortable ('One doesn't discuss such things'). Never raises her voice.",
+      "portrait_prompt": "1920s English aristocratic woman, mid-forties, dark hair pinned up, pearl earrings, high-necked evening dress, composed and cold, painterly portrait, dim lamplight",
+      "personality": {"nervous": 0.6, "proud": 0.9, "loyal": 0.3, "greedy": 0.2, "guilt_prone": 0.5},
+      "goals": [
+        "Conceal the affair with Dr. Crane at almost any cost.",
+        "Avoid scandal — the marriage was the only thing she had.",
+        "She would rather Thomas Pell were suspected than her affair exposed."
+      ],
+      "knowledge": [
+        "She was in the garden with Dr. Crane from eleven until about half past. They were talking about leaving together for France in the spring.",
+        "Her pearl necklace broke on the garden bench at about half past eleven. She could not find the clasp in the dark and came in without it.",
+        "Reginald and Thomas Pell argued loudly in the study last Thursday. She heard Reginald say the word 'Manchester' and the word 'thief'.",
+        "Reginald kept the desk drawer locked. The key is on his watch chain.",
+        "Reginald had been cold to Ada all week and said at breakfast that she would be 'gone by Christmas'.",
+        "Reginald had a weak heart. Dr. Crane had warned him about brandy.",
+        "She did not go near the study all evening."
+      ],
+      "secrets": [
+        {"id": "m1", "tier": 1, "text": "She was not upstairs with a headache. She was in the garden.", "cover_story": "She went up to bed with a headache at eleven and heard nothing until Ada screamed.", "key_phrases": "(was|went|sat|stayed)( out)? (in|to|into|on) the (garden|terrace|bench)"},
+        {"id": "m2", "tier": 2, "text": "She was in the garden with Dr. Crane. They have been lovers for two years and planned to leave for France in the spring.", "key_phrases": "Elias|lover|affair|France|with (Dr\\.? )?Crane"},
+        {"id": "m3", "tier": 3, "text": "She heard last Thursday's argument clearly: Reginald called Pell a thief and accused him of stealing from the partnership. She has said nothing because she would rather Pell were suspected of the murder than answer questions about where she was tonight.", "key_phrases": "thief|steal|stole|embezzl|stealing from"}
+      ],
+      "stress_sensitivity": {"evidence": 3, "threaten": 1, "flatter": 1, "bluff": 2, "silence": 3},
+      "crack_thresholds": [4, 8, 12],
+      "special_unlocks": {
+        "m2": {"requires_any": ["evidence:necklace_clasp", "revealed:c3", "stress>=10"]}
+      },
+      "shutdown_rules": {},
+      "deflections": [
+        "Asks whether the detective has spoken to Mr. Pell yet, and mentions that he and Reginald 'did not part friends' last week.",
+        "Says Reginald's heart had been bad for years and Dr. Crane will confirm it.",
+        "Remarks that a housemaid who has just been dismissed has more reason to be angry than a wife."
+      ],
+      "framing_actions": [],
+      "tells": {"nervous": "her hand goes to her throat and finds no necklace there", "angry": "goes very still and looks at a point just past your shoulder", "cracking": "her voice drops to almost nothing"},
+      "guilty": false,
+      "relationships": {
+        "crane": {"type": "lover", "trust": 0.9},
+        "pell": {"type": "dislikes", "trust": 0.2},
+        "ada": {"type": "employer", "trust": 0.5}
+      },
+      "voice": {"webspeech_index": 0, "base_pitch": 1.1}
+    },
+    {
+      "id": "crane",
+      "name": "Dr. Elias Crane",
+      "role": "Family physician and dinner guest",
+      "public_description": "The Vanes' doctor for ten years and an old friend of the house. Says he left the drawing room at five past eleven to telephone a patient in the village.",
+      "persona": "Fifty, kind-faced, tired. Owes Reginald six hundred pounds from an investment Reginald 'helped' him into. In love with Margaret and ashamed of the deceit, not of the love. Would take the blame for her without hesitating, which is exactly what he must not do.",
+      "speech_quirk": "Medical euphemisms ('a cardiac event', 'an unfortunate outcome'). Answers awkward questions with questions. Calls the detective 'my friend'.",
+      "portrait_prompt": "1920s English country doctor, fifty, grey at the temples, tired kind eyes, tweed waistcoat under a dinner jacket, painterly portrait, lamplight",
+      "personality": {"nervous": 0.4, "proud": 0.4, "loyal": 0.9, "greedy": 0.1, "guilt_prone": 0.7},
+      "goals": [
+        "Protect Margaret before himself.",
+        "Keep the debt to Reginald private — it would ruin his practice.",
+        "Let the death pass as natural if he possibly can, so that none of this comes out."
+      ],
+      "knowledge": [
+        "He was in the garden with Margaret from about five past eleven until half past. He did not telephone anyone; the line has been down since dinner anyway.",
+        "Reginald had angina. He had warned him about brandy and about the stairs.",
+        "When he examined the body at a quarter to midnight he saw the flush and smelled bitter almonds on the glass. He knows it was cyanide. He said 'his heart' to the room to buy time.",
+        "Reginald kept potassium cyanide for photographic fixing. Crane had told him more than once it was kept carelessly.",
+        "He owes Reginald six hundred pounds and Reginald reminded him of it at dinner.",
+        "Ada Finch's mother was his patient; he treated her for nothing. Ada is a good girl.",
+        "He saw nothing of Pell after dinner until the body was found."
+      ],
+      "secrets": [
+        {"id": "c1", "tier": 1, "text": "He did not telephone a patient. He was in the garden.", "cover_story": "He telephoned a patient in the village about a fever and the line was very poor, then took some air on the terrace.", "key_phrases": "(did not|didn't|never) (telephone|ring|call)|no (such )?(telephone )?call|wasn't (on the )?telephone"},
+        {"id": "c2", "tier": 2, "text": "He recognized cyanide at once — the flush, the smell of bitter almonds — and deliberately told the room it was a heart attack.", "key_phrases": "cyanide|bitter almonds|poison|not his heart|wasn't his heart"},
+        {"id": "c3", "tier": 3, "text": "He was in the garden with Margaret. They are lovers and mean to leave for France together.", "key_phrases": "Margaret and I|lover|affair|France|in love with"}
+      ],
+      "stress_sensitivity": {"evidence": 3, "threaten": 2, "flatter": 0, "bluff": 1, "silence": 1},
+      "crack_thresholds": [4, 7, 11],
+      "special_unlocks": {
+        "c3": {"requires_any": ["evidence:necklace_clasp", "revealed:m2"]}
+      },
+      "shutdown_rules": {},
+      "deflections": [
+        "Talks about Reginald's angina and the brandy he'd been warned off.",
+        "Asks, my friend, whether the detective has considered that a man of fifty-eight with that colour in his face might simply have died.",
+        "Mentions gently that the housemaid found him, and that she had been crying before she found him."
+      ],
+      "framing_actions": [],
+      "tells": {"nervous": "polishes his spectacles that don't need polishing", "angry": "becomes very formal and stops saying 'my friend'", "cracking": "sits down heavily, as if his knees have gone"},
+      "guilty": false,
+      "relationships": {
+        "margaret": {"type": "lover", "trust": 0.9},
+        "pell": {"type": "acquaintance", "trust": 0.4},
+        "ada": {"type": "kind_to", "trust": 0.6}
+      },
+      "voice": {"webspeech_index": 1, "base_pitch": 0.9}
+    },
+    {
+      "id": "pell",
+      "name": "Thomas Pell",
+      "role": "Business partner",
+      "public_description": "Sir Reginald's junior partner in Vane & Pell. Says he stepped out of the billiard room at twenty past eleven to fetch his cigars from his room and was gone perhaps ten minutes.",
+      "persona": "Forty-two, handsome, expansive, quick to laugh. Has been skimming the Manchester accounts for three years to cover debts from a mining venture. Reginald found out on Tuesday. Pell decided on Wednesday. He is not sorry, only careful.",
+      "speech_quirk": "Warm and familiar; uses the detective's title constantly ('Inspector, Inspector'). Redirects with anecdotes about Reginald's temper. When threatened, goes formal and mentions his solicitor.",
+      "portrait_prompt": "1920s English businessman, early forties, handsome, brilliantined hair, easy confident smile, dinner jacket, cigar, painterly portrait, lamplight",
+      "personality": {"nervous": 0.2, "proud": 0.7, "loyal": 0.1, "greedy": 0.9, "guilt_prone": 0.1},
+      "goals": [
+        "Avoid arrest.",
+        "Steer suspicion toward Margaret and Crane — he knows about the affair and their false alibis.",
+        "Get the solicitor's letter out of the study desk before anyone reads it."
+      ],
+      "knowledge": [
+        "At ten to eleven he went to the darkroom on the pretext of admiring Reginald's new prints, put on gloves, and took a measure of potassium cyanide in a folded paper. He smoked a cigar while he did it.",
+        "At twenty past eleven he went to the study. Reginald had stepped out. He emptied the paper into the decanter and was gone inside a minute.",
+        "His cigar case was on the billiard room mantelpiece the whole evening. 'Fetching cigars' was a lie; he never went to his room.",
+        "Margaret and Crane are lovers. He saw them together on the garden bench through the billiard room window at about ten past eleven.",
+        "On Tuesday Reginald told him he knew about the Manchester accounts and would 'settle it this weekend' — dissolution, restitution, the police.",
+        "Ada Finch was in the servants' corridor by the study door at twenty past eleven. She saw him come out. He is not certain what she understood.",
+        "Reginald kept an unsent letter to his solicitor in the locked desk drawer; Reginald waved it at him on Tuesday.",
+        "Reginald had a bad heart. The doctor said so himself tonight."
+      ],
+      "secrets": [
+        {"id": "p1", "tier": 1, "text": "He did not go to fetch his cigars — his case was in the billiard room all along. He went to the study.", "cover_story": "He went up to his room for cigars, found them, and came back down — ten minutes, perhaps less.", "key_phrases": "(went|was) (in|to|into) the study|never went (up )?to my room|didn't go (up )?for (the |my )?cigars"},
+        {"id": "p2", "tier": 2, "text": "Reginald had discovered his embezzlement from the Manchester accounts and intended to dissolve the partnership and go to the police.", "key_phrases": "embezzl|discrepanc|prosecut|dissol|restitution|Manchester accounts|found out|took (the )?money"},
+        {"id": "p3", "tier": 3, "text": "He poisoned the decanter with cyanide from the darkroom.", "is_confession": true, "key_phrases": "cyanide|poison|put (something|it|the powder) in|I killed|I did it"}
+      ],
+      "stress_sensitivity": {"evidence": 4, "threaten": 0, "flatter": 0, "bluff": 1, "silence": 1},
+      "crack_thresholds": [5, 9, 14],
+      "special_unlocks": {
+        "p1": {"requires_any": ["evidence:cigar_case", "revealed:a3"]},
+        "p2": {"requires_any": ["evidence:solicitor_letter", "evidence:ledger", "evidence:ashes_in_grate", "revealed:m3"]},
+        "p3": {"requires_any": ["evidence:cigar_ash", "evidence:cyanide_jar"], "requires_revealed": ["p2"]}
+      },
+      "shutdown_rules": {},
+      "deflections": [
+        "Wonders aloud why Lady Margaret came in from 'bed' at half past eleven with wet shoes and no necklace.",
+        "Reminds the detective that the doctor himself said it was Reginald's heart, and the doctor would know.",
+        "Tells a story about Reginald sacking a maid before Christmas one year and the maid putting a dead rat in the range."
+      ],
+      "framing_actions": [
+        {"id": "burn_letter", "trigger": "turn>=10 and not searched:study", "probability": 0.7, "effect": {"remove_evidence": "solicitor_letter", "add_evidence_id": "ashes_in_grate"}, "ticker": "Mr. Pell was seen coming out of the study, looking pleased with himself."}
+      ],
+      "tells": {"nervous": "laughs a beat too late", "angry": "goes formal — 'I think I should like my solicitor present, Inspector'", "cracking": "stops using your title altogether"},
+      "guilty": true,
+      "relationships": {
+        "margaret": {"type": "leverage", "trust": 0.1},
+        "crane": {"type": "acquaintance", "trust": 0.3},
+        "ada": {"type": "threatens", "trust": 0.0}
+      },
+      "voice": {"webspeech_index": 2, "base_pitch": 0.95}
+    },
+    {
+      "id": "ada",
+      "name": "Ada Finch",
+      "role": "Housemaid",
+      "public_description": "Four years in service at Vane Hall. Says she was in the kitchen all evening preparing coffee, and found Sir Reginald at twenty to twelve.",
+      "persona": "Twenty-three, sharp, frightened. This morning Sir Reginald dismissed her without a reference for 'insolence' — she had asked for two months' back wages. A dismissed maid is the easiest person in the house to blame, and she knows it.",
+      "speech_quirk": "Very formal ('sir', 'madam', 'if you please') until upset, then plain and fast. Answers exactly what is asked and not a word more. Kindness undoes her more than pressure.",
+      "portrait_prompt": "1920s English housemaid, early twenties, cap and apron, sharp watchful eyes, tired, painterly portrait, lamplight",
+      "personality": {"nervous": 0.9, "proud": 0.5, "loyal": 0.6, "greedy": 0.2, "guilt_prone": 0.8},
+      "goals": [
+        "Not be blamed.",
+        "Get a reference from someone — anyone — so she can find another place.",
+        "Stay out of Mr. Pell's way. She saw him, and he saw her, and she is more afraid of him than of the police."
+      ],
+      "knowledge": [
+        "She was in the servants' corridor outside the study from about eighteen minutes past eleven to twenty-two minutes past. She had gone to take the torn reference out of the study wastebasket, hoping to piece it together.",
+        "At about twenty-one minutes past eleven Mr. Pell came out of the study pulling off a pair of gloves. He saw her. He said nothing and walked away toward the billiard room.",
+        "She found Sir Reginald at twenty to twelve when she brought the coffee. His face was red and he had been sick.",
+        "Sir Reginald tore up her reference in front of her this morning in the study and put the pieces in the wastebasket.",
+        "Dr. Crane has always been kind to her. He treated her mother for nothing.",
+        "Lady Margaret came in through the garden door at half past eleven with wet shoes, and went upstairs quickly.",
+        "Nobody but Sir Reginald was supposed to go in the darkroom. Mr. Pell had been shown it once, last month."
+      ],
+      "secrets": [
+        {"id": "a1", "tier": 1, "text": "She was dismissed this morning without a reference.", "cover_story": "She was in the kitchen all evening; Sir Reginald was a fair master.", "key_phrases": "dismiss|sacked|let (me )?go|given (my )?notice|without a (reference|character)"},
+        {"id": "a2", "tier": 2, "text": "She was in the corridor outside the study at twenty past eleven, taking the torn reference from the wastebasket.", "key_phrases": "corridor|outside the study|by the study door|wastebasket|waste-paper"},
+        {"id": "a3", "tier": 3, "text": "She saw Mr. Pell leave the study at twenty-one minutes past eleven, pulling off gloves. He saw her. She is afraid of what he will do if she says so.", "key_phrases": "gloves|saw (Mr\\.? )?Pell|saw him (come|coming|leave|leaving)"}
+      ],
+      "stress_sensitivity": {"evidence": 2, "threaten": 2, "flatter": 4, "bluff": 1, "silence": 2},
+      "crack_thresholds": [2, 4, 7],
+      "special_unlocks": {
+        "a3": {"requires_any": ["flatter_count>=2", "revealed:p1", "evidence:torn_reference"]}
+      },
+      "shutdown_rules": {"threaten": "I don't know anything, sir. I don't know anything at all."},
+      "deflections": [
+        "Says she only brings the coffee, sir, she doesn't know what the gentlemen talk about.",
+        "Mentions that her ladyship came in by the garden door with wet shoes, then looks as if she wishes she hadn't.",
+        "Asks whether the detective will be speaking to the doctor, because the doctor is a good man."
+      ],
+      "framing_actions": [],
+      "tells": {"nervous": "twists her apron in both hands", "angry": "goes rigid and stares at the floor", "cracking": "starts to cry without making any sound"},
+      "guilty": false,
+      "relationships": {
+        "crane": {"type": "trusts", "trust": 0.8},
+        "margaret": {"type": "employer", "trust": 0.4},
+        "pell": {"type": "fears", "trust": 0.0}
+      },
+      "voice": {"webspeech_index": 3, "base_pitch": 1.2}
+    }
+  ],
+  "solution": {
+    "murderer": "pell",
+    "method": "Potassium cyanide taken from the darkroom at 22:50 and added to the study decanter at 23:20 while Sir Reginald was out of the room.",
+    "method_evidence_ids": ["cyanide_jar", "decanter"],
+    "motive": "Sir Reginald had discovered Pell's embezzlement of about four thousand pounds from the Manchester accounts and intended to dissolve the partnership and go to the police.",
+    "motive_evidence_ids": ["solicitor_letter", "ledger", "ashes_in_grate"],
+    "proof_paths": [
+      ["evidence:cigar_case", "revealed:p1", "revealed:a3", "evidence:cigar_ash"],
+      ["evidence:solicitor_letter", "evidence:ledger", "revealed:p2", "evidence:cyanide_jar", "revealed:p3"],
+      ["evidence:ashes_in_grate", "evidence:ledger", "revealed:p2", "evidence:cigar_ash", "revealed:p3"]
+    ]
+  },
+  "red_herrings": [
+    "Margaret and Crane give each other a false alibi. It looks like collusion in murder; it is collusion in adultery.",
+    "Ada has a fresh motive (dismissed without a reference) and lies about where she was.",
+    "Crane's 'his heart' remark and Reginald's real angina make a natural death plausible for the first few turns."
+  ],
+  "rumor_seeds": [
+    {"holder": "pell", "text": "Lady Margaret came in from the garden at half past eleven with wet shoes and no necklace. Whatever she says about bed, it isn't true.", "spreads_to": ["ada", "crane"], "intent": "redirect"}
+  ],
+  "ticker_lines": [
+    "Two of the guests were seen talking quietly in the corridor.",
+    "A door closed somewhere upstairs.",
+    "Someone has been in the drawing room; the fire has been made up.",
+    "Low voices from the billiard room, then silence.",
+    "The rain has eased. The garden door is unlatched."
+  ]
+}

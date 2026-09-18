@@ -26,6 +26,7 @@ const config: UserConfig & VitestBlock = {
     },
   },
   server: {
+    host: true,
     port: 5173,
     strictPort: false,
   },

@@ -33,7 +33,8 @@ import type {
 const rawBase = (import.meta.env.VITE_API_URL ?? '').trim()
 
 /** Backend origin without a trailing slash, e.g. "http://localhost:8000". */
-export const API_BASE: string = (rawBase || 'http://localhost:8000').replace(/\/+$/, '')
+const defaultBase = typeof window !== 'undefined' ? `${window.location.protocol}//${window.location.hostname}:8000` : 'http://localhost:8000'
+export const API_BASE: string = (rawBase || defaultBase).replace(/\/+$/, '')
 
 /** REST prefix. */
 export const API_ROOT: string = `${API_BASE}/api`

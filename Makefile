@@ -6,12 +6,12 @@ setup:
 	@echo "Setup done. Optional: put GEMINI_API_KEY=... in backend/.env for live suspects."
 dev:
 	@echo "Starting backend :8000 and frontend :5173"; \
-	(cd backend && set -a && . ./.env && set +a && .venv/bin/uvicorn --app-dir ../scripts mock_api:app --port 8000) & \
-	(cd frontend && npm run dev -- --port 5173); wait
+	(cd backend && set -a && . ./.env && set +a && .venv/bin/uvicorn --app-dir ../scripts mock_api:app --host 0.0.0.0 --port 8000) & \
+	(cd frontend && npm run dev -- --host --port 5173); wait
 backend:
-	cd backend && set -a && . ./.env && set +a && .venv/bin/uvicorn --app-dir ../scripts mock_api:app --port 8000
+	cd backend && set -a && . ./.env && set +a && .venv/bin/uvicorn --app-dir ../scripts mock_api:app --host 0.0.0.0 --port 8000
 frontend:
-	cd frontend && npm run dev -- --port 5173
+	cd frontend && npm run dev -- --host --port 5173
 test:
 	cd backend && .venv/bin/python -m pytest -q -m "not integration"
 test-integration:

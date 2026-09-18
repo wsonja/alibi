@@ -1797,14 +1797,16 @@ html[data-screen-reader] .pixel-portrait {
   backdrop-filter: blur(3px);
 }
 /* the setup card sits over the card painted in the artwork, leaving the detective and marquee visible */
-.setup-card--art {
-  max-width: none;
-}
 @media (min-width: 1024px) {
+  .screen--setup-art {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 21vh 0 6vh 21vw !important;
+  }
   .setup-card--art {
-    width: 62vw;
-    margin-left: 20vw;
-    margin-top: 22vh;
+    width: 61vw !important;
+    max-width: none !important;
+    margin: 0 !important;
   }
 }
 .setup-card--art .archive-link {

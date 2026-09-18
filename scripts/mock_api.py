@@ -137,7 +137,10 @@ def search(gid: str, body: dict):
     try: out = g["director"].search(body.get("location_id"))
     except director_mod.DirectorError as e: raise HTTPException(400, {"error": str(e)})
     record(g, out)
-    return {"evidence": out.get("evidence") or out.get("examined") or [e for e in world_mod.public_evidence(g["case"], g["world"]) if e["state"] == "examined"], "clock": out.get("clock")}
+    newly = set()
+    for row in out.get("private_turns", []):
+        newly.update((row.get("output") or {}).get("examined") or [])
+    return {"evidence": [e for e in world_mod.public_evidence(g["case"], g["world"]) if e["id"] in newly], "clock": out.get("clock")}
 
 @app.post("/api/games/{gid}/accuse")
 async def accuse(gid: str, body: dict):

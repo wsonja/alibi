@@ -214,9 +214,6 @@ export function Briefing() {
                     </div>
                   ) : null}
                 </Modal>
-                    <p className="muted" style={{ margin: '6px 0 0', fontSize: 12 }}>You can search this room during the investigation.</p>
-                  </div>
-                ) : null}
               </div>
             </div>
 

@@ -12,10 +12,10 @@ verify-quick:
 	./scripts/verify_alibi.sh --quick --skip-start
 dev:
 	@echo "Starting backend :8000 and frontend :5173"; \
-	(cd backend && set -a && . ./.env && set +a && .venv/bin/uvicorn --app-dir ../scripts mock_api:app --host 0.0.0.0 --port 8000) & \
+	(cd backend && set -a && . ./.env && set +a && .venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000) & \
 	(cd frontend && npm run dev -- --host --port 5173); wait
 backend:
-	cd backend && set -a && . ./.env && set +a && .venv/bin/uvicorn --app-dir ../scripts mock_api:app --host 0.0.0.0 --port 8000
+	cd backend && set -a && . ./.env && set +a && .venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000
 frontend:
 	cd frontend && npm run dev -- --host --port 5173
 test:

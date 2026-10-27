@@ -1,4 +1,4 @@
-"""Shared fixtures for the engine tests. Runs in scripted mode; nothing here touches an LLM."""
+"""Shared fixtures for the engine and API tests. Runs in scripted mode; nothing here touches an LLM."""
 import os
 
 os.environ["LLM_MODE"] = "scripted"
@@ -160,6 +160,23 @@ def fake_performer():
 @pytest.fixture
 def fake_guard():
     return fake_guard_impl
+
+
+@pytest.fixture
+def make_api(tmp_path):
+    """Factory: make_api(**settings) -> an unstarted TestClient over a fresh app. Every app made by one test shares
+    tmp_path/alibi.db, so a second app is the same server restarted."""
+    from fastapi.testclient import TestClient
+
+    from app.config import Settings
+    from app.main import create_app
+
+    def _make(**overrides):
+        base = {"_env_file": None, "database_url": f"sqlite+aiosqlite:///{tmp_path / 'alibi.db'}",
+                "llm_mode": "scripted", "debug_panel": False, "dotenv_path": tmp_path / ".env"}
+        return TestClient(create_app(Settings(**{**base, **overrides})))
+
+    return _make
 
 
 @pytest.fixture

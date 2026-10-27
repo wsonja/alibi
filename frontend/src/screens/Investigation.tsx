@@ -14,11 +14,12 @@ import { Modal } from '@/components/common/Modal'
 import { SceneThumb } from '@/components/common/SceneThumb'
 import { SectionTitle } from '@/components/common/SectionTitle'
 import JudgePanel from '@/components/judge/JudgePanel'
+import { NotebookPanel } from '@/components/notebook/NotebookPanel'
 import { PixelPortrait } from '@/components/portrait/PixelPortrait'
 import { cn } from '@/lib/cn'
 import { presetFromSetting } from '@/lib/presets'
 import { clockPhase, formatClock12 } from '@/lib/clock'
-import { describeTurn, selectPrimarySuspect, selectSecondarySuspect, turnsForSuspect, useGame } from '@/store/game'
+import { selectPrimarySuspect, selectSecondarySuspect, speakerIndex, turnsForSuspect, useGame } from '@/store/game'
 import { useUI, type ActionTab } from '@/store/ui'
 import { speak } from '@/voice'
 
@@ -116,12 +117,16 @@ export function Investigation() {
   // Computed locally (not via a store selector) because a selector that returns a freshly-filtered array on every
   // call makes useSyncExternalStore see a "new" snapshot each render and loop forever (React: "Maximum update
   // depth exceeded" / "getSnapshot should be cached").
-  const examined = useMemo(() => game?.evidence.filter((e) => e.state === 'examined') ?? [], [game])
+  const methodEvidence = useMemo(
+    () => game?.evidence.filter((e) => e.state === 'examined' || e.state === 'known') ?? [],
+    [game],
+  )
 
   const tab = useUI((s) => s.actionTab)
   const setTab = useUI((s) => s.setActionTab)
   const toggleJudge = useUI((s) => s.toggleJudge)
   const voiceOn = useUI((s) => s.a11y.voice)
+  const interject = useGame((s) => s.interject)
   const spokenRef = useRef<string>('')
   useEffect(() => {
     if (!voiceOn || !game) return
@@ -140,6 +145,7 @@ export function Investigation() {
   const [selectedTactic, setSelectedTactic] = useState<Tactic | null>(null)
   const [tacticText, setTacticText] = useState('')
   const [confrontTopic, setConfrontTopic] = useState('')
+  const [interjectText, setInterjectText] = useState('')
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null)
   const [accuseOpen, setAccuseOpen] = useState(false)
   const logRef = useRef<HTMLDivElement | null>(null)
@@ -155,17 +161,20 @@ export function Investigation() {
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       const inField = e.target instanceof HTMLElement && ['INPUT', 'TEXTAREA'].includes(e.target.tagName)
-      if (e.key === '`') {
+      if (e.key === '`' || e.key === 'F9') {
         e.preventDefault()
         toggleJudge()
         return
       }
       if (inField) return
       if (e.key === 'a' || e.key === 'A') setAccuseOpen(true)
+      const tabKeys: ActionTab[] = ['ask', 'present', 'tactic', 'confront', 'search']
+      const digit = e.key >= '1' && e.key <= '5' ? Number(e.key) - 1 : -1
+      if (digit >= 0) setTab(tabKeys[digit]!)
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [toggleJudge])
+  }, [toggleJudge, setTab])
 
   const isPending = pending !== null
   const primaryPending = !!primary && pending?.suspectId === primary.id
@@ -176,8 +185,6 @@ export function Investigation() {
     const el = logRef.current
     if (el) el.scrollTop = el.scrollHeight
   }, [logRows.length])
-
-  const workingNotes = useMemo(() => (game ? game.turns.slice(-6).map((t) => describeTurn(t, game.cast)).filter(Boolean).reverse() : []), [game])
 
   const presentEvidence = useMemo(() => (game ? [...game.evidence].sort((a, b) => evidenceRank(a) - evidenceRank(b)) : []), [game])
 
@@ -335,7 +342,7 @@ export function Investigation() {
             <div className="lacquer lacquer--soft flex flex-col gap-2">
               <div className="flex items-center justify-between gap-2 flex-wrap">
                 <span className="display display--gold" style={{ fontSize: 13 }}>
-                  {game.cast.find((c) => c.id === confrontation.a)?.name ?? confrontation.a} ⚔ {game.cast.find((c) => c.id === confrontation.b)?.name ?? confrontation.b}
+                  Confrontation
                 </span>
                 <span className="muted" style={{ fontSize: 12 }}>
                   “{confrontation.topic}”
@@ -346,9 +353,29 @@ export function Investigation() {
                   </Button>
                 ) : null}
               </div>
+              <div className="flex items-start justify-center gap-4 flex-wrap">
+                {([confrontation.a, confrontation.b] as const).map((sid) => {
+                  const who = game.cast.find((c) => c.id === sid)
+                  if (!who) return null
+                  return (
+                    <div key={sid} className="flex flex-col items-center gap-1" style={{ minWidth: 120 }}>
+                      <PixelPortrait suspect={who} emotion={who.emotion} size={96} dim={confrontation.speaking === sid} />
+                      <span className="display display--gold" style={{ fontSize: 11 }}>
+                        {who.name}
+                      </span>
+                    </div>
+                  )
+                })}
+              </div>
               <div className="dialogue-log" style={{ maxHeight: 180 }}>
                 {confrontation.lines.map((l) => (
-                  <div key={`${l.turn}:${l.seq}`} className="dialogue-log__row">
+                  <div
+                    key={`${l.turn}:${l.seq}`}
+                    className={cn(
+                      'dialogue-log__row',
+                      l.actor === 'detective' ? 'speaker-you' : `speaker-${speakerIndex(game.cast, l.actor)}`,
+                    )}
+                  >
                     <span className="dialogue-log__who">{l.actor === 'detective' ? 'You' : (game.cast.find((c) => c.id === l.actor)?.name ?? l.actor)}</span>
                     <span className="dialogue-log__text">{l.spoken ?? l.detective_text}</span>
                     <span className="dialogue-log__time">{l.clock}</span>
@@ -356,6 +383,32 @@ export function Investigation() {
                 ))}
                 {!confrontation.done ? <p className="mono muted">{confrontation.speaking ? `${game.cast.find((c) => c.id === confrontation.speaking)?.name ?? '…'} is speaking…` : '…'}</p> : null}
               </div>
+              {!confrontation.done && !confrontation.justWatch ? (
+                <div className="flex gap-2 items-stretch flex-wrap">
+                  <input
+                    type="text"
+                    className="field"
+                    style={{ flex: 1, minWidth: 160 }}
+                    placeholder="Interject…"
+                    value={interjectText}
+                    onChange={(e) => setInterjectText(e.target.value)}
+                    disabled={isPending}
+                  />
+                  <Button
+                    variant="red"
+                    size="sm"
+                    disabled={isPending || !interjectText.trim()}
+                    onClick={async () => {
+                      const t = interjectText.trim()
+                      if (!t) return
+                      const ok = await interject(t)
+                      if (ok) setInterjectText('')
+                    }}
+                  >
+                    Interject
+                  </Button>
+                </div>
+              ) : null}
             </div>
           ) : null}
 
@@ -381,7 +434,13 @@ export function Investigation() {
           <div ref={logRef} className="dialogue-log" style={{ maxHeight: 240, minHeight: 120 }} aria-live="off">
             {logRows.length === 0 ? <p className="mono muted">No conversation yet with {primary.name}.</p> : null}
             {logRows.map((r) => (
-              <div key={r.id} className="dialogue-log__row speaker-0">
+              <div
+                key={r.id}
+                className={cn(
+                  'dialogue-log__row',
+                  r.speaker === 'you' ? 'speaker-you' : `speaker-${speakerIndex(game.cast, primary.id)}`,
+                )}
+              >
                 <span className="dialogue-log__who">{r.speaker === 'you' ? 'You' : primary.name}</span>
                 <span className="dialogue-log__text">{r.text}</span>
                 <span className="dialogue-log__time">{r.clock}</span>
@@ -479,36 +538,8 @@ export function Investigation() {
           </div>
         </div>
 
-        {/* RIGHT — notebook + accuse */}
-        <div className="parchment flex flex-col gap-3 min-w-0">
-          <SectionTitle as="h2" align="left">
-            Notebook
-          </SectionTitle>
-          <ul className="flex flex-col gap-2 list-none p-0 m-0">
-            {game.evidence.map((e) => (
-              <li key={e.id} className={cn(e.state !== 'examined' && e.state !== 'known' ? 'hidden' : '')} style={{ opacity: e.state === 'examined' ? 1 : 0.55 }}>
-                <div className="flex items-start gap-2">
-                  <EvidenceIcon name={e.name} description={e.description} size={18} color="var(--wood-600)" />
-                  <div className="min-w-0">
-                    <div style={{ fontWeight: 700, fontSize: 13 }}>{e.name}</div>
-                    <div style={{ fontSize: 12 }}>{e.state === 'examined' && e.examined_detail ? e.examined_detail : e.description}</div>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-
-          <hr className="hr-wood" style={{ margin: '4px 0' }} />
-          <h3 className="label-caps" style={{ margin: 0 }}>
-            Working notes
-          </h3>
-          <ul className="flex flex-col gap-1 list-none p-0 m-0" style={{ fontSize: 13 }}>
-            {workingNotes.length === 0 ? <li className="ink-soft">Nothing yet. Ask someone something.</li> : null}
-            {workingNotes.map((n, i) => (
-              <li key={i}>{n}</li>
-            ))}
-          </ul>
-
+        <div className="flex flex-col gap-3 min-w-0">
+          <NotebookPanel cast={game.cast} evidence={game.evidence} turns={game.turns} notebook={game.notebook} timeline={game.case.timeline_public} />
           <div className="mt-auto">
             <Button variant="red" size="lg" block onClick={() => setAccuseOpen(true)}>
               ⚖ Accuse
@@ -544,7 +575,7 @@ export function Investigation() {
         open={accuseOpen}
         onClose={() => setAccuseOpen(false)}
         cast={game.cast}
-        examined={examined}
+        methodEvidence={methodEvidence}
         pending={isPending}
         onAccuse={async (payload) => {
           const debrief = await accuse(payload)
@@ -564,12 +595,12 @@ interface AccuseModalProps {
   open: boolean
   onClose: () => void
   cast: PublicSuspect[]
-  examined: PublicEvidence[]
+  methodEvidence: PublicEvidence[]
   pending: boolean
   onAccuse: (payload: { suspect_id: string; method_evidence_ids: string[]; motive_text: string; confidence: number }) => Promise<void>
 }
 
-function AccuseModal({ open, onClose, cast, examined, pending, onAccuse }: AccuseModalProps) {
+function AccuseModal({ open, onClose, cast, methodEvidence, pending, onAccuse }: AccuseModalProps) {
   const [suspectId, setSuspectId] = useState<string | null>(null)
   const [evidenceIds, setEvidenceIds] = useState<string[]>([])
   const [motive, setMotive] = useState('')
@@ -611,15 +642,16 @@ function AccuseModal({ open, onClose, cast, examined, pending, onAccuse }: Accus
           <h3 className="label-caps" style={{ margin: '0 0 6px' }}>
             2. The method — how did they do it?
           </h3>
-          {examined.length === 0 ? (
+          {methodEvidence.length === 0 ? (
             <p className="ink-soft" style={{ margin: 0 }}>
-              No evidence examined yet. You can still accuse, but the method scores 0 until you present examined evidence.
+              No evidence known yet. You can still accuse, but the method scores 0 until you hold evidence.
             </p>
           ) : (
             <div className="flex gap-2 flex-wrap">
-              {examined.map((e) => (
+              {methodEvidence.map((e) => (
                 <button key={e.id} type="button" className={cn('chip', evidenceIds.includes(e.id) && 'selected')} onClick={() => toggleEvidence(e.id)} title={e.examined_detail ?? e.description}>
                   {e.name}
+                  {e.state === 'known' ? ' (seen)' : ''}
                 </button>
               ))}
             </div>

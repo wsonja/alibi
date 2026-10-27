@@ -44,7 +44,7 @@ def regex_check(spoken: str, locked_secrets: list[dict]) -> list[str]:
 
 
 async def model_check(spoken: str, locked_secrets: list[dict]) -> dict:
-    """The GUARD_MODEL verdict. Raises LLMUnavailable / InvalidOutput / NotConfigured like call_tool."""
+    """The GUARD_MODEL verdict. Raises LLMUnavailable / InvalidOutput like call_tool."""
     listing = "\n".join(f"- {sec.get('id')}: {sec.get('text', '')}" for sec in locked_secrets)
     user = f"Statement:\n{spoken}\n\nLocked secrets:\n{listing}"
     raw = await llm.call_tool(

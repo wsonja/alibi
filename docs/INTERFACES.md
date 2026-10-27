@@ -137,7 +137,7 @@ class Performer(Protocol):
 ```
 - `client.py` — `async def call_tool(model, system_text, messages, tool, *, max_tokens=1200, temperature=0.9) -> dict`
   (Gemini structured JSON output per §0.2 incl. the model ladder and retries; raises `InvalidOutput` on bad JSON /
-  missing required keys and `LLMUnavailable` when every model fails; logs model/latency/tokens);
+  missing required keys and `LLMUnavailable` when every model fails or no key is set; logs model/latency/tokens);
   `credential_available() -> bool`; `resolve_mode(settings) -> "gemini"|"scripted"`.
 - `tools.py` — the JSON tool schemas: `RESPOND_AS_CHARACTER` (PLAN §7.3 verbatim), `LEAK_CHECK`, `NOTEBOOK_UPDATE`,
   `GRADE_MOTIVE`, `FALLBACK_LINES`, `SUMMARIZE`, `WRITE_CASE` (case schema), `SOLVE_CASE`, `ALTERNATIVE_CASE`, `GRADE_ALTERNATIVE`.
@@ -156,13 +156,21 @@ class Performer(Protocol):
 
 - `config.py` — pydantic-settings `Settings` reading `backend/.env`: GEMINI_API_KEY, SUSPECT_MODEL, AUTHOR_MODEL,
   GUARD_MODEL, DATABASE_URL, DEBUG_PANEL, OFFSCREEN_EVERY, LLM_MODE, FAKE_LLM, RNG_SEED, CORS_ORIGINS.
-- `models.py` — PLAN §5 tables (SQLAlchemy 2 async, JSON columns).
-- `schemas.py` — Pydantic models for every request/response in §6 below.
-- `routers/` — `cases.py`, `games.py`, `debug.py`, `ws.py`, `settings.py`, `tts.py`.
-- `services/game_service.py` — loads case + world from DB, runs the Director, persists turns/snapshots BEFORE
-  responding, broadcasts WS events. One asyncio.Lock per game id.
-- `main.py` — FastAPI app, CORS, routers, startup (create_all, load cases from `app/cases/*.json` into `cases` table
-  if missing), `/api/health`.
+- `models.py` — PLAN §5 tables (SQLAlchemy 2 async, JSON columns) plus: `turns.public` (the PublicTurn shown for that
+  row, so `GameState.turns` is identical after a restart), `accusations.turn`, and `archived` on `turns`,
+  `guardrail_events`, `notebook_entries`, `accusations` (rewind archives instead of deleting). `turns.snapshot` sits
+  on the last row of each action; `suspect_state` / `evidence_state` are a projection rewritten with every turn.
+- `schemas.py` — Pydantic models for every request/response in §6 below. Public responses use whitelisting response
+  models with `response_model_exclude_unset`; Debrief and DebugState stay loose dicts.
+- `routers/` — `cases.py`, `games.py`, `debug.py`, `ws.py`, `settings.py`, `tts.py` (501 until M5).
+- `services/game_service.py` — loads case + world from DB, runs the Director on a copy of the committed world,
+  persists turns/snapshots BEFORE responding, then adopts the copy and broadcasts WS events. One asyncio.Lock per game
+  id. Restore = last non-archived snapshot, else `initial_world`. The Director RNG is seeded with
+  `f"{RNG_SEED or game_id}:{turn}"` so a restarted server rolls exactly as one that never stopped. Watson runs as a
+  background task after every 2nd player turn and every confrontation, on player-visible state only.
+- `main.py` — `create_app(settings)` factory and `app`: CORS (CORS_ORIGINS plus any host on :5173), routers,
+  startup (create_all, load cases from `app/cases/*.json` into `cases` table if missing), `/api/health`. Errors are
+  `{error: str}` with 400/404/422/501/503.
 
 ## 5. Scripted performer rules (`agents/scripted.py`)
 
@@ -202,9 +210,12 @@ Deterministic (seeded by game id + turn) and isolation-safe: it sees only its ow
 - `GET /health` → `{ok: true, llm_mode: "gemini"|"scripted", debug_panel: bool, models: {suspect, author, guard}, cases: int}`
 - `POST /settings/api-key {api_key}` → `{llm_mode}` (a Gemini key; writes GEMINI_API_KEY into backend/.env, updates process env; local dev convenience)
 - `GET /cases` → `[{id, title, setting, generated, n_suspects, preset}]` (`preset` ∈ manor|liner|startup|dorm|room|other, derived from setting keywords)
-- `GET /cases/{id}/export` → the case JSON with `solution`, `timeline_truth`, secrets etc. included (it is a share seed)
-- `POST /cases/import` `{case: {...}}` → `{case_id}` after static_check
-- `POST /cases/generate` (gemini only) → 202 `{job_id}`; `GET /cases/jobs/{job_id}` → `{status, progress: [str], case_id?, checker_report?}`
+- `GET /cases/{id}/export` → the case JSON with `solution`, `timeline_truth`, secrets etc. included (it is a share seed).
+  404 unless `DEBUG_PANEL=1`: PLAN §2.7 lets secrets leave the server only behind that flag.
+- `POST /cases/import` `{case: {...}}` → `{case_id}` after static_check (plus non-empty `id`, `title`, `setting`,
+  `briefing`). Re-importing an identical case returns its id; a different case with a taken id gets `<id>_<6 hex>`.
+- `POST /cases/generate` (gemini only) → 202 `{job_id}`; `GET /cases/jobs/{job_id}` → `{status, progress: [str], case_id?, checker_report?}`.
+  Until the Author lands (M6): 503 without Gemini, 501 with it; unknown jobs 404.
 - `GET /games` → `[{game_id, case_id, case_title, setting, difficulty, status, turn, created_at, correct: bool|null, rank: str|null}]`
 - `POST /games`, `GET /games/{id}`, `POST /games/{id}/turn`, `POST /games/{id}/confront`, `POST /games/{id}/confront/interject {text}`,
   `POST /games/{id}/search`, `POST /games/{id}/accuse`, `GET /games/{id}/debrief`, `POST /games/{id}/rewind {turn}`,
@@ -233,6 +244,9 @@ DebugState     = {llm_mode, models: {suspect, author, guard}, turn, clock, suspe
 ```
 WS events: `turn_result`, `confront_line`, `confront_done {turn}`, `ticker {text}`, `clock {clock}`, `world_event {text, evidence?}`,
 `notebook_updated {NotebookEntry}`, `guard_event {…}` (only when DEBUG_PANEL=1), `pending {suspect_id}`.
+Every event is sent as `{type, data}`. A socket gets `clock` right after it connects; an unknown game closes with 4404.
+`ticker` carries off-screen tick lines only (framing actions arrive as `world_event`). `pending` is not sent: the
+client shows its own pending state.
 
 Forbidden keys in any non-debug response are enforced by `tests/test_api.py` exactly as PLAN §9 lists them.
 

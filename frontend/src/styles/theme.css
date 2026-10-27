@@ -48,6 +48,10 @@
      .dialogue-log            mono lacquer log; rows .dialogue-log__row, .dialogue-log__who, .dialogue-log__text,
                               .dialogue-log__time; speaker colours via .speaker-0…3 (sets --speaker) and .speaker-you.
      .clock                   analog clock wrapper; .clock__time text; .clock--dawn turns the time red.
+     .alibi-board             time grid. .alibi-chip claim. .alibi-chip--overlap amber, --conflict red.
+     .alibi-note              contradiction line under the grid. --overlap / --conflict set the stripe.
+     .cast-graph              React Flow frame. .cast-node name plate. .cast-graph--lacquer on a dark panel.
+     .tab-bar--notebook       tighter notebook tabs on parchment.
      .timeline                thin vertical list; .timeline__item .timeline__time .timeline__event
      .pixel-portrait          canvas/svg portrait (pixelated, round disc behind it). .pixel-portrait--dim (pending)
      .fade-in .slide-up       200 ms entrance animations (disabled in low-sensory / reduced motion)
@@ -1344,6 +1348,20 @@ textarea.field {
   color: var(--ink);
   border-bottom-color: var(--red-600);
 }
+.tab-bar--parchment .tab:hover {
+  color: var(--ink);
+  background: rgba(90, 51, 28, 0.08);
+}
+.tab-bar--notebook {
+  flex-wrap: wrap;
+  overflow: visible;
+}
+.tab-bar--notebook .tab {
+  flex: 1 1 auto;
+  padding: 6px 8px 4px;
+  letter-spacing: 0.04em;
+  font-size: 11px;
+}
 
 .slider {
   appearance: none;
@@ -1777,6 +1795,10 @@ html[data-screen-reader] .pixel-portrait {
   overflow-x: auto;
   scrollbar-width: thin;
 }
+.alibi-scroll {
+  min-width: 0;
+  max-width: 100%;
+}
 
 
 /* ---- painted backdrops (public/art/*.jpg) ------------------------------------------------ */
@@ -1831,4 +1853,169 @@ html[data-screen-reader] .pixel-portrait {
 .lacquer .chip:disabled,
 .action-bar .chip:disabled {
   opacity: 0.7;
+}
+
+.alibi-board {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  color: var(--ink);
+}
+.alibi-board th,
+.alibi-board td {
+  border-bottom: 1px solid var(--paper-400);
+  padding: 4px 6px;
+  vertical-align: top;
+  text-align: left;
+}
+.alibi-board td {
+  min-width: 4.5rem;
+}
+.alibi-board th {
+  font-family: var(--font-heading);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.alibi-board tbody th[scope='row'] {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--paper-200);
+  max-width: 7rem;
+}
+.alibi-chip {
+  display: inline-block;
+  margin: 0 4px 4px 0;
+  padding: 2px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--wood-600);
+  background: rgba(255, 255, 255, 0.35);
+  font-size: 11px;
+  line-height: 1.3;
+  max-width: 9rem;
+}
+.alibi-chip--overlap {
+  border: 2px solid var(--deflect);
+  background: rgba(224, 164, 34, 0.22);
+}
+.alibi-chip--conflict {
+  border: 2px solid var(--lie);
+  background: rgba(210, 59, 59, 0.12);
+}
+.alibi-notes {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.alibi-note {
+  padding: 4px 8px;
+  border-left: 3px solid var(--wood-500);
+  font-size: 13px;
+}
+.alibi-note--overlap {
+  border-left-color: var(--deflect);
+  background: rgba(224, 164, 34, 0.16);
+}
+.alibi-note--conflict {
+  border-left-color: var(--lie);
+  background: rgba(210, 59, 59, 0.1);
+}
+
+.cast-graph {
+  width: 100%;
+  border: 1px solid var(--wood-500);
+  border-radius: 4px;
+  background: rgba(43, 27, 18, 0.04);
+}
+.cast-graph--lacquer {
+  background: rgba(0, 0, 0, 0.25);
+  border-color: var(--gold-500);
+}
+.cast-graph .react-flow {
+  --xy-background-color-default: transparent;
+  --xy-node-color-default: var(--ink);
+  --xy-node-border-default: 2px solid var(--gold-500);
+  --xy-node-background-color-default: var(--paper-200);
+  --xy-node-boxshadow-selected-default: 0 0 0 1px var(--gold-500);
+  --xy-edge-stroke-selected-default: var(--gold-500);
+  --xy-selection-background-color-default: rgba(201, 162, 75, 0.12);
+  --xy-selection-border-default: 1px dotted var(--gold-500);
+  background-color: transparent;
+}
+.cast-graph .react-flow__node-cast {
+  background: transparent;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.cast-node {
+  padding: 6px 10px;
+  border: 2px solid var(--gold-500);
+  border-radius: 4px;
+  background: var(--paper-200);
+  color: var(--ink);
+  font-family: var(--font-heading);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-align: center;
+  max-width: 8.5rem;
+}
+.cast-graph .react-flow__handle {
+  opacity: 0;
+}
+.cast-graph .react-flow__attribution {
+  background: transparent;
+}
+.cast-graph .react-flow__attribution a {
+  color: var(--ink-soft);
+  font-size: 9px;
+}
+.cast-graph--lacquer .react-flow__attribution a {
+  color: var(--gold-400);
+}
+.cast-graph__lines {
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 180px;
+  overflow: auto;
+}
+.cast-graph__line {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 4px 6px;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+}
+.cast-graph__line--selected {
+  border-color: var(--gold-500);
+  background: rgba(201, 162, 75, 0.15);
+}
+.cast-graph__who {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+.cast-graph__text {
+  font-size: 13px;
+}
+.cast-graph--lacquer .cast-graph__line {
+  color: var(--paper-200);
 }

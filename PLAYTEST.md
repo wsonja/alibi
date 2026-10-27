@@ -25,7 +25,7 @@ Optional: for live AI suspects, put a Gemini key (free at aistudio.google.com) i
 ## 2. Run (two terminals)
 
 ```bash
-make backend      # API on http://localhost:8000   (manual: cd backend && .venv/bin/uvicorn --app-dir ../scripts mock_api:app --port 8000)
+make backend      # API on http://localhost:8000   (manual: cd backend && .venv/bin/uvicorn app.main:app --port 8000)
 ```
 
 ```bash

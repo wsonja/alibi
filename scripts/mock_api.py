@@ -1,5 +1,7 @@
-"""TEMPORARY in-memory API (no persistence) so the frontend can be exercised before the real app layer lands.
-It runs the real engine Director with the real scripted performer. Delete once backend/app/main.py exists."""
+"""DEPRECATED. Use backend/app/main.py (`make backend`), the persistent app this stood in for.
+
+In-memory API with no persistence, no Watson, no rewind and no DEBUG_PANEL gate. Nothing starts it any more; it is
+kept only as a reference for the old behaviour and can be deleted."""
 from __future__ import annotations
 import asyncio, glob, json, os, pathlib, random, sys, uuid, datetime
 ROOT = pathlib.Path(__file__).resolve().parents[1]

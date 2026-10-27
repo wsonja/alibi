@@ -5,13 +5,14 @@ suspects, search rooms, present evidence, use tactics (bluff / flatter / threate
 room together, then accuse. Suspects run on Google Gemini when a key is present, or on a built-in scripted performer
 when it isn't, so the game is playable offline too.
 
-**Status: demo MVP.** Setup, Briefing, Investigation and Case Closed screens over a temporary in-memory API
-(`scripts/mock_api.py`) that runs the real game engine. The persistent FastAPI backend (`backend/app/main.py`), Judge
-panel, sensors and campaign archive are in progress (see `PLAN.md`, `docs/INTERFACES.md`, `PROGRESS.md`).
+**Status: demo MVP.** Setup, Briefing, Investigation and Case Closed screens over a persistent FastAPI backend
+(`backend/app/main.py`, SQLite in `backend/alibi.db`): games survive a server restart, and rewind, the Watson notebook
+and WebSocket updates work. Case generation, sensors and the campaign archive are in progress (see `PLAN.md`,
+`docs/INTERFACES.md`, `PROGRESS.md`). `make reset-db` wipes saved games.
 
 ## Run it
 
-Requirements: Python 3.11+, Node 20+.
+Requirements: Python 3.12+ with `python3-venv` (e.g. `apt install python3.12-venv`), Node 20+.
 
 ```bash
 git clone https://github.com/wsonja/alibi.git && cd alibi
@@ -49,8 +50,12 @@ thresholds, and some only unlock once you hold specific evidence. Accuse when yo
 
 ```bash
 make test             # backend unit tests (scripted mode, no network)
+make verify           # boot gates + API playtest + redteam + frontend test/build
 cd frontend && npx tsc --noEmit -p tsconfig.app.json && npm run build
 ```
+
+Known gaps and the repair order live in `docs/BROKEN.md` and `docs/FIX_PLAN.md`. Agents should use the
+`verify-alibi` skill (`.cursor/skills/verify-alibi/SKILL.md`) before claiming the game works.
 
 Layout: `backend/app/engine` (deterministic director: stress, unlocks, confrontations, rumors, world, scoring,
 debrief), `backend/app/agents` (Gemini client, suspect prompts, scripted performer, leak guard, Watson notebook,

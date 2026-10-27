@@ -2,8 +2,8 @@
  * Debrief — route "/game/:id/debrief" (docs/DESIGN.md §5.6). CASE CLOSED: verdict, score, the truth, the reveal
  * reel (every suspect's lines coloured by honesty + their private reasoning), what you missed, case stats.
  *
- * Field names come from `Debrief` in @/api/types, cross-checked against a real accuse() response from the temp
- * backend (scripts/mock_api.py): a few `missed` fields carry richer objects at runtime than the `string[]` the
+ * Field names come from `Debrief` in @/api/types, cross-checked against a real accuse() response (built by
+ * backend/app/engine/debrief.py): a few `missed` fields carry richer objects at runtime than the `string[]` the
  * type declares (evidence_never_examined, secrets_never_revealed) — the helpers below read either shape safely.
  */
 import { useEffect, useMemo, useState } from 'react'
@@ -13,6 +13,7 @@ import { ButtonLink, Button } from '@/components/common/Button'
 import { ErrorNotice } from '@/components/common/ErrorNotice'
 import { Marquee } from '@/components/common/Marquee'
 import { SectionTitle } from '@/components/common/SectionTitle'
+import { RumorMap } from '@/components/debrief/RumorMap'
 import { PixelPortrait } from '@/components/portrait/PixelPortrait'
 import { cn } from '@/lib/cn'
 import { useGame } from '@/store/game'
@@ -226,6 +227,8 @@ export function Debrief() {
           ))}
         </div>
       </section>
+
+      <RumorMap cast={d.cast} edges={d.rumor_map ?? []} />
 
       <section className="parchment mt-4">
         <SectionTitle as="h2" align="left">

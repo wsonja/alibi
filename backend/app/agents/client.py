@@ -345,10 +345,15 @@ async def call_tool(
     ``model`` is a role (``suspect``|``author``|``guard``) or a comma-separated list of model names.
     ``messages`` are ``{"role": "user"|"assistant", "content": str}`` dicts (assistant -> Gemini "model").
     ``tool`` is one of the schemas in ``tools.py``; its ``input_schema`` becomes ``response_json_schema``.
+    A missing credential raises ``LLMUnavailable`` because no model in the ladder can answer. The Director falls back
+    to the scripted performer only on that class.
     """
     from google.genai import errors, types
 
-    client = get_client()  # raises NotConfigured
+    try:
+        client = get_client()
+    except NotConfigured as exc:
+        raise LLMUnavailable(str(exc)) from exc
     schema = tool["input_schema"]
     ladder = model_ladder(model)
     contents = _to_contents(messages)

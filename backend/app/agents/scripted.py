@@ -814,8 +814,9 @@ def other_address(other_name: str, rel_type: str, speaker_voice: Voice) -> str:
 # --------------------------------------------------------------------------------------------------------------------
 
 WHEREABOUTS_RE = re.compile(
-    r"\bwhere (were|was) you\b|\bwhere did you go\b|\bwhereabouts\b|\bwhat were you doing\b|\bwhere you were\b|"
-    r"\bwhere you went\b|\baccount for (your|the) (time|movements|evening)\b|\byour movements\b|\bwhere exactly\b",
+    r"\bwhere (were|was) you\b|\bwhere did you(?:\s+\w+){0,2}\s+go\b|\bwhereabouts\b|\bwhat were you doing\b|"
+    r"\bwhere you were\b|\bwhere you went\b|\baccount for (your|the) (time|movements|evening)\b|"
+    r"\byour movements\b|\bwhere exactly\b|\breally go\b",
     re.IGNORECASE,
 )
 MESSAGE_PREFIX_RE = re.compile(r"^(Detective(?: \([a-z]+\))?:|The detective shows you:)\s*", re.IGNORECASE)

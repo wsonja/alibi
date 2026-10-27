@@ -1,0 +1,9 @@
+ts	phase	decision	why	evidence	result
+2026-10-27T00:06:03Z	start	diagnose-verify-plan run began on cursor/diagnose-verify-plan-11d9	figure-it-out for boot+inventory+verification skill+fix plan	agent-run	open
+2026-10-27T00:07:13Z	frame	done predicate: boot health + BROKEN.md evidence + verify skill green/red + FIX_PLAN phases	prove-it-works; this run delivers diagnosis not the full game fix	docs/DIAGNOSE_PLAYBOOK.md	framed
+2026-10-27T00:07:13Z	setup	apt install python3.12-venv after make setup failed on ensurepip	host image lacked venv; smallest fix to unblock boot	/opt/cursor/artifacts/smoke/make-setup.log	venv ok, npm peer conflict next
+2026-10-27T00:08:48Z	api-smoke	Vane Hall scripted loop ask/search/present/flatter/confront/accuse works; rewind 501; dissolution false-positive on solution substring	prove-it-works against live mock_api	/opt/cursor/artifacts/smoke/api-playtest.log	19/20 with 1 false positive
+2026-10-27T00:14:14Z	inventory	wrote docs/BROKEN.md from live boot+API+browser+tests	prove-it-works; encode inventory for the fix plan	docs/BROKEN.md	22 items measured
+2026-10-27T00:14:14Z	skill	added verify-alibi skill + scripts/verify_alibi.sh + api_playtest.py	encode-lessons-in-structure so the next agent re-runs gates	.cursor/skills/verify-alibi/SKILL.md	authored
+2026-10-27T00:14:14Z	plan	phased FIX_PLAN 0-7 boot then persist then fun then art	foundational-thinking: scaffold/verify before features	docs/FIX_PLAN.md	drafted
+2026-10-27T00:14:33Z	verify	scripts/verify_alibi.sh --skip-start all gates passed	prove-it-works on the harness itself	/opt/cursor/artifacts/smoke/verify-alibi.log	VERIFIED

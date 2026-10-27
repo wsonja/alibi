@@ -1,9 +1,15 @@
 PY=backend/.venv/bin/python
-.PHONY: setup dev backend frontend test test-integration redteam smoke types reset-db ping-models lint
+.PHONY: setup dev backend frontend test test-integration redteam smoke types reset-db ping-models lint verify verify-quick
 setup:
-	python3 -m venv backend/.venv && backend/.venv/bin/pip install -q -r backend/requirements.txt && cd frontend && npm install
+	@python3 -c "import ensurepip" 2>/dev/null || { echo "Missing python3-venv (e.g. apt install python3.12-venv)."; exit 1; }
+	python3 -m venv backend/.venv && backend/.venv/bin/pip install -q -r backend/requirements.txt
+	cd frontend && npm install --legacy-peer-deps
 	cp -n backend/.env.example backend/.env || true
 	@echo "Setup done. Optional: put GEMINI_API_KEY=... in backend/.env for live suspects."
+verify:
+	./scripts/verify_alibi.sh
+verify-quick:
+	./scripts/verify_alibi.sh --quick --skip-start
 dev:
 	@echo "Starting backend :8000 and frontend :5173"; \
 	(cd backend && set -a && . ./.env && set +a && .venv/bin/uvicorn --app-dir ../scripts mock_api:app --host 0.0.0.0 --port 8000) & \

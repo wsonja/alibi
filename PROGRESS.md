@@ -19,3 +19,10 @@
   on every attempt; 3.6-flash works but slow (~25 s); 3.5-flash-lite / 3.1-flash-lite ~2 s with valid JSON.
   → model ladders in backend/.env.example; suspects default to gemini-3.5-flash-lite.
 - Structured JSON output (response_json_schema) replaces forced tool use. Scripted performer remains the offline/fallback path.
+
+## 2026-10-26 — diagnose + verify skill + fix plan
+- Booted scripted mock_api + Vite on a clean image (needed `python3-venv`; npm needs `--legacy-peer-deps`).
+- Measured: API Vane Hall loop works; 261 pytest + 27 vitest + redteam 120/120 pass; UI Setup→Briefing→Ask→Search→Judge→Debrief render.
+- Broken inventory in `docs/BROKEN.md` (no persistent `main.py`, WS noop, Watson null, generate/api-key 404, rewind 501, boards/sensors missing, cast art vs Tapia gap).
+- Added `.cursor/skills/verify-alibi`, `scripts/verify_alibi.sh`, `scripts/api_playtest.py`, `docs/FIX_PLAN.md`, `docs/DIAGNOSE_PLAYBOOK.md`.
+- Decision trail: `.audit/diagnose-verify-plan.tsv` (local; not committed).

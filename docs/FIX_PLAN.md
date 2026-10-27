@@ -62,7 +62,9 @@ Do phases in order. Each phase ends with `scripts/verify_alibi.sh` green plus th
 - Watson notes / suggested_next drive the Notes tab; evidence has its own tab.
 - Acceptance: AlibiBoard vitest fixture marks overlap/conflict; Investigation shows Notes · Alibi Board · Evidence · Graph.
 
-## Phase 5. Graphics pass (non-AI look)
+## Phase 5. Graphics pass (non-AI look) — WAITING ON DESIGN
+
+**Blocked.** Phases 0–4 ship without this. Start after cast / campaign art direction lands (portraits, case map, confrontation chrome). Do not invent filler generative faces in the meantime.
 
 **Why.** Setup already uses strong painted backdrops. Suspect faces and campaign art are the weak link vs slide 3.
 

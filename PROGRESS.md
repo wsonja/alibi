@@ -57,3 +57,7 @@
 - Alibi Board columns are the hours a claim covers. A public timeline hour is a column only when it falls inside a claim, so empty hours do not push the chips off a narrow panel. A chip is amber when both sides of a contradiction are the same suspect, red when the other side is someone else or a clue. A claim that only shares a clock with another claim stays plain. Identical claims are shown once.
 - `GameState` has no relationship edges. The investigation graph is the cast plus confrontation lines the player heard (`PublicTurn` actor/other/spoken). Debrief `RumorMap` draws `rumor_map` with the same React Flow frame. Private edges animate. Confrontation edges are red.
 - Evidence tab sets `useSensors.evidenceTabOpen` so a notebook gaze maps to evidence only while that tab is open.
+
+## 2026-10-27 — FIX_PLAN Phases 0–4 shipped; Phase 5 held
+- Phases 0–4 on `cursor/phases-0-4-11d9` (PR #2). Phase 5 graphics marked WAITING ON DESIGN — cast portraits,
+  campaign map, confrontation chrome, demo MP4 after art direction; no generative filler faces until then.

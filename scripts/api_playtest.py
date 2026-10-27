@@ -154,20 +154,34 @@ def main() -> int:
     status, dbg = req("GET", f"/api/games/{gid}/debug")
     check("debug_has_suspects", status == 200 and bool((dbg or {}).get("suspects")), "")
 
+    gaps: list[tuple[str, str]] = []
     status, rewind = req("POST", f"/api/games/{gid}/rewind", {"turn": 1})
-    # Temporary API documents 501 until the real backend lands.
-    check("rewind_documented", status in (200, 501), str(rewind))
+    if status == 200:
+        check("rewind_works", True, str(rewind))
+    elif status == 501:
+        gaps.append(
+            (
+                "rewind_not_implemented",
+                "mock_api returns 501; real backend must implement rewind (docs/BROKEN.md #5)",
+            )
+        )
+        print("GAP ", "rewind_not_implemented", gaps[-1][1])
+    else:
+        check("rewind_works", False, f"unexpected status {status}: {rewind}")
 
-    return _finish(results)
+    return _finish(results, gaps)
 
 
-def _finish(results: list[tuple[str, bool, str]]) -> int:
+def _finish(results: list[tuple[str, bool, str]], gaps: list[tuple[str, str]] | None = None) -> int:
     fails = [name for name, ok, _ in results if not ok]
+    gaps = gaps or []
     print("---SUMMARY---")
-    print(f"{len(results) - len(fails)}/{len(results)} passed")
+    print(f"{len(results) - len(fails)}/{len(results)} passed, {len(gaps)} known gap(s)")
     for name, ok, detail in results:
         if not ok:
             print("FAIL", name, detail)
+    for name, detail in gaps:
+        print("GAP ", name, detail)
     return 1 if fails else 0
 
 

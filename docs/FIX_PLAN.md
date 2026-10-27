@@ -37,8 +37,10 @@ Do phases in order. Each phase ends with `scripts/verify_alibi.sh` green plus th
 
 - Harden `agents/scripted.py` against `PLAYTEST.md` beats (cigar → study admit, Ada a3 after two flatters, framing burn).
 - Accuse modal: allow method picks from `known` **or** `examined` (brandy starts known).
+- Fix dialogue `speaker-N` classes; listen for F9 as well as backtick; mount confront dual-portrait + interject.
 - Surface ticker / off-screen gossip text so the house feels alive.
 - Keep Leak Guard regex path honest in scripted mode; log guard events into Judge + reel.
+- Refresh or delete stale claims in `frontend/FOUNDATION.md`.
 - Acceptance: a human (or Playwright) following `PLAYTEST.md` in scripted mode reaches Correct / Detective+.
 
 ## Phase 3. Live suspects without breaking isolation

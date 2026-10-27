@@ -61,3 +61,8 @@
 ## 2026-10-27 — FIX_PLAN Phases 0–4 shipped; Phase 5 held
 - Phases 0–4 on `cursor/phases-0-4-11d9` (PR #2). Phase 5 graphics marked WAITING ON DESIGN — cast portraits,
   campaign map, confrontation chrome, demo MP4 after art direction; no generative filler faces until then.
+
+## 2026-10-27 — Immersive redesign direction locked
+- Owner rejected pixel faces; supplied noir / tabletop / crime-scene refs → `docs/art-direction/refs/`.
+- Plan in `docs/IMMERSIVE_REDESIGN.md`: painted cast pack (owner delivers files), MediaPipe camera (free, no key),
+  low-text arrive→crime→meet cast→room hotspots with the same verbs. FIX_PLAN Phase 5 unblocked as 5a–5e.

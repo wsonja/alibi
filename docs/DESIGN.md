@@ -3,6 +3,10 @@
 This transcribes the reference mockups the owner supplied (you cannot see them; this document is the source of truth).
 The game engine/repo is "Alibi" (PLAN.md); the on-screen brand is **MURDER MYSTERY MAYHEM**.
 
+**2026-10-27 update:** pixel-art *faces* are retired as the north star. Owner direction is painted noir cast +
+immersive low-text flow — see `docs/IMMERSIVE_REDESIGN.md` and `docs/art-direction/refs/`. Room desk chrome and
+parchment/lacquer panels below still apply until that redesign lands; §6 procedural pixels become fallback only.
+
 ## 1. Mood and materials
 
 A 1920s private study / library at night, rendered like a warm pixel-art / painted adventure game.

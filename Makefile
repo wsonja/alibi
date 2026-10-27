@@ -3,7 +3,7 @@ PY=backend/.venv/bin/python
 setup:
 	@python3 -c "import ensurepip" 2>/dev/null || { echo "Missing python3-venv (e.g. apt install python3.12-venv)."; exit 1; }
 	python3 -m venv backend/.venv && backend/.venv/bin/pip install -q -r backend/requirements.txt
-	cd frontend && npm install --legacy-peer-deps
+	cd frontend && npm install
 	cp -n backend/.env.example backend/.env || true
 	@echo "Setup done. Optional: put GEMINI_API_KEY=... in backend/.env for live suspects."
 verify:

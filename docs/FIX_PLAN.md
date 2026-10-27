@@ -12,8 +12,8 @@ Do phases in order. Each phase ends with `scripts/verify_alibi.sh` green plus th
 **Why first.** Foundational. Nothing else is re-runnable until `make setup` works on a clean machine.
 
 - Install docs: require Python 3.12 + `python3-venv` + Node 20.
-- Makefile `setup` already guards `ensurepip` and uses `npm install --legacy-peer-deps` (partial). Finish by pinning `openapi-typescript` or TypeScript so peers resolve without hiding the whole tree behind that flag.
-- Acceptance: fresh clone → `make setup` → `make backend` + `make frontend` → health 200 and Setup renders. Re-run setup on a clean tree after the pin.
+- Makefile `setup` guards `ensurepip`. TypeScript pinned to ~5.9 so `openapi-typescript` peers resolve without `--legacy-peer-deps`.
+- Acceptance: fresh clone → `make setup` → `make backend` + `make frontend` → health 200 and Setup renders.
 
 ## Phase 1. Persist the real backend
 

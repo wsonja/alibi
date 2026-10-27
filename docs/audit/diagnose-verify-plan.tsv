@@ -11,3 +11,4 @@ ts	phase	decision	why	evidence	result
 2026-10-27T00:16:16Z	inventory	merged backend+frontend map findings into BROKEN/FIX_PLAN (debug gate, snapshot unused, gemini-no-key stall, speaker-0, confront UI, FOUNDATION stale)	subagent maps added concrete file-level gaps	docs/BROKEN.md items 23-30	updated
 2026-10-27T00:17:00Z	harness	rewind 501 is GAP not PASS in api_playtest	comment-sicko MUST KILL on stub disguised as pass	scripts/api_playtest.py	fixed
 2026-10-27T00:19:11Z	trail-review	acted on Opus audit: labeled evidence kinds, restart-wipe proof, GAP for study-admit, secret in FORBIDDEN_KEYS, trail path docs	cross-model Attention flags	docs/BROKEN.md + scripts/api_playtest.py	addressed
+2026-10-27T00:20:56Z	phase0	pinned typescript ~5.9; npm install works without legacy-peer-deps; README notes python3-venv	Phase 0 acceptance: peer conflict root cause	frontend/package.json	done

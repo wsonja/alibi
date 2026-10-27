@@ -11,7 +11,7 @@ panel, sensors and campaign archive are in progress (see `PLAN.md`, `docs/INTERF
 
 ## Run it
 
-Requirements: Python 3.11+, Node 20+.
+Requirements: Python 3.12+ with `python3-venv` (e.g. `apt install python3.12-venv`), Node 20+.
 
 ```bash
 git clone https://github.com/wsonja/alibi.git && cd alibi

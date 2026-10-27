@@ -62,18 +62,21 @@ Do phases in order. Each phase ends with `scripts/verify_alibi.sh` green plus th
 - Watson notes / suggested_next drive the Notes tab; evidence has its own tab.
 - Acceptance: AlibiBoard vitest fixture marks overlap/conflict; Investigation shows Notes · Alibi Board · Evidence · Graph.
 
-## Phase 5. Graphics pass (non-AI look) — WAITING ON DESIGN
+## Phase 5. Immersive art + low-text UX + live camera — DIRECTION LOCKED
 
-**Blocked.** Phases 0–4 ship without this. Start after cast / campaign art direction lands (portraits, case map, confrontation chrome). Do not invent filler generative faces in the meantime.
+**Unblocked by owner refs (2026-10-27).** Full plan: `docs/IMMERSIVE_REDESIGN.md` + `docs/art-direction/refs/`.
+Kill pixel faces; noir painted cast; room-first low-text spine; MediaPipe gaze (free, on-device).
 
-**Why.** Setup already uses strong painted backdrops. Suspect faces and campaign art are the weak link vs slide 3.
+**Why.** Pixel portraits + text-heavy Setup/Briefing fight the product the owner wants (tabletop mystery + noir characters). Camera stub emits nothing today.
 
-- Keep room JPGs; do **not** replace them with flat purple gradients or stock AI collage.
-- Commission or hand-draw 4–5 cast portraits × emotion variants (or refine pixel set to a consistent limited palette with readable silhouettes). Ban one-off generative faces that don't share a palette.
-- Campaign / Archive screen: illustrated case map matching slide 3 (First Murder → Death at Sea → Pitch → Heiress), not a bare list.
-- Confrontation layout: dual portraits + notes rail as in slide 3 left panel.
-- Capture a real demo MP4 for slide 4 / README.
-- Acceptance: side-by-side with Tapia slide 3, a stranger can tell it is the same product; no "AI portrait lottery" look.
+Split PRs (see IMMERSIVE_REDESIGN §E):
+- **5a** PaintedPortrait + Vane Hall emotion pack (needs owner portrait files — §A1).
+- **5b** Arrive → time/crime → meet cast scene-by-scene → roam; icon action dock (all verbs kept).
+- **5c** Room hotspots → search/examine.
+- **5d** Real `@mediapipe/tasks-vision` FaceLandmarker → `player_signal` (no API key; video never leaves device).
+- **5e** Archive case map + demo MP4.
+
+Acceptance: no pixel faces on the happy path; stranger matches refs 02–04; camera-on glance at Evidence shows in Judge; camera-off play identical otherwise; Accuse/Ask/Confront/Search always reachable without reading a manual.
 
 ## Phase 6. Presence layers (optional, after core fun)
 

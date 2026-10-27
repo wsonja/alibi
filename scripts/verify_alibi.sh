@@ -71,6 +71,14 @@ tmux_run() {
   tmux "${conf[@]}" send-keys -t "$session:0.0" "$cmd" C-m
 }
 
+tmux_send_ctrl_c() {
+  local conf=( )
+  if [[ -f /exec-daemon/tmux.portal.conf ]]; then
+    conf=(-f /exec-daemon/tmux.portal.conf)
+  fi
+  tmux "${conf[@]}" send-keys -t "$1:0.0" C-c
+}
+
 wait_http() {
   local url="$1" name="$2" tries="${3:-40}"
   local i
@@ -106,11 +114,14 @@ else
   tail -20 "$OUT/pytest.log" || true
 fi
 
+# A backend this script starts keeps its games in $OUT, out of the player's Archive (backend/alibi.db).
+BACKEND_CMD="set -a && . ./.env && set +a && export LLM_MODE=scripted DATABASE_URL='sqlite+aiosqlite:///$OUT/verify.db' && .venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000 >>'$OUT/backend.log' 2>&1"
+
 gate "3 servers"
 if [[ "$SKIP_START" -eq 0 ]]; then
   if ! curl -fsS "$API/api/health" >/dev/null 2>&1; then
-    tmux_run "$BACKEND_SESSION" "$ROOT/backend" \
-      "set -a && . ./.env && set +a && export LLM_MODE=scripted && .venv/bin/uvicorn --app-dir ../scripts mock_api:app --host 127.0.0.1 --port 8000 >'$OUT/backend.log' 2>&1"
+    rm -f "$OUT/verify.db" "$OUT/backend.log"
+    tmux_run "$BACKEND_SESSION" "$ROOT/backend" "$BACKEND_CMD"
     STARTED_BACKEND=1
   fi
   if ! curl -fsS "$WEB/" >/dev/null 2>&1; then
@@ -139,15 +150,40 @@ if wait_http "$WEB/" "frontend"; then
 fi
 
 gate "4 API playtest"
-if LLM_MODE=scripted "$PY" "$ROOT/scripts/api_playtest.py" "$API" >"$OUT/api-playtest.log" 2>&1; then
+rm -f "$OUT/game_id"
+if LLM_MODE=scripted PLAYTEST_GAME_FILE="$OUT/game_id" "$PY" "$ROOT/scripts/api_playtest.py" "$API" \
+    >"$OUT/api-playtest.log" 2>&1; then
   pass "api playtest (log $OUT/api-playtest.log)"
 else
   fail "api playtest (log $OUT/api-playtest.log)"
   tail -30 "$OUT/api-playtest.log" || true
 fi
 
+gate "5 restart persistence"
+if [[ "$STARTED_BACKEND" -eq 1 && -s "$OUT/game_id" ]]; then
+  gid="$(cat "$OUT/game_id")"
+  curl -fsS "$API/api/games/$gid" >"$OUT/game-before-restart.json" || true
+  tmux_send_ctrl_c "$BACKEND_SESSION"
+  for ((i = 1; i <= 20; i++)); do
+    curl -fsS "$API/api/health" >/dev/null 2>&1 || break
+    sleep 0.5
+  done
+  tmux_run "$BACKEND_SESSION" "$ROOT/backend" "$BACKEND_CMD"
+  if wait_http "$API/api/health" "restarted backend"; then
+    curl -fsS "$API/api/games/$gid" >"$OUT/game-after-restart.json" || true
+    if "$PY" -c 'import json, sys; a, b = (json.load(open(p)) for p in sys.argv[1:]); sys.exit(a != b)' \
+        "$OUT/game-before-restart.json" "$OUT/game-after-restart.json" 2>/dev/null; then
+      pass "GET /api/games/$gid is identical after a backend restart"
+    else
+      fail "game state changed across restart (diff $OUT/game-before-restart.json $OUT/game-after-restart.json)"
+    fi
+  fi
+else
+  echo "SKIP  restart gate needs a backend this script started (run without --skip-start, servers down)"
+fi
+
 if [[ "$QUICK" -eq 0 ]]; then
-  gate "5 redteam"
+  gate "6 redteam"
   if (
     cd "$ROOT"
     LLM_MODE=scripted "$PY" scripts/redteam.py --case backend/app/cases/vane_hall.json
@@ -162,7 +198,7 @@ if [[ "$QUICK" -eq 0 ]]; then
     tail -20 "$OUT/redteam.log" || true
   fi
 
-  gate "6 frontend test + build"
+  gate "7 frontend test + build"
   if (cd "$ROOT/frontend" && npm test) >"$OUT/vitest.log" 2>&1; then
     pass "vitest (log $OUT/vitest.log)"
   else
@@ -176,9 +212,9 @@ if [[ "$QUICK" -eq 0 ]]; then
 fi
 
 echo
-echo "Harness gaps (not checked here): persistence across restart, WebSocket pushes, Watson notebook,"
-echo "case generate / api-key routes, Alibi Board / graphs, sensors, cast art. See docs/BROKEN.md."
-echo "API playtest may print GAP lines (rewind stub, PLAYTEST study-admit, temporary mock_api) without failing."
+echo "Harness gaps (not checked here): WS updates rendered in the browser, live Gemini suspects, case generation,"
+echo "Alibi Board / graphs, sensors, cast art. See docs/BROKEN.md."
+echo "API playtest may print a GAP line (PLAYTEST study-admit) without failing."
 echo
 
 if [[ "$FAILS" -eq 0 ]]; then

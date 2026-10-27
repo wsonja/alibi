@@ -3,13 +3,18 @@
 
 Usage (backend already up on :8000):
   LLM_MODE=scripted backend/.venv/bin/python scripts/api_playtest.py
+Set PLAYTEST_GAME_FILE=path to write the game id there (verify_alibi.sh uses it for the restart gate).
 """
 from __future__ import annotations
 
+import contextlib
 import json
+import os
 import sys
 import urllib.error
 import urllib.request
+
+from websockets.sync.client import connect
 
 BASE = sys.argv[1] if len(sys.argv) > 1 else "http://127.0.0.1:8000"
 FORBIDDEN_KEYS = {
@@ -57,7 +62,24 @@ def walk_forbidden(obj, path="$", hits=None):
     return hits
 
 
+def next_event(sock, wanted: str, limit: int = 30) -> dict | None:
+    """Read WS events until one of type ``wanted`` arrives (None on timeout or after ``limit`` others)."""
+    for _ in range(limit):
+        try:
+            event = json.loads(sock.recv(timeout=5))
+        except TimeoutError:
+            return None
+        if event.get("type") == wanted:
+            return event
+    return None
+
+
 def main() -> int:
+    with contextlib.ExitStack() as cleanup:
+        return play(cleanup)
+
+
+def play(cleanup: contextlib.ExitStack) -> int:
     results: list[tuple[str, bool, str]] = []
 
     def check(name: str, ok: bool, detail: str = "") -> None:
@@ -80,9 +102,16 @@ def main() -> int:
     check("create_game", status == 201 and bool(gid), str(gid))
     if not gid:
         return _finish(results)
+    if os.environ.get("PLAYTEST_GAME_FILE"):
+        with open(os.environ["PLAYTEST_GAME_FILE"], "w", encoding="utf-8") as f:
+            f.write(gid)
 
     status, game = req("GET", f"/api/games/{gid}")
     check("get_game_briefing_status", status == 200 and game.get("status") == "briefing", str(game.get("status")))
+
+    sock = cleanup.enter_context(connect(BASE.replace("http", "ws", 1) + f"/api/ws/games/{gid}", open_timeout=5))
+    hello = next_event(sock, "clock")
+    check("ws_connects_with_clock", bool(hello), str(hello))
 
     status, turn = req(
         "POST",
@@ -90,6 +119,8 @@ def main() -> int:
         {"type": "ask", "suspect_id": "pell", "text": "Where were you at twenty past eleven?"},
     )
     check("ask_pell", status == 200 and bool(turn and turn.get("spoken")), str(turn))
+    pushed = next_event(sock, "turn_result")
+    check("ws_pushes_turn_result", bool(pushed) and pushed["data"] == turn, str(pushed)[:160])
 
     status, search = req("POST", f"/api/games/{gid}/search", {"location_id": "billiard_room"})
     evidence = (search or {}).get("evidence") if isinstance(search, dict) else []
@@ -104,9 +135,14 @@ def main() -> int:
     )
     check("present_cigar", status == 200 and bool(present), str(present))
 
+    # Watson runs after the turn-2 response goes out; its push is the signal that the notebook is stored.
+    pushed_nb = next_event(sock, "notebook_updated")
+    check("ws_pushes_notebook", bool(pushed_nb) and pushed_nb["data"].get("turn") == 2, str(pushed_nb)[:160])
     status, mid = req("GET", f"/api/games/{gid}")
     mid_hits = walk_forbidden(mid)
     check("no_forbidden_keys_mid_game", status == 200 and not mid_hits, str(mid_hits))
+    notebook = (mid or {}).get("notebook") or {}
+    check("watson_notebook_in_game_state", bool(pushed_nb) and notebook == pushed_nb["data"], str(notebook)[:160])
 
     gaps: list[tuple[str, str]] = []
     status, ask2 = req(
@@ -183,26 +219,16 @@ def main() -> int:
     check("no_forbidden_keys_in_game_state", status == 200 and not hits, str(hits))
 
     status, dbg = req("GET", f"/api/games/{gid}/debug")
-    check("debug_has_suspects", status == 200 and bool((dbg or {}).get("suspects")), "")
+    if (health or {}).get("debug_panel"):
+        check("debug_has_suspects", status == 200 and bool((dbg or {}).get("suspects")), str(status))
+    else:
+        check("debug_hidden_without_debug_panel", status == 404, str(status))
 
     status, rewind = req("POST", f"/api/games/{gid}/rewind", {"turn": 1})
-    if status == 200:
-        check("rewind_works", True, str(rewind))
-    elif status == 501:
-        gaps.append(
-            (
-                "rewind_not_implemented",
-                "mock_api returns 501; real backend must implement rewind (docs/BROKEN.md #5)",
-            )
-        )
-        print("GAP ", "rewind_not_implemented", gaps[-1][1])
-    else:
-        check("rewind_works", False, f"unexpected status {status}: {rewind}")
-
-    note = str((health or {}).get("note") or "")
-    if "TEMPORARY" in note or "in-memory" in note.lower():
-        gaps.append(("backend_is_temporary_mock_api", note[:160]))
-        print("GAP ", "backend_is_temporary_mock_api", note[:160])
+    rewound = isinstance(rewind, dict) and rewind.get("turn") == 1 and rewind.get("status") != "closed"
+    check("rewind_reopens_turn_1", status == 200 and rewound, str({k: (rewind or {}).get(k) for k in ("turn", "status")}))
+    status, _ = req("GET", f"/api/games/{gid}/debrief")
+    check("debrief_gone_after_rewind", status == 404, str(status))
 
     return _finish(results, gaps)
 

@@ -41,15 +41,16 @@ Logs land in `.verify-alibi/` (gitignored) or `$VERIFY_ALIBI_OUT` if set.
 1. **Tooling.** `backend/.venv` exists; `frontend/node_modules` exists. If missing, print `make setup` (needs `python3-venv` and `npm install --legacy-peer-deps` on this stack).
 2. **Unit.** `cd backend && .venv/bin/python -m pytest -q -m "not integration"`.
 3. **Servers.** `GET /api/health` → `ok: true`. `GET` frontend root → 200.
-4. **API playtest.** `backend/.venv/bin/python scripts/api_playtest.py` (scripted Vane Hall ask/search/present/flatter/search/confront/accuse; forbids secret keys in game JSON).
-5. **Red team (full mode).** `LLM_MODE=scripted backend/.venv/bin/python scripts/redteam.py --case backend/app/cases/vane_hall.json` → 0 FAIL.
-6. **Frontend (full mode).** `cd frontend && npm test` and `npm run build`.
+4. **API playtest.** `backend/.venv/bin/python scripts/api_playtest.py` (scripted Vane Hall ask/search/present/flatter/search/confront/accuse/rewind; WS turn_result and notebook pushes; Watson notebook in GameState; forbids secret keys in game JSON).
+5. **Restart persistence.** Only when the script started the backend: Ctrl-C uvicorn, start it again, and `GET /api/games/{id}` must be byte-identical. A started backend uses `.verify-alibi/verify.db`, not `backend/alibi.db`.
+6. **Red team (full mode).** `LLM_MODE=scripted backend/.venv/bin/python scripts/redteam.py --case backend/app/cases/vane_hall.json` → 0 FAIL.
+7. **Frontend (full mode).** `cd frontend && npm test` and `npm run build`.
 
-`--quick` stops after gate 4.
+`--quick` stops after gate 5.
 
 ## How to report
 
-Print each gate as `PASS` or `FAIL` with the log path. Then list open product gaps from `docs/BROKEN.md` that the harness does **not** cover (persistence, WS, Watson null, generate 404, graphics). Never claim those are fine because the script exited 0.
+Print each gate as `PASS` or `FAIL` with the log path. Then list open product gaps from `docs/BROKEN.md` that the harness does **not** cover (WS updates rendered in the browser, live Gemini suspects, case generation, graphics). Never claim those are fine because the script exited 0.
 
 ## Related docs
 

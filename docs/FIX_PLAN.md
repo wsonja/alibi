@@ -53,14 +53,14 @@ Do phases in order. Each phase ends with `scripts/verify_alibi.sh` green plus th
 - Judge Context Boxes show per-suspect system blocks with no foreign secrets (debug gated).
 - Acceptance: red-team 0 FAIL; human judge confirms a locked secret stayed locked under prompts 1–15.
 
-## Phase 4. Boards that make deduction tactile
+## Phase 4. Boards that make deduction tactile — DONE
 
 **Why.** Ask/present alone feels like a chatbot. Tapia + PLAN M2–M3 need spatial tools.
 
-- Alibi Board (time grid, contradiction highlight).
-- Relationship Graph + Rumor Map via `@xyflow/react`.
-- Watson contradictions drive "Working notes" and sticky suggestions.
-- Acceptance: after asking Margaret and Crane about 23:00–23:30, the Alibi Board marks the overlap without opening debug.
+- Alibi Board (time grid, contradiction highlight) in `components/notebook/`.
+- Relationship Graph + Debrief Rumor Map via `@xyflow/react`.
+- Watson notes / suggested_next drive the Notes tab; evidence has its own tab.
+- Acceptance: AlibiBoard vitest fixture marks overlap/conflict; Investigation shows Notes · Alibi Board · Evidence · Graph.
 
 ## Phase 5. Graphics pass (non-AI look)
 

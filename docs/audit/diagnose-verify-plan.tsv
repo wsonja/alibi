@@ -7,3 +7,4 @@ ts	phase	decision	why	evidence	result
 2026-10-27T00:14:14Z	skill	added verify-alibi skill + scripts/verify_alibi.sh + api_playtest.py	encode-lessons-in-structure so the next agent re-runs gates	.cursor/skills/verify-alibi/SKILL.md	authored
 2026-10-27T00:14:14Z	plan	phased FIX_PLAN 0-7 boot then persist then fun then art	foundational-thinking: scaffold/verify before features	docs/FIX_PLAN.md	drafted
 2026-10-27T00:14:33Z	verify	scripts/verify_alibi.sh --skip-start all gates passed	prove-it-works on the harness itself	/opt/cursor/artifacts/smoke/verify-alibi.log	VERIFIED
+2026-10-27T00:15:16Z	verify	supersede api-smoke false FAIL: solution substring was dissolution; api_playtest now checks JSON keys	fix-root-causes on the observation method	scripts/api_playtest.py walk_forbidden	VERIFIED key check green

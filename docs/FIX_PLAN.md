@@ -21,9 +21,11 @@ Do phases in order. Each phase ends with `scripts/verify_alibi.sh` green plus th
 **Why.** In-memory `mock_api` is why "the app never actually worked" across demos. Restart kills the case.
 
 - Land `backend/app/main.py` + routers per `docs/INTERFACES.md` / PLAN §9.
-- SQLite `alibi.db`, snapshot per turn before response (PLAN §2.5).
-- Wire Watson notebook into `GameState.notebook` (stop hardcoding `null`).
+- SQLite `alibi.db`, call `snapshot.take` and write it on every turn before the response (PLAN §2.5).
+- Gate `/debug` on `DEBUG_PANEL=1`.
+- Wire Watson notebook into `GameState.notebook` (stop hardcoding `null`; call `watson.update`).
 - WebSocket fan-out for turn / confront / ticker / notebook events.
+- Make missing-key Gemini resolve to scripted (or map `NotConfigured` → `LLMUnavailable`) so `LLM_MODE=gemini` never stalls a turn.
 - Implement or clearly hide: rewind, settings/api-key, generate/import/export.
 - Delete or demote `mock_api` once parity exists.
 - Add `test_api.py` + `test_persistence.py` (PLAN §15).

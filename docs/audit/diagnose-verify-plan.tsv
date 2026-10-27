@@ -8,3 +8,4 @@ ts	phase	decision	why	evidence	result
 2026-10-27T00:14:14Z	plan	phased FIX_PLAN 0-7 boot then persist then fun then art	foundational-thinking: scaffold/verify before features	docs/FIX_PLAN.md	drafted
 2026-10-27T00:14:33Z	verify	scripts/verify_alibi.sh --skip-start all gates passed	prove-it-works on the harness itself	/opt/cursor/artifacts/smoke/verify-alibi.log	VERIFIED
 2026-10-27T00:15:16Z	verify	supersede api-smoke false FAIL: solution substring was dissolution; api_playtest now checks JSON keys	fix-root-causes on the observation method	scripts/api_playtest.py walk_forbidden	VERIFIED key check green
+2026-10-27T00:16:16Z	inventory	merged backend+frontend map findings into BROKEN/FIX_PLAN (debug gate, snapshot unused, gemini-no-key stall, speaker-0, confront UI, FOUNDATION stale)	subagent maps added concrete file-level gaps	docs/BROKEN.md items 23-30	updated

@@ -56,10 +56,19 @@ Evidence under `/opt/cursor/artifacts/smoke/` (and committed pointers below).
 
 ### Isolation / judge story (partial)
 
-20. **Judge panel works** on backtick / F9 against `/debug` (`smoke/browser/09-judge-panel.png`). Good for the Tapia proof story.
+20. **Judge panel works** on backtick against `/debug` (`smoke/browser/09-judge-panel.png`). Good for the Tapia proof story. The UI shows an F9 keycap but Investigation only listens for backtick (and A for Accuse). F9 does nothing.
 21. **Cross-contamination field is always empty** in mock debug (`"cross_contamination": []` hardcoded). Not computed.
 22. **Reveal reel works on Debrief** after accuse (`smoke/browser/10-debrief.png`).
+23. **`DEBUG_PANEL` is ignored.** Mock `/debug` always returns secret text, heard logs, and internal reasoning. PLAN §9 says that route should 404 unless `DEBUG_PANEL=1`.
+24. **Snapshots are never stored on turns.** `engine/snapshot.py` exists and unit tests call `take`, but `mock_api` never persists a snapshot. Restart resume is impossible even if you kept the process id.
+25. **`LLM_MODE=gemini` without a key does not fall back.** `resolve_mode("gemini")` still returns gemini. `Director` only catches exceptions named `LLMUnavailable`. A missing-key `NotConfigured` from the client propagates and stalls the turn. Measured from `performer.py` / `director.py` exception-name branch.
+26. **Author and Checker modules exist** (`agents/author.py`, `checker.py`) but have no HTTP job surface and no PersonaHub sample file. Generation UI is ahead of the server.
+27. **Dialogue log ignores speaker colors.** Every row hardcodes `speaker-0` in `Investigation.tsx`. `speakerIndex` exists on the store and is unused.
+28. **Confront UI is tab-only.** Store has `interject` and `justWatch`. No dual-portrait confrontation stage, no interject control, no “Just watch”. Tapia slide 3 left panel is not built.
+29. **`ComposureMeter` is never mounted.** Sensors store `start()` is never called from screens. Camera consent only flips a flag.
+30. **`frontend/FOUNDATION.md` is stale.** It still calls Investigation, Debrief, and Judge placeholders. Those screens are real (Archive is the remaining thin placeholder). Do not rebuild them from that doc.
 
 ## False alarms ruled out
 
 - Substring `"solution"` in game JSON was a hit on **"dissolution"** in evidence text, not a leaked `solution` key. Verification must check JSON keys, not substrings.
+- The painted JPEGs in `frontend/public/art/` are full mockup screens used as blurred backdrops. They are not clickable widgets. Live UI is React + procedural pixels on top.

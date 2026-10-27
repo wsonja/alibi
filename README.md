@@ -49,8 +49,12 @@ thresholds, and some only unlock once you hold specific evidence. Accuse when yo
 
 ```bash
 make test             # backend unit tests (scripted mode, no network)
+make verify           # boot gates + API playtest + redteam + frontend test/build
 cd frontend && npx tsc --noEmit -p tsconfig.app.json && npm run build
 ```
+
+Known gaps and the repair order live in `docs/BROKEN.md` and `docs/FIX_PLAN.md`. Agents should use the
+`verify-alibi` skill (`.cursor/skills/verify-alibi/SKILL.md`) before claiming the game works.
 
 Layout: `backend/app/engine` (deterministic director: stress, unlocks, confrontations, rumors, world, scoring,
 debrief), `backend/app/agents` (Gemini client, suspect prompts, scripted performer, leak guard, Watson notebook,

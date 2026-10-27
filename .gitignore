@@ -10,3 +10,5 @@ dist/
 .ruff_cache/
 frontend/dist/
 .DS_Store
+.verify-alibi/
+.audit/

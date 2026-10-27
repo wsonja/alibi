@@ -50,3 +50,10 @@
 - Case generation answers 503 (no Gemini) / 501 (Author not built); `POST /tts` answers 501.
 - `verify_alibi.sh` gate 5 restarts uvicorn and diffs `GET /api/games/{id}`; a started backend uses
   `.verify-alibi/verify.db`. All 7 gates pass; 279 pytest.
+
+## 2026-10-27 — FIX_PLAN Phase 4: deduction boards
+- Investigation right column is `NotebookPanel` (Notes, Alibi Board, Evidence, Graph). Accuse stays under it.
+- Notes reads `GameState.notebook` (`per_suspect`, `suggested_next`, sticky). A null notebook still shows the last six turns.
+- Alibi Board columns are the hours a claim covers. A public timeline hour is a column only when it falls inside a claim, so empty hours do not push the chips off a narrow panel. A chip is amber when both sides of a contradiction are the same suspect, red when the other side is someone else or a clue. A claim that only shares a clock with another claim stays plain. Identical claims are shown once.
+- `GameState` has no relationship edges. The investigation graph is the cast plus confrontation lines the player heard (`PublicTurn` actor/other/spoken). Debrief `RumorMap` draws `rumor_map` with the same React Flow frame. Private edges animate. Confrontation edges are red.
+- Evidence tab sets `useSensors.evidenceTabOpen` so a notebook gaze maps to evidence only while that tab is open.

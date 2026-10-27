@@ -13,6 +13,7 @@ import { ButtonLink, Button } from '@/components/common/Button'
 import { ErrorNotice } from '@/components/common/ErrorNotice'
 import { Marquee } from '@/components/common/Marquee'
 import { SectionTitle } from '@/components/common/SectionTitle'
+import { RumorMap } from '@/components/debrief/RumorMap'
 import { PixelPortrait } from '@/components/portrait/PixelPortrait'
 import { cn } from '@/lib/cn'
 import { useGame } from '@/store/game'
@@ -226,6 +227,8 @@ export function Debrief() {
           ))}
         </div>
       </section>
+
+      <RumorMap cast={d.cast} edges={d.rumor_map ?? []} />
 
       <section className="parchment mt-4">
         <SectionTitle as="h2" align="left">

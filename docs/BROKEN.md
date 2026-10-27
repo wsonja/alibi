@@ -60,7 +60,7 @@ route works; case generation itself is still unbuilt).
 
 ### Features promised in PLAN / Tapia deck, not shipped
 
-14. **No Alibi Board, Relationship Graph, or Rumor Map UI.** `[code]` `@xyflow/react` unused under `frontend/src`.
+14. **FIXED 2026-10-27. Alibi Board, Relationship Graph, and Rumor Map.** Notebook tabs on Investigation. Rumor map on Debrief. `@xyflow/react` draws both graphs. Case relationships are not on `GameState`, so the investigation graph uses confrontation lines the player heard.
 15. **Sensors / composure / voice / heartbeat are placeholders.** `[code]` files say so; `ComposureMeter` never mounted; `useSensors.start` never called from screens.
 16. **Archive is a thin list.** `[code]` `Archive.tsx` still says placeholder. No campaign map.
 17. **Character art is procedural pixel portraits.** `[runtime]` screenshots + `[code]` `pixelPortrait.ts`. Room JPGs in `public/art/` are painted backdrops (full fake UIs under a blur), not clickable widgets.

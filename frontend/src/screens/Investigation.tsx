@@ -14,11 +14,12 @@ import { Modal } from '@/components/common/Modal'
 import { SceneThumb } from '@/components/common/SceneThumb'
 import { SectionTitle } from '@/components/common/SectionTitle'
 import JudgePanel from '@/components/judge/JudgePanel'
+import { NotebookPanel } from '@/components/notebook/NotebookPanel'
 import { PixelPortrait } from '@/components/portrait/PixelPortrait'
 import { cn } from '@/lib/cn'
 import { presetFromSetting } from '@/lib/presets'
 import { clockPhase, formatClock12 } from '@/lib/clock'
-import { describeTurn, selectPrimarySuspect, selectSecondarySuspect, speakerIndex, turnsForSuspect, useGame } from '@/store/game'
+import { selectPrimarySuspect, selectSecondarySuspect, speakerIndex, turnsForSuspect, useGame } from '@/store/game'
 import { useUI, type ActionTab } from '@/store/ui'
 import { speak } from '@/voice'
 
@@ -184,8 +185,6 @@ export function Investigation() {
     const el = logRef.current
     if (el) el.scrollTop = el.scrollHeight
   }, [logRows.length])
-
-  const workingNotes = useMemo(() => (game ? game.turns.slice(-6).map((t) => describeTurn(t, game.cast)).filter(Boolean).reverse() : []), [game])
 
   const presentEvidence = useMemo(() => (game ? [...game.evidence].sort((a, b) => evidenceRank(a) - evidenceRank(b)) : []), [game])
 
@@ -539,36 +538,8 @@ export function Investigation() {
           </div>
         </div>
 
-        {/* RIGHT — notebook + accuse */}
-        <div className="parchment flex flex-col gap-3 min-w-0">
-          <SectionTitle as="h2" align="left">
-            Notebook
-          </SectionTitle>
-          <ul className="flex flex-col gap-2 list-none p-0 m-0">
-            {game.evidence.map((e) => (
-              <li key={e.id} className={cn(e.state !== 'examined' && e.state !== 'known' ? 'hidden' : '')} style={{ opacity: e.state === 'examined' ? 1 : 0.55 }}>
-                <div className="flex items-start gap-2">
-                  <EvidenceIcon name={e.name} description={e.description} size={18} color="var(--wood-600)" />
-                  <div className="min-w-0">
-                    <div style={{ fontWeight: 700, fontSize: 13 }}>{e.name}</div>
-                    <div style={{ fontSize: 12 }}>{e.state === 'examined' && e.examined_detail ? e.examined_detail : e.description}</div>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-
-          <hr className="hr-wood" style={{ margin: '4px 0' }} />
-          <h3 className="label-caps" style={{ margin: 0 }}>
-            Working notes
-          </h3>
-          <ul className="flex flex-col gap-1 list-none p-0 m-0" style={{ fontSize: 13 }}>
-            {workingNotes.length === 0 ? <li className="ink-soft">Nothing yet. Ask someone something.</li> : null}
-            {workingNotes.map((n, i) => (
-              <li key={i}>{n}</li>
-            ))}
-          </ul>
-
+        <div className="flex flex-col gap-3 min-w-0">
+          <NotebookPanel cast={game.cast} evidence={game.evidence} turns={game.turns} notebook={game.notebook} timeline={game.case.timeline_public} />
           <div className="mt-auto">
             <Button variant="red" size="lg" block onClick={() => setAccuseOpen(true)}>
               ⚖ Accuse

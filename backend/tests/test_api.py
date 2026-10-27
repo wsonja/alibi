@@ -85,6 +85,15 @@ def test_debug_and_case_export_exist_only_with_debug_panel(make_api):
     assert exported["id"] == CASE and exported["solution"]["murderer"] in SUSPECTS
 
 
+def test_cross_contamination_flags_another_suspects_secret_inside_a_prompt(case, world):
+    from app.services.game_service import cross_contamination
+
+    secret = next(s for s in case["suspects"] if s["id"] == "pell")["secrets"][0]
+    assert cross_contamination(case, world) == []
+    world["suspects"]["ada"]["last_system_blocks"] = [f"You are Ada Finch. {secret['text']}"]
+    assert cross_contamination(case, world) == [{"suspect_id": "ada", "found": f"pell:{secret['id']}"}]
+
+
 def test_watson_writes_the_notebook_after_every_second_turn_from_what_was_said(make_api):
     with make_api() as c:
         gid = new_game(c)

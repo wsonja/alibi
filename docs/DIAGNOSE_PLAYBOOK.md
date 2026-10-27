@@ -35,4 +35,4 @@ High for verification and inventory (those are the product of this run). Medium 
 
 ## Audit trail
 
-`.audit/diagnose-verify-plan.tsv` (committed for reviewer trust).
+Committed at `docs/audit/diagnose-verify-plan.tsv`. Local working copy may also live under `.audit/` (gitignored).

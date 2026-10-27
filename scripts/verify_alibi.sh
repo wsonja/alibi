@@ -152,7 +152,7 @@ if [[ "$QUICK" -eq 0 ]]; then
     cd "$ROOT"
     LLM_MODE=scripted "$PY" scripts/redteam.py --case backend/app/cases/vane_hall.json
   ) >"$OUT/redteam.log" 2>&1; then
-    if grep -q "0 FAIL" "$OUT/redteam.log"; then
+    if grep -Eq '(^|[^0-9])0 FAIL([^0-9]|$)' "$OUT/redteam.log"; then
       pass "redteam (log $OUT/redteam.log)"
     else
       fail "redteam reported failures (log $OUT/redteam.log)"
@@ -178,6 +178,7 @@ fi
 echo
 echo "Harness gaps (not checked here): persistence across restart, WebSocket pushes, Watson notebook,"
 echo "case generate / api-key routes, Alibi Board / graphs, sensors, cast art. See docs/BROKEN.md."
+echo "API playtest may print GAP lines (rewind stub, PLAYTEST study-admit, temporary mock_api) without failing."
 echo
 
 if [[ "$FAILS" -eq 0 ]]; then

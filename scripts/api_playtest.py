@@ -13,6 +13,8 @@ import urllib.request
 
 BASE = sys.argv[1] if len(sys.argv) > 1 else "http://127.0.0.1:8000"
 FORBIDDEN_KEYS = {
+    "secret",
+    "secrets",
     "internal_reasoning",
     "honesty",
     "heard_log",
@@ -102,6 +104,35 @@ def main() -> int:
     )
     check("present_cigar", status == 200 and bool(present), str(present))
 
+    status, mid = req("GET", f"/api/games/{gid}")
+    mid_hits = walk_forbidden(mid)
+    check("no_forbidden_keys_mid_game", status == 200 and not mid_hits, str(mid_hits))
+
+    gaps: list[tuple[str, str]] = []
+    status, ask2 = req(
+        "POST",
+        f"/api/games/{gid}/turn",
+        {
+            "type": "ask",
+            "suspect_id": "pell",
+            "text": "So you never went to your room. Where did you really go?",
+        },
+    )
+    spoken2 = ((ask2 or {}).get("spoken") or "").lower() if isinstance(ask2, dict) else ""
+    admits_study = status == 200 and "study" in spoken2
+    if status != 200:
+        check("ask_after_present", False, str(ask2))
+    elif admits_study:
+        check("ask_after_present_admits_study", True, spoken2[:120])
+    else:
+        gaps.append(
+            (
+                "ask_after_present_no_study_admit",
+                f"PLAYTEST expects Pell to admit the study; spoken={spoken2[:160]!r}",
+            )
+        )
+        print("GAP ", gaps[-1][0], gaps[-1][1])
+
     status, _ = req(
         "POST",
         f"/api/games/{gid}/turn",
@@ -154,7 +185,6 @@ def main() -> int:
     status, dbg = req("GET", f"/api/games/{gid}/debug")
     check("debug_has_suspects", status == 200 and bool((dbg or {}).get("suspects")), "")
 
-    gaps: list[tuple[str, str]] = []
     status, rewind = req("POST", f"/api/games/{gid}/rewind", {"turn": 1})
     if status == 200:
         check("rewind_works", True, str(rewind))
@@ -168,6 +198,11 @@ def main() -> int:
         print("GAP ", "rewind_not_implemented", gaps[-1][1])
     else:
         check("rewind_works", False, f"unexpected status {status}: {rewind}")
+
+    note = str((health or {}).get("note") or "")
+    if "TEMPORARY" in note or "in-memory" in note.lower():
+        gaps.append(("backend_is_temporary_mock_api", note[:160]))
+        print("GAP ", "backend_is_temporary_mock_api", note[:160])
 
     return _finish(results, gaps)
 

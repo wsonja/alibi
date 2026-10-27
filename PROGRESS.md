@@ -25,4 +25,4 @@
 - Measured: API Vane Hall loop works; 261 pytest + 27 vitest + redteam 120/120 pass; UI Setup→Briefing→Ask→Search→Judge→Debrief render.
 - Broken inventory in `docs/BROKEN.md` (no persistent `main.py`, WS noop, Watson null, generate/api-key 404, rewind 501, boards/sensors missing, cast art vs Tapia gap).
 - Added `.cursor/skills/verify-alibi`, `scripts/verify_alibi.sh`, `scripts/api_playtest.py`, `docs/FIX_PLAN.md`, `docs/DIAGNOSE_PLAYBOOK.md`.
-- Decision trail: `.audit/diagnose-verify-plan.tsv` (local; not committed).
+- Decision trail: `docs/audit/diagnose-verify-plan.tsv` (committed).

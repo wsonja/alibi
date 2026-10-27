@@ -12,9 +12,8 @@ Do phases in order. Each phase ends with `scripts/verify_alibi.sh` green plus th
 **Why first.** Foundational. Nothing else is re-runnable until `make setup` works on a clean machine.
 
 - Install docs: require Python 3.12 + `python3-venv` + Node 20.
-- Makefile `setup`: create venv, `pip install -r requirements`, `npm install --legacy-peer-deps`, copy `.env.example`.
-- Optional: pin `openapi-typescript` or TypeScript so peers resolve without a flag.
-- Acceptance: fresh clone → `make setup` → `make backend` + `make frontend` → health 200 and Setup renders.
+- Makefile `setup` already guards `ensurepip` and uses `npm install --legacy-peer-deps` (partial). Finish by pinning `openapi-typescript` or TypeScript so peers resolve without hiding the whole tree behind that flag.
+- Acceptance: fresh clone → `make setup` → `make backend` + `make frontend` → health 200 and Setup renders. Re-run setup on a clean tree after the pin.
 
 ## Phase 1. Persist the real backend
 
@@ -35,7 +34,7 @@ Do phases in order. Each phase ends with `scripts/verify_alibi.sh` green plus th
 
 **Why.** Scripted mode must teach the game when Gemini is down. Today Pell never "admits the study" on the PLAYTEST line.
 
-- Harden `agents/scripted.py` against `PLAYTEST.md` beats (cigar → study admit, Ada a3 after two flatters, framing burn).
+- Harden `agents/scripted.py` against `PLAYTEST.md` beats (cigar → study admit, Ada a3 after two flatters, framing burn). Keep isolation: scripted may only use that suspect's own case dict and state, never the solution block or another suspect's secrets (`CLAUDE.md`).
 - Accuse modal: allow method picks from `known` **or** `examined` (brandy starts known).
 - Fix dialogue `speaker-N` classes; listen for F9 as well as backtick; mount confront dual-portrait + interject.
 - Surface ticker / off-screen gossip text so the house feels alive.

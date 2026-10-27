@@ -13,3 +13,4 @@ ts	phase	decision	why	evidence	result
 2026-10-27T00:19:11Z	trail-review	acted on Opus audit: labeled evidence kinds, restart-wipe proof, GAP for study-admit, secret in FORBIDDEN_KEYS, trail path docs	cross-model Attention flags	docs/BROKEN.md + scripts/api_playtest.py	addressed
 2026-10-27T00:20:56Z	phase0	pinned typescript ~5.9; npm install works without legacy-peer-deps; README notes python3-venv	Phase 0 acceptance: peer conflict root cause	frontend/package.json	done
 2026-10-27T00:37:30Z	browser-smoke	Begin Manor reaches briefing in <1s; computerUse hang report not reproduced (GENERATE lines only show on generate path)	prove-it-works replay	/opt/cursor/artifacts/smoke/browser/repro-begin-ok.png	false alarm for hand-written Begin
+2026-10-27T00:56:59Z	phase3	api-key localhost-only; redteam 120/0; leak guard+fallback already from Phase 1	Phase 3 isolation acceptance on scripted path	scripts/redteam.py + settings.py	done

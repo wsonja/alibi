@@ -46,10 +46,11 @@ Do phases in order. Each phase ends with `scripts/verify_alibi.sh` green plus th
 
 **Why.** Tapia pitch is multi-agent secrets under pressure.
 
-- Gemini key via `POST /settings/api-key` writing `backend/.env` only.
-- Full Leak Guard (regex ∪ model) with regenerate / fallback (PLAN §7.4).
-- `make redteam` green in scripted **and** a recorded gemini sample run.
-- Judge Context Boxes show per-suspect system blocks with no foreign secrets.
+- Gemini key via `POST /settings/api-key` writing `backend/.env` only (loopback clients only).
+- Full Leak Guard (regex ∪ model) with regenerate / fallback (PLAN §7.4) — wired in Phase 1 `game_service` + Director.
+- Missing-key Gemini falls back per turn (`NotConfigured` → `LLMUnavailable`).
+- `make redteam` green in scripted (120/120 on Vane Hall). Live Gemini sample still needs a real key in `.env`.
+- Judge Context Boxes show per-suspect system blocks with no foreign secrets (debug gated).
 - Acceptance: red-team 0 FAIL; human judge confirms a locked secret stayed locked under prompts 1–15.
 
 ## Phase 4. Boards that make deduction tactile

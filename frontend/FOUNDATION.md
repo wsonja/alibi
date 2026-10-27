@@ -13,10 +13,11 @@ src/
   components/common/   Button Modal Placard Panel SectionTitle Sticky Marquee RoomBackdrop SceneThumb
                        Toast(er) TypewriterProgress KeyCap ClockFace ApiKeyModal EvidenceIcon ErrorNotice
   components/portrait/ PixelPortrait
-  components/sensors/  ComposureMeter ConsentGate        ← placeholders, sensors lane replaces
-  components/judge/    JudgePanel                        ← placeholder, judge lane replaces
-  sensors/index.ts  voice/index.ts  audio/heartbeat.ts   ← placeholders (same exports), later lanes replace
-  screens/  NewCase Briefing  |  Investigation Debrief Archive ← placeholders (keep the default export)
+  components/sensors/  ComposureMeter ConsentGate        ← placeholders (not mounted yet)
+  components/judge/    JudgePanel                        ← live (backtick / F9)
+  sensors/index.ts  voice/index.ts  audio/heartbeat.ts   ← sensors/heartbeat still stubs; voice play uses speechSynthesis
+  screens/  NewCase Briefing Investigation Debrief are live play screens
+            Archive is a thin list (campaign map still TODO)
   routes.tsx  App.tsx  main.tsx
 ```
 

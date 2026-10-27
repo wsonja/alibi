@@ -26,3 +26,27 @@
 - Broken inventory in `docs/BROKEN.md` (no persistent `main.py`, WS noop, Watson null, generate/api-key 404, rewind 501, boards/sensors missing, cast art vs Tapia gap).
 - Added `.cursor/skills/verify-alibi`, `scripts/verify_alibi.sh`, `scripts/api_playtest.py`, `docs/FIX_PLAN.md`, `docs/DIAGNOSE_PLAYBOOK.md`.
 - Decision trail: `docs/audit/diagnose-verify-plan.tsv` (committed).
+
+## 2026-10-27 — FIX_PLAN Phase 1: persistent backend
+- `backend/app/main.py` + config/db/models/schemas/routers/services replace `scripts/mock_api.py` (now deprecated,
+  started by nothing). `make backend` / `make dev` run `app.main:app`; SQLite in `backend/alibi.db`.
+- Commit-or-discard turns: each action runs the Director on a deep copy of the committed world, writes turn rows,
+  snapshot, guard events and the suspect/evidence projection in one transaction, then adopts the copy. A failed
+  action leaves the game untouched; GET and /debug never see half a turn and never wait on a running LLM turn.
+- `turns.public` stores the PublicTurn per row so `GameState` is identical after a restart. The Director RNG is
+  seeded per game and turn, so a restarted server rolls framing actions and tickers exactly as one that never
+  stopped (`test_persistence.py` compares the two; an unseeded RNG fails it every run).
+- Watson runs as a FastAPI background task after every 2nd player turn and every confrontation, from public turns,
+  cast, evidence, locations and the public timeline only. A rewind bumps a branch counter so a late notebook from the
+  old branch is dropped.
+- Rewind archives rows after the chosen turn (turns, guard events, notebook entries, accusations) and restores that
+  snapshot; a closed case reopens.
+- Export is 404 unless `DEBUG_PANEL=1`. INTERFACES §6 calls it a share seed, but it carries the solution and PLAN
+  §2.7 (non-negotiable) lets secrets out only behind that flag. No screen calls export yet.
+- `call_tool` maps a missing key (`NotConfigured`) to `LLMUnavailable`, so `LLM_MODE=gemini` without a key falls back
+  to scripted per turn instead of failing.
+- WS sockets get the current clock on connect (a reconnecting client resyncs). `pending` is not sent; the client
+  already shows its own pending state.
+- Case generation answers 503 (no Gemini) / 501 (Author not built); `POST /tts` answers 501.
+- `verify_alibi.sh` gate 5 restarts uvicorn and diffs `GET /api/games/{id}`; a started backend uses
+  `.verify-alibi/verify.db`. All 7 gates pass; 279 pytest.

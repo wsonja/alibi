@@ -5,9 +5,10 @@ suspects, search rooms, present evidence, use tactics (bluff / flatter / threate
 room together, then accuse. Suspects run on Google Gemini when a key is present, or on a built-in scripted performer
 when it isn't, so the game is playable offline too.
 
-**Status: demo MVP.** Setup, Briefing, Investigation and Case Closed screens over a temporary in-memory API
-(`scripts/mock_api.py`) that runs the real game engine. The persistent FastAPI backend (`backend/app/main.py`), Judge
-panel, sensors and campaign archive are in progress (see `PLAN.md`, `docs/INTERFACES.md`, `PROGRESS.md`).
+**Status: demo MVP.** Setup, Briefing, Investigation and Case Closed screens over a persistent FastAPI backend
+(`backend/app/main.py`, SQLite in `backend/alibi.db`): games survive a server restart, and rewind, the Watson notebook
+and WebSocket updates work. Case generation, sensors and the campaign archive are in progress (see `PLAN.md`,
+`docs/INTERFACES.md`, `PROGRESS.md`). `make reset-db` wipes saved games.
 
 ## Run it
 

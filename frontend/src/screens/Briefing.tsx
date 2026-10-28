@@ -11,14 +11,13 @@ import { ClockFace } from '@/components/common/ClockFace'
 import { ErrorNotice } from '@/components/common/ErrorNotice'
 import { EvidenceIcon } from '@/components/common/EvidenceIcon'
 import { Marquee } from '@/components/common/Marquee'
-import { SceneThumb } from '@/components/common/SceneThumb'
+import { BackdropThumb } from '@/components/common/BackdropThumb'
 import { SectionTitle } from '@/components/common/SectionTitle'
 import { Sticky } from '@/components/common/Sticky'
 import { Modal } from '@/components/common/Modal'
 import { PaintedPortrait } from '@/components/portrait/PaintedPortrait'
 import { cn } from '@/lib/cn'
 import { formatClock12 } from '@/lib/clock'
-import { presetFromSetting } from '@/lib/presets'
 import { deriveCrimeScene, deriveDeathWindow, extractAlibi, numberWord } from '@/lib/text'
 import { useGame } from '@/store/game'
 
@@ -112,7 +111,6 @@ export function Briefing() {
   const death = useMemo(() => (ready ? deriveDeathWindow(ready.case.timeline_public, ready.case.victim.cause_of_death_public) : null), [ready])
   const scene = useMemo(() => (ready ? deriveCrimeScene(ready.locations, ready.evidence, ready.case.briefing) : null), [ready])
   const initialEvidence = useMemo(() => (ready ? ready.evidence.filter((e) => e.state === 'known' || e.state === 'examined') : []), [ready])
-  const preset = ready ? presetFromSetting(ready.case.setting) : 'other'
   const n = ready?.cast.length ?? 0
 
   return (
@@ -190,7 +188,7 @@ export function Briefing() {
                   </div>
                 </div>
                 <div className="lacquer lacquer--soft flex items-center gap-3">
-                  <SceneThumb preset={preset} className="rounded" style={{ width: 96, height: 60, flex: '0 0 auto', border: '1px solid var(--gold-500)' }} />
+                  <BackdropThumb locationId={scene?.id} className="rounded" style={{ width: 96, height: 60, flex: '0 0 auto', border: '1px solid var(--gold-500)' }} title={scene?.name} />
                   <div className="min-w-0">
                     <span className="label-caps label-caps--gold">Crime scene: {scene?.name ?? 'unknown'}</span>
                     <div>
@@ -203,7 +201,7 @@ export function Briefing() {
                 <Modal open={sceneOpen && !!scene} onClose={() => setSceneOpen(false)} title={`Crime scene: ${scene?.name ?? ''}`} width={560}>
                   {scene ? (
                     <div className="flex flex-col gap-3">
-                      <SceneThumb preset={preset} className="rounded" style={{ width: '100%', height: 200, border: '1px solid var(--gold-500)' }} />
+                      <BackdropThumb locationId={scene.id} className="rounded" style={{ width: '100%', height: 200, border: '1px solid var(--gold-500)' }} title={scene.name} />
                       <p style={{ margin: 0, fontSize: 17 }}>{scene.description}</p>
                       {ready.evidence.filter((e) => e.location === scene.id && e.state !== 'hidden').length ? (
                         <p className="muted" style={{ margin: 0, fontSize: 14 }}>

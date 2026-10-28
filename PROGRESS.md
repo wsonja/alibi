@@ -72,3 +72,8 @@
   UI uses label-free portraits only. Installed webp under `frontend/public/portraits/vane_hall/`.
 - `PaintedPortrait` prefers pack art (avatar ≤64px, bust otherwise); missing emotion → `_neutral.webp`; else pixel fallback.
 - Briefing / Investigation / Accuse / Debrief switched to PaintedPortrait. Backdrops still pending owner zip.
+
+## 2026-10-28 — Phase 5a: Vane Hall backdrops
+- Installed concept-board webps under `frontend/public/backdrops/{landscape_16x9,ultrawide_21x9,mobile_9x16,scene_originals}/`.
+- `RoomBackdrop` uses responsive `<picture>`; Investigation follows the selected suspect's `last_seen_location`.
+- Crime-scene / search modals use `BackdropThumb` (scene_originals). PNG sources omitted from the repo (webp only).

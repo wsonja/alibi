@@ -11,13 +11,12 @@ import { ErrorNotice } from '@/components/common/ErrorNotice'
 import { EvidenceIcon } from '@/components/common/EvidenceIcon'
 import { Marquee } from '@/components/common/Marquee'
 import { Modal } from '@/components/common/Modal'
-import { SceneThumb } from '@/components/common/SceneThumb'
+import { BackdropThumb } from '@/components/common/BackdropThumb'
 import { SectionTitle } from '@/components/common/SectionTitle'
 import JudgePanel from '@/components/judge/JudgePanel'
 import { NotebookPanel } from '@/components/notebook/NotebookPanel'
 import { PaintedPortrait } from '@/components/portrait/PaintedPortrait'
 import { cn } from '@/lib/cn'
-import { presetFromSetting } from '@/lib/presets'
 import { clockPhase, formatClock12 } from '@/lib/clock'
 import { selectPrimarySuspect, selectSecondarySuspect, speakerIndex, turnsForSuspect, useGame } from '@/store/game'
 import { useUI, type ActionTab } from '@/store/ui'
@@ -551,7 +550,7 @@ export function Investigation() {
       <Modal open={!!searchResult} onClose={() => setSearchResult(null)} title={`Searched: ${game.locations.find((l) => l.id === searchResult?.locationId)?.name ?? ''}`} width={560}>
         {searchResult ? (
           <div className="flex flex-col gap-3">
-            <SceneThumb preset={presetFromSetting(game.case.setting)} className="rounded" style={{ width: '100%', height: 200, border: '1px solid var(--gold-500)' }} />
+            <BackdropThumb locationId={searchResult.locationId} className="rounded" style={{ width: '100%', height: 200, border: '1px solid var(--gold-500)' }} />
             <p style={{ margin: 0, fontSize: 16, color: 'var(--ink)' }}>{game.locations.find((l) => l.id === searchResult.locationId)?.description}</p>
             {searchResult.found.length ? (
               <div className="flex flex-col gap-2">

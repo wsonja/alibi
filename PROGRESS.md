@@ -84,3 +84,8 @@
 - Camera was a no-op: consent never called `start()`, face pipeline was a stub, ComposureMeter missing from
   Investigation. Consent checkbox now requests the webcam; MediaPipe FaceLandmarker samples composure/gaze;
   Investigation shows ComposureMeter and restarts the camera if consent was saved.
+
+## 2026-10-28 — MediaPipe CPU fallback + verify skill
+- GPU-only FaceLandmarker threw `kGpuService` / `emscripten_webgl_create_context() returned error 0`.
+  `createLandmarkerWithFallback` tries GPU then CPU; vitest covers the WebGL failure path.
+- `verify-alibi` skill + harness: asset gate, sensor vitest in unit gate, manual camera steps documented.

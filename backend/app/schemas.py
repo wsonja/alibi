@@ -64,6 +64,8 @@ class InterjectRequest(_Request):
 
 class SearchRequest(_Request):
     location_id: str
+    # When set, examine only this clue (room click-to-collect). Omit to examine the whole room.
+    evidence_id: str | None = None
 
 
 class AccuseRequest(_Request):
@@ -139,11 +141,18 @@ class PublicEvidence(BaseModel):
     examined_detail: str | None = None
 
 
+class ClueSpot(BaseModel):
+    id: str
+    label: str | None = None
+    collected: bool = False
+
+
 class PublicLocation(BaseModel):
     id: str
     name: str
     description: str
     searched: bool
+    spots: list[ClueSpot] = Field(default_factory=list)
 
 
 class PublicTurn(BaseModel):
@@ -281,6 +290,7 @@ class InterjectResponse(BaseModel):
 class SearchResponse(BaseModel):
     evidence: list[PublicEvidence]
     clock: str
+    spots: list[ClueSpot] = Field(default_factory=list)
 
 
 class RetryResponse(BaseModel):

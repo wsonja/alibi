@@ -530,14 +530,20 @@ class GameService:
         rt.interject = text.strip() or None
         return {"ok": True, "queued": rt.interject is not None}
 
-    async def search(self, game_id: str, location_id: str, background: BackgroundTasks) -> dict:
+    async def search(
+        self, game_id: str, location_id: str, background: BackgroundTasks, evidence_id: str | None = None,
+    ) -> dict:
         rt = await self.runtime(game_id)
         async with rt.lock:
-            outcome = await self._run(rt, lambda d: d.search(location_id))
+            outcome = await self._run(rt, lambda d: d.search(location_id, evidence_id))
             await self.hub.send(game_id, "turn_result", outcome["public_turns"][0])
             await self._broadcast_world(rt, outcome)
             self._schedule_notebook(rt, "search", background)
-        return {"evidence": outcome["search"]["evidence"], "clock": outcome["clock"]}
+        return {
+            "evidence": outcome["search"]["evidence"],
+            "clock": outcome["clock"],
+            "spots": outcome["search"].get("spots") or [],
+        }
 
     async def accuse(self, game_id: str, req: dict) -> dict:
         rt = await self.runtime(game_id)

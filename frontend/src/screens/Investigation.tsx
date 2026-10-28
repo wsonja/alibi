@@ -10,11 +10,11 @@ import { ClockFace } from '@/components/common/ClockFace'
 import { ErrorNotice } from '@/components/common/ErrorNotice'
 import { EvidenceIcon } from '@/components/common/EvidenceIcon'
 import { Modal } from '@/components/common/Modal'
-import { BackdropThumb } from '@/components/common/BackdropThumb'
 import { SectionTitle } from '@/components/common/SectionTitle'
 import JudgePanel from '@/components/judge/JudgePanel'
 import { NotebookPanel } from '@/components/notebook/NotebookPanel'
 import { PaintedPortrait } from '@/components/portrait/PaintedPortrait'
+import { RoomExplore } from '@/components/room/RoomExplore'
 import { ComposureMeter } from '@/components/sensors/ComposureMeter'
 import { cn } from '@/lib/cn'
 import { clockPhase, formatClock12 } from '@/lib/clock'
@@ -148,7 +148,8 @@ export function Investigation() {
   }, [voiceOn, game])
 
   const [askText, setAskText] = useState('')
-  const [searchResult, setSearchResult] = useState<{ locationId: string; found: PublicEvidence[] } | null>(null)
+  const [exploringId, setExploringId] = useState<string | null>(null)
+  const [lastFound, setLastFound] = useState<PublicEvidence | null>(null)
   const [selectedEvidence, setSelectedEvidence] = useState<string | null>(null)
   const [selectedTactic, setSelectedTactic] = useState<Tactic | null>(null)
   const [tacticText, setTacticText] = useState('')
@@ -228,8 +229,8 @@ export function Investigation() {
       await confront(t, 3)
     } else if (tab === 'search') {
       if (!selectedLocation) return
-      const res = await search(selectedLocation)
-      if (res) setSearchResult({ locationId: selectedLocation, found: res.evidence ?? [] })
+      setLastFound(null)
+      setExploringId(selectedLocation)
     }
   }
 
@@ -240,6 +241,8 @@ export function Investigation() {
     (tab === 'tactic' && !selectedTactic) ||
     (tab === 'confront' && (!confrontTopic.trim() || !selection.secondary)) ||
     (tab === 'search' && !selectedLocation)
+
+  const exploring = exploringId ? game.locations.find((l) => l.id === exploringId) ?? null : null
 
   const ticker = game.ticker[game.ticker.length - 1]
 
@@ -284,16 +287,19 @@ export function Investigation() {
                   </button>
                   <button
                     type="button"
-                    className="btn btn-black btn--sm"
-                    style={{ flex: '0 0 auto', padding: '4px 8px' }}
-                    title="Set as confrontation partner"
-                    aria-label={`Set ${s.name} as the second suspect for confrontation`}
+                    className={cn('btn-confront', selection.secondary === s.id && 'is-active')}
+                    title="Confront — put them in a room with the selected suspect"
+                    aria-label={`Confront: pick ${s.name} to face the other suspect`}
                     onClick={(e) => {
                       e.stopPropagation()
                       select(s.id, true)
+                      setTab('confront')
                     }}
                   >
-                    ⚔
+                    <span className="btn-confront__icon" aria-hidden="true">
+                      ⚔
+                    </span>
+                    Confront
                   </button>
                 </li>
               )
@@ -523,10 +529,10 @@ export function Investigation() {
                 <p className="muted" style={{ margin: 0, fontSize: 13 }}>
                   {selection.secondary ? (
                     <>
-                      {primary.name} ⚔ {secondary?.name}
+                      {primary.name} ⚔ {secondary?.name} — type a topic, then start the confrontation.
                     </>
                   ) : (
-                    'Shift-click a suspect, or use the ⚔ button, to pick a second suspect.'
+                    'Tap Confront on a second suspect to make them face each other, then type a topic.'
                   )}
                 </p>
                 <input type="text" className="field" placeholder="Confrontation topic…" value={confrontTopic} onChange={(e) => setConfrontTopic(e.target.value)} disabled={isPending || !selection.secondary} />
@@ -535,12 +541,16 @@ export function Investigation() {
 
             {tab === 'search' ? (
               <p className="muted" style={{ margin: 0 }}>
-                {selectedLocation ? <>Search {game.locations.find((l) => l.id === selectedLocation)?.name}?</> : 'Pick a location on the left.'}
+                {selectedLocation ? (
+                  <>Enter {game.locations.find((l) => l.id === selectedLocation)?.name} and click clues yourself — nothing is handed to you.</>
+                ) : (
+                  'Pick a location on the left, then enter the room.'
+                )}
               </p>
             ) : null}
 
             <Button variant="red" size="lg" block loading={isPending} disabled={sendDisabled} onClick={() => void handleSend()}>
-              {SEND_LABEL[tab]}
+              {tab === 'search' ? 'ENTER ROOM' : SEND_LABEL[tab]}
             </Button>
           </div>
         </div>
@@ -556,28 +566,23 @@ export function Investigation() {
         </div>
       </div>
 
-      <Modal open={!!searchResult} onClose={() => setSearchResult(null)} title={`Searched: ${game.locations.find((l) => l.id === searchResult?.locationId)?.name ?? ''}`} width={560}>
-        {searchResult ? (
-          <div className="flex flex-col gap-3">
-            <BackdropThumb locationId={searchResult.locationId} className="rounded" style={{ width: '100%', height: 200, border: '1px solid var(--gold-500)' }} />
-            <p style={{ margin: 0, fontSize: 16, color: 'var(--ink)' }}>{game.locations.find((l) => l.id === searchResult.locationId)?.description}</p>
-            {searchResult.found.length ? (
-              <div className="flex flex-col gap-2">
-                {searchResult.found.map((e) => (
-                  <div key={e.id} style={{ border: '2px solid var(--truth)', borderRadius: 6, padding: '10px 12px', background: 'rgba(63,163,77,.08)' }}>
-                    <div style={{ color: 'var(--truth)', fontSize: 11, letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: 2 }}>New evidence</div>
-                    <div style={{ fontWeight: 700, fontSize: 16, color: 'var(--ink)' }}>{e.name}</div>
-                    {e.examined_detail ? <div style={{ fontSize: 14, color: 'var(--ink-soft)', marginTop: 4 }}>{e.examined_detail}</div> : null}
-                  </div>
-                ))}
-                <p style={{ margin: 0, fontSize: 13, color: 'var(--ink-soft)' }}>These are now in your notebook and can be presented to a suspect.</p>
-              </div>
-            ) : (
-              <p style={{ margin: 0, color: 'var(--ink-soft)' }}>Nothing new here. You already searched this room.</p>
-            )}
-          </div>
-        ) : null}
-      </Modal>
+      {exploring ? (
+        <RoomExplore
+          location={exploring}
+          caseId={game.case.id}
+          pending={isPending}
+          lastFound={lastFound}
+          onClose={() => {
+            setExploringId(null)
+            setLastFound(null)
+          }}
+          onCollect={async (evidenceId) => {
+            const res = await search(exploring.id, evidenceId)
+            const found = res?.evidence?.[0] ?? null
+            setLastFound(found)
+          }}
+        />
+      ) : null}
 
       <AccuseModal
         open={accuseOpen}

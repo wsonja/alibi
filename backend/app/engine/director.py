@@ -814,26 +814,43 @@ class Director:
 
     # ------------------------------------------------------------------ search
 
-    def search(self, location_id: str) -> dict:
+    def search(self, location_id: str, evidence_id: str | None = None) -> dict:
         self._ensure_open()
         if not isinstance(location_id, str) or location_id not in self.locations:
             raise DirectorError(f"unknown location {location_id!r}")
-        self._begin_turn(0)  # world.search adds the +10 itself
+        if evidence_id is not None and (not isinstance(evidence_id, str) or not evidence_id):
+            raise DirectorError("evidence_id must be a non-empty string when set")
+        self._begin_turn(0)  # world.search / examine_at advance the clock
         turn = self.turn
         self._count_action("search")
-        newly = world_mod.search(self.case, self.world, location_id)
+        try:
+            newly = (
+                world_mod.examine_at(self.case, self.world, location_id, evidence_id)
+                if evidence_id
+                else world_mod.search(self.case, self.world, location_id)
+            )
+        except KeyError as e:
+            raise DirectorError(str(e)) from e
         outcome = self._new_outcome()
         examined_public = [world_mod.public_evidence_item(self.evidence[eid], self.world["evidence"][eid]) for eid in newly]
+        spots = world_mod.clue_spots(self.case, self.world, location_id)
         outcome["private_turns"].append(self._private_row(
-            seq=1, type="search", actor="detective", target=location_id, input={"location_id": location_id},
+            seq=1, type="search", actor="detective", target=location_id,
+            input={"location_id": location_id, "evidence_id": evidence_id},
             output={"examined": newly}))
         outcome["public_turns"].append(public_turn(
             turn=turn, seq=1, type="search", actor="detective", target=location_id, clock=self.clock))
         self._after_player_turn(outcome, set(), seq=2)
-        outcome["search"] = {"location_id": location_id, "examined": newly, "evidence": examined_public}
+        outcome["search"] = {
+            "location_id": location_id,
+            "evidence_id": evidence_id,
+            "examined": newly,
+            "evidence": examined_public,
+            "spots": spots,
+        }
         outcome["watson_visible"] = {
             "turn": turn, "type": "search", "target": location_id, "detective_text": None, "spoken": None,
-            "tactic": None, "evidence_id": None,
+            "tactic": None, "evidence_id": evidence_id,
             "examined_evidence": [{"id": e["id"], "name": e["name"], "examined_detail": e.get("examined_detail", "")}
                                   for e in examined_public],
         }

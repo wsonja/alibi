@@ -96,7 +96,7 @@ export interface GameStoreState {
   confront: (topic: string, rounds?: number, justWatch?: boolean, pair?: { a: string; b: string }) => Promise<PublicTurn[] | null>
   interject: (text: string) => Promise<boolean>
   endConfrontation: () => void
-  search: (locationId: string) => Promise<SearchResponse | null>
+  search: (locationId: string, evidenceId?: string | null) => Promise<SearchResponse | null>
   accuse: (payload: AccuseRequest) => Promise<Debrief | null>
   loadDebrief: (id?: string) => Promise<Debrief | null>
   rewind: (turn: number) => Promise<GameState | null>
@@ -375,22 +375,35 @@ export const useGame = create<GameStoreState>()((set, get) => {
       set({ confrontation: null, pending: null })
     },
 
-    search: async (locationId) => {
+    search: async (locationId, evidenceId) => {
       const id = get().gameId
       if (!id) return null
       set({ pending: { suspectId: '', kind: 'search', since: Date.now() }, error: null })
       try {
-        const res = await api.postSearch(id, locationId)
+        const res = await api.postSearch(id, locationId, evidenceId)
         const game = get().game
         if (game) {
           const evidence = (res.evidence ?? []).reduce(upsertEvidence, game.evidence)
-          const locations = game.locations.map((l) => (l.id === locationId ? { ...l, searched: true } : l))
+          const locations = game.locations.map((l) => {
+            if (l.id !== locationId) return l
+            return {
+              ...l,
+              searched: true,
+              spots: res.spots ?? l.spots?.map((s) => (s.id === evidenceId ? { ...s, collected: true, label: s.label ?? res.evidence?.[0]?.name } : s)),
+            }
+          })
           set({ game: { ...game, evidence, locations, clock: res.clock || game.clock } })
         }
         set({ pending: null })
         const found = res.evidence ?? []
         const locName = get().game?.locations.find((l) => l.id === locationId)?.name ?? 'the room'
-        const text = found.length ? `Searched ${locName}: ${found.map((e) => e.name).join(', ')}.` : `Searched ${locName}: nothing new.`
+        const text = evidenceId
+          ? found.length
+            ? `You take a closer look: ${found.map((e) => e.name).join(', ')}.`
+            : `Nothing new about that.`
+          : found.length
+            ? `Searched ${locName}: ${found.map((e) => e.name).join(', ')}.`
+            : `Searched ${locName}: nothing new.`
         get().addToast({ kind: found.length ? 'success' : 'info', text, ttlMs: 6000 })
         get().announce(text)
         void get().refreshGame()

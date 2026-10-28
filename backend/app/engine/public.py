@@ -94,8 +94,13 @@ def public_turn(
 def public_locations(case: dict, world: dict) -> list[dict]:
     searched = set(world.get("game", {}).get("searched_locations", []))
     return [
-        {"id": loc["id"], "name": loc.get("name", loc["id"]), "description": loc.get("description", ""),
-         "searched": loc["id"] in searched}
+        {
+            "id": loc["id"],
+            "name": loc.get("name", loc["id"]),
+            "description": loc.get("description", ""),
+            "searched": loc["id"] in searched,
+            "spots": world_mod.clue_spots(case, world, loc["id"]),
+        }
         for loc in case.get("locations", [])
     ]
 

@@ -89,3 +89,9 @@
 - GPU-only FaceLandmarker threw `kGpuService` / `emscripten_webgl_create_context() returned error 0`.
   `createLandmarkerWithFallback` tries GPU then CPU; vitest covers the WebGL failure path.
 - `verify-alibi` skill + harness: asset gate, sensor vitest in unit gate, manual camera steps documented.
+
+## 2026-10-28 — Story briefing (guided chapters)
+- Replaced fact-sheet Briefing with click/key story: what happened → victim (+ time chip) →
+  public timeline one beat at a time → meet each suspect in a claimed-room plate with a spoken intro →
+  first evidence (decanter) → Begin investigation. Sticky note removed.
+- Evidence object plates optional at `frontend/public/evidence/vane_hall/<id>.webp` (see EVIDENCE_ASSETS.md).

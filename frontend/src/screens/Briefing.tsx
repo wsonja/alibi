@@ -1,97 +1,227 @@
 /**
- * Briefing — route "/game/:id/briefing" (docs/DESIGN.md §5.2), from GET /games/:id.
- * Wide parchment case file: crime left, equal-height light suspect cards right, evidence strip, begin.
+ * Briefing — guided story, not a fact sheet.
+ * Chapters: what happened → victim → timeline (one beat per click/key) → meet each suspect → first evidence → Begin.
  */
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import type { PublicEvidence, PublicLocation, PublicSuspect } from '@/api/types'
+import type { PublicEvidence, PublicSuspect } from '@/api/types'
 import { Button, ButtonLink } from '@/components/common/Button'
-import { ClockFace } from '@/components/common/ClockFace'
 import { ErrorNotice } from '@/components/common/ErrorNotice'
 import { EvidenceIcon } from '@/components/common/EvidenceIcon'
-import { BackdropThumb } from '@/components/common/BackdropThumb'
-import { SectionTitle } from '@/components/common/SectionTitle'
-import { Sticky } from '@/components/common/Sticky'
-import { Modal } from '@/components/common/Modal'
 import { PaintedPortrait } from '@/components/portrait/PaintedPortrait'
 import { cn } from '@/lib/cn'
-import { formatClock12 } from '@/lib/clock'
-import { deriveCrimeScene, deriveDeathWindow, extractAlibi, numberWord } from '@/lib/text'
+import { backdropUrls } from '@/lib/backdrops'
+import {
+  advanceStory,
+  claimedPlaceLabel,
+  claimedSceneFor,
+  evidenceArtUrl,
+  evidenceLocationName,
+  evidenceScene,
+  initialEvidence,
+  initialProgress,
+  introLineFor,
+  type StoryProgress,
+} from '@/lib/briefingStory'
+import { formatClock12 as fmt12 } from '@/lib/clock'
+import { deriveDeathWindow } from '@/lib/text'
 import { useGame } from '@/store/game'
 
-function SuspectCard({ suspect, caseId }: { suspect: PublicSuspect; caseId: string }) {
-  const [open, setOpen] = useState(false)
-  const alibi = useMemo(() => extractAlibi(suspect.public_description), [suspect.public_description])
+function Hint({ children }: { children: string }) {
   return (
-    <li className="h-full min-h-0">
-      <article
-        className="suspect-brief-card fade-in"
-        aria-label={`${suspect.name}, ${suspect.role}`}
-      >
-        <PaintedPortrait suspect={suspect} emotion={suspect.emotion} size={96} caseId={caseId} />
-        <h3 className="display" style={{ fontSize: 13, margin: 0, color: 'var(--wood-700)' }}>
-          {suspect.name}
-        </h3>
-        <p style={{ margin: 0, fontStyle: 'italic', fontSize: 14, color: 'var(--ink-soft)' }}>
-          {suspect.role}
-        </p>
-        <p className="suspect-brief-card__bio">{suspect.public_description}</p>
-        <button type="button" className="btn btn-black btn--sm mt-auto" onClick={() => setOpen(true)} aria-label={`Show the stated alibi of ${suspect.name}`}>
-          <span aria-hidden="true">🔍</span> Alibi
-        </button>
-      </article>
-      <Modal open={open} onClose={() => setOpen(false)} title={`${suspect.name} — alibi (public)`} width={520}>
-        <div className="flex gap-4 items-start">
-          <PaintedPortrait suspect={suspect} emotion={suspect.emotion} size={96} caseId={caseId} />
-          <div>
-            <p style={{ margin: '0 0 6px', fontStyle: 'italic', color: 'var(--ink-soft)' }}>{suspect.role}</p>
-            <p style={{ margin: 0, fontSize: 18, fontFamily: 'var(--font-body)' }}>“{alibi}”</p>
-            <p style={{ margin: '10px 0 0', fontSize: 13, color: 'var(--ink-soft)' }}>This is what they told everyone. Whether it holds up is for you to find out.</p>
-          </div>
-        </div>
-      </Modal>
-    </li>
+    <p className="story-hint" aria-hidden="true">
+      {children}
+    </p>
   )
 }
 
-function EvidenceStrip({ evidence, locations }: { evidence: PublicEvidence[]; locations: PublicLocation[] }) {
-  const ref = useRef<HTMLDivElement | null>(null)
-  const [overflow, setOverflow] = useState(false)
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const check = () => setOverflow(el.scrollWidth > el.clientWidth + 4)
-    check()
-    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(check) : null
-    ro?.observe(el)
-    return () => ro?.disconnect()
-  }, [evidence.length])
-  const scroll = (dir: 1 | -1) => ref.current?.scrollBy({ left: dir * 300, behavior: 'smooth' })
-  const locName = (id: string) => locations.find((l) => l.id === id)?.name ?? id
+function StoryShell({
+  bg,
+  children,
+  onAdvance,
+  canAdvance,
+}: {
+  bg: string
+  children: React.ReactNode
+  onAdvance: () => void
+  canAdvance: boolean
+}) {
   return (
-    <div className="relative">
-      {overflow ? (
-        <button type="button" className="btn btn-black btn--sm absolute left-0 top-1/2 -translate-y-1/2 z-10" onClick={() => scroll(-1)} aria-label="Scroll evidence left">
-          ◀
-        </button>
-      ) : null}
-      <div ref={ref} className="scroll-x flex gap-3 py-2 px-1" role="list" aria-label="Initial evidence">
-        {evidence.length === 0 ? <p className="ink-soft">No evidence is known yet. Search the rooms.</p> : null}
-        {evidence.map((e) => (
-          <div key={e.id} className={cn('evidence-card evidence-card--paper', e.state === 'examined' && 'evidence-card--examined')} role="listitem">
-            <EvidenceIcon name={e.name} description={e.description} size={30} color="#7a4b22" />
-            <span className="evidence-card__name" style={{ color: 'var(--ink)' }}>{e.name}</span>
-            <span className="evidence-card__where" style={{ color: 'var(--ink-soft)' }}>📍 {locName(e.location)}</span>
-            <span style={{ fontSize: 12, color: 'var(--ink-soft)' }}>{e.state === 'examined' && e.examined_detail ? e.examined_detail : e.description}</span>
-          </div>
-        ))}
-      </div>
-      {overflow ? (
-        <button type="button" className="btn btn-black btn--sm absolute right-0 top-1/2 -translate-y-1/2 z-10" onClick={() => scroll(1)} aria-label="Scroll evidence right">
-          ▶
-        </button>
-      ) : null}
+    <div
+      className="story-stage"
+      style={{ backgroundImage: `url(${bg})` }}
+      onClick={() => {
+        if (canAdvance) onAdvance()
+      }}
+      role="presentation"
+    >
+      <div className="story-stage__veil" />
+      <div className="story-stage__content">{children}</div>
+      {canAdvance ? <Hint>Click or press any key to continue</Hint> : null}
     </div>
+  )
+}
+
+function WhatChapter({ text }: { text: string }) {
+  return (
+    <article className="story-card fade-in">
+      <p className="story-kicker">Tonight</p>
+      <h1 className="story-title">What happened?</h1>
+      <p className="story-body">{text}</p>
+    </article>
+  )
+}
+
+function VictimChapter({
+  name,
+  description,
+  cause,
+  deathLabel,
+  clock,
+}: {
+  name: string
+  description: string
+  cause: string
+  deathLabel: string | null
+  clock: string
+}) {
+  return (
+    <article className="story-card story-card--victim fade-in">
+      <p className="story-kicker">The study</p>
+      <h1 className="story-title">The victim</h1>
+      <div className="story-victim-figure" aria-hidden="true">
+        <div className="story-victim-figure__desk" />
+        <div className="story-victim-figure__body" />
+      </div>
+      <h2 className="story-name">{name}</h2>
+      <p className="story-body">{description}</p>
+      <p className="story-body story-body--soft">{cause}</p>
+      {deathLabel ? (
+        <div className="story-time-chip pop-in" role="status">
+          Time of death · between {deathLabel}
+        </div>
+      ) : (
+        <div className="story-time-chip pop-in" role="status">
+          Your clock · {fmt12(clock)}
+        </div>
+      )}
+    </article>
+  )
+}
+
+function TimelineChapter({
+  entries,
+  shown,
+}: {
+  entries: { time: string; event: string }[]
+  shown: number
+}) {
+  return (
+    <article className="story-card fade-in">
+      <p className="story-kicker">As the house remembers it</p>
+      <h1 className="story-title">Public timeline</h1>
+      <ol className="story-timeline">
+        {entries.slice(0, shown).map((t, i) => (
+          <li key={`${t.time}-${i}`} className="story-timeline__item pop-in">
+            <span className="story-timeline__time">{t.time}</span>
+            <span className="story-timeline__event">{t.event}</span>
+          </li>
+        ))}
+      </ol>
+      {shown < entries.length ? (
+        <p className="story-body story-body--soft" style={{ marginTop: 12 }}>
+          {entries.length - shown} more beat{entries.length - shown === 1 ? '' : 's'}…
+        </p>
+      ) : null}
+    </article>
+  )
+}
+
+function MeetChapter({ suspect, caseId }: { suspect: PublicSuspect; caseId: string }) {
+  return (
+    <article className="story-card story-card--meet fade-in">
+      <p className="story-kicker">{claimedPlaceLabel(suspect.id)}</p>
+      <h1 className="story-title">A face in the house</h1>
+      <div className="story-meet">
+        <PaintedPortrait suspect={suspect} emotion={suspect.emotion} size={160} caseId={caseId} />
+        <div>
+          <h2 className="story-name">{suspect.name}</h2>
+          <p className="story-role">{suspect.role}</p>
+          <p className="story-speech">“{introLineFor(suspect)}”</p>
+        </div>
+      </div>
+    </article>
+  )
+}
+
+function EvidenceChapter({
+  item,
+  caseId,
+  locationName,
+}: {
+  item: PublicEvidence
+  caseId: string
+  locationName: string
+}) {
+  const [imgOk, setImgOk] = useState(true)
+  const src = evidenceArtUrl(caseId, item.id)
+  return (
+    <article className="story-card fade-in">
+      <p className="story-kicker">Found in {locationName}</p>
+      <h1 className="story-title">First evidence</h1>
+      <div className="story-evidence">
+        {imgOk ? (
+          <img
+            className="story-evidence__art"
+            src={src}
+            alt={item.name}
+            onError={() => setImgOk(false)}
+          />
+        ) : (
+          <div className="story-evidence__fallback" aria-hidden="true">
+            <EvidenceIcon name={item.name} description={item.description} size={96} color="#7a4b22" />
+          </div>
+        )}
+        <div>
+          <h2 className="story-name">{item.name}</h2>
+          <p className="story-body">{item.description}</p>
+          <p className="story-body story-body--soft">You may examine it properly once the investigation begins.</p>
+        </div>
+      </div>
+    </article>
+  )
+}
+
+function ReadyChapter({
+  onBegin,
+  closed,
+  debriefPath,
+}: {
+  onBegin: () => void
+  closed: boolean
+  debriefPath: string
+}) {
+  return (
+    <article className="story-card fade-in" style={{ textAlign: 'center' }}>
+      <p className="story-kicker">Until dawn</p>
+      <h1 className="story-title">The house is waiting</h1>
+      <p className="story-body">You have the story the house will admit to. The rest you must dig for.</p>
+      {closed ? (
+        <ButtonLink to={debriefPath} size="lg">
+          This case is closed — read the debrief ▸
+        </ButtonLink>
+      ) : (
+        <Button
+          size="lg"
+          onClick={(e) => {
+            e.stopPropagation()
+            onBegin()
+          }}
+        >
+          Begin investigation ▸
+        </Button>
+      )}
+    </article>
   )
 }
 
@@ -102,153 +232,118 @@ export function Briefing() {
   const loading = useGame((s) => s.loading)
   const error = useGame((s) => s.error)
   const loadGame = useGame((s) => s.loadGame)
-  const [sceneOpen, setSceneOpen] = useState(false)
+  const [progress, setProgress] = useState<StoryProgress>(initialProgress)
 
   useEffect(() => {
     if (id) void loadGame(id)
   }, [id, loadGame])
 
   const ready = game && game.game_id === id ? game : null
-  const death = useMemo(() => (ready ? deriveDeathWindow(ready.case.timeline_public, ready.case.victim.cause_of_death_public) : null), [ready])
-  const scene = useMemo(() => (ready ? deriveCrimeScene(ready.locations, ready.evidence, ready.case.briefing) : null), [ready])
-  const initialEvidence = useMemo(() => (ready ? ready.evidence.filter((e) => e.state === 'known' || e.state === 'examined') : []), [ready])
-  const n = ready?.cast.length ?? 0
+  const death = useMemo(
+    () => (ready ? deriveDeathWindow(ready.case.timeline_public, ready.case.victim.cause_of_death_public) : null),
+    [ready],
+  )
+  const known = useMemo(() => (ready ? initialEvidence(ready.evidence) : []), [ready])
+  const firstEvidence = known[0] ?? null
 
-  return (
-    <div className="screen screen--briefing">
-      {!ready && loading ? (
-        <div className="parchment mono muted mt-8 text-center" aria-busy="true" style={{ maxWidth: 480, margin: '32px auto' }}>
+  const advance = useCallback(() => {
+    if (!ready) return
+    setProgress((p) => advanceStory(p, ready.case.timeline_public, ready.cast.length))
+  }, [ready])
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return
+      if (progress.chapter === 'ready') return
+      e.preventDefault()
+      advance()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [advance, progress.chapter])
+
+  if (!ready && loading) {
+    return (
+      <div className="screen screen--briefing">
+        <div className="story-card mono muted" style={{ margin: '40px auto', maxWidth: 420, textAlign: 'center' }} aria-busy="true">
           Opening the case file…
         </div>
-      ) : null}
-      {!ready && !loading && error ? (
-        <div className="mt-8" style={{ maxWidth: 640, margin: '32px auto' }}>
+      </div>
+    )
+  }
+  if (!ready && !loading && error) {
+    return (
+      <div className="screen screen--briefing">
+        <div style={{ maxWidth: 640, margin: '40px auto' }}>
           <ErrorNotice message={error} onRetry={() => void loadGame(id)} />
         </div>
-      ) : null}
+      </div>
+    )
+  }
+  if (!ready) return null
 
-      {ready ? (
-        <section className="parchment parchment--briefing slide-up" aria-labelledby="briefing-title">
-          <SectionTitle id="briefing-title" as="h1" subtitle="Same roof. Different truths.">
-            Briefing — The Crime
-          </SectionTitle>
-          <p className="text-center ink-soft" style={{ margin: '-6px 0 16px', fontStyle: 'italic' }}>
-            {ready.case.title} · {ready.case.setting}
-          </p>
+  const caseId = ready.case.id
+  let bg = backdropUrls('library').landscape
+  if (progress.chapter === 'victim') bg = backdropUrls('library').landscape
+  if (progress.chapter === 'meet') {
+    const s = ready.cast[progress.meetIndex]
+    if (s) bg = backdropUrls(claimedSceneFor(s.id)).landscape
+  }
+  if ((progress.chapter === 'evidence' || progress.chapter === 'ready') && firstEvidence) {
+    bg = backdropUrls(evidenceScene(firstEvidence, ready.locations)).landscape
+  }
+  if (progress.chapter === 'what') bg = backdropUrls('manor_exterior').landscape
 
-          <div className="grid gap-6 lg:grid-cols-[52fr_48fr]">
-            <div className="min-w-0">
-              <h2 className="label-caps" style={{ fontSize: 13, marginTop: 0 }}>
-                ✜ What happened?
-              </h2>
-              {ready.case.briefing.split(/\n{2,}/).map((para, i) => (
-                <p key={i} style={{ fontSize: 18, lineHeight: 1.55 }}>
-                  {para}
-                </p>
-              ))}
+  const canAdvance = progress.chapter !== 'ready'
 
-              <div className="brief-panel mt-3 flex gap-3 items-start">
-                <span aria-hidden="true" style={{ fontSize: 22 }}>
-                  ☠
-                </span>
-                <div>
-                  <span className="label-caps">The victim — {ready.case.victim.name}</span>
-                  <p style={{ margin: '2px 0 4px', fontSize: 14 }}>{ready.case.victim.description}</p>
-                  <p className="ink-soft" style={{ margin: 0, fontSize: 13, fontStyle: 'italic' }}>
-                    {ready.case.victim.cause_of_death_public}
-                  </p>
-                </div>
-              </div>
-
-              <h3 className="label-caps mt-4" style={{ fontSize: 12 }}>
-                Public timeline
-              </h3>
-              <ol className="timeline">
-                {ready.case.timeline_public.map((t, i) => (
-                  <li key={`${t.time}-${i}`} className="timeline__item">
-                    <span className="timeline__time">{t.time}</span>
-                    <span className="timeline__event">{t.event}</span>
-                  </li>
-                ))}
-              </ol>
-
-              <div className="grid gap-3 sm:grid-cols-2 mt-4">
-                <div className="brief-panel flex items-center gap-3">
-                  <ClockFace time={death?.to ?? ready.clock} size={64} />
-                  <div>
-                    <span className="label-caps">Time of death</span>
-                    <div style={{ fontSize: 16 }}>{death ? `Between ${death.label}` : 'Not yet established'}</div>
-                    <div className="ink-soft" style={{ fontSize: 12 }}>
-                      Your clock: {formatClock12(ready.clock)}
-                    </div>
-                  </div>
-                </div>
-                <div className="brief-panel flex items-center gap-3">
-                  <BackdropThumb locationId={scene?.id} className="rounded" style={{ width: 96, height: 60, flex: '0 0 auto', border: '1px solid var(--wood-500)' }} title={scene?.name} />
-                  <div className="min-w-0">
-                    <span className="label-caps">Crime scene: {scene?.name ?? 'unknown'}</span>
-                    <div>
-                      <button type="button" className="underline cursor-pointer" style={{ color: 'var(--wood-700)', fontSize: 14 }} onClick={() => setSceneOpen((o) => !o)} aria-expanded={sceneOpen}>
-                        📍 View location
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <Modal open={sceneOpen && !!scene} onClose={() => setSceneOpen(false)} title={`Crime scene: ${scene?.name ?? ''}`} width={560}>
-                  {scene ? (
-                    <div className="flex flex-col gap-3">
-                      <BackdropThumb locationId={scene.id} className="rounded" style={{ width: '100%', height: 200, border: '1px solid var(--wood-500)' }} title={scene.name} />
-                      <p style={{ margin: 0, fontSize: 17 }}>{scene.description}</p>
-                      {ready.evidence.filter((e) => e.location === scene.id && e.state !== 'hidden').length ? (
-                        <p className="ink-soft" style={{ margin: 0, fontSize: 14 }}>
-                          Noted here: {ready.evidence.filter((e) => e.location === scene.id && e.state !== 'hidden').map((e) => e.name).join(', ')}
-                        </p>
-                      ) : null}
-                      <p className="ink-soft" style={{ margin: 0, fontSize: 13 }}>You can search this room during the investigation.</p>
-                    </div>
-                  ) : null}
-                </Modal>
-              </div>
-            </div>
-
-            <div className="min-w-0">
-              <SectionTitle as="h2" align="left" subtitle={`${numberWord(n)} people. ${numberWord(n)} versions.`}>
-                The suspects
-              </SectionTitle>
-              <ul className="suspect-brief-grid list-none p-0 m-0">
-                {ready.cast.map((s) => (
-                  <SuspectCard key={s.id} suspect={s} caseId={ready.case.id} />
-                ))}
-              </ul>
-              <div className="hidden xl:flex justify-end mt-3">
-                <Sticky>Hover a suspect to hear their story. Then doubt it.</Sticky>
-              </div>
-            </div>
-          </div>
-
-          <hr className="hr-wood mt-6" />
-
-          <SectionTitle as="h2" align="left" subtitle="A few clues to get you started.">
-            Initial evidence
-          </SectionTitle>
-          <EvidenceStrip evidence={initialEvidence} locations={ready.locations} />
-
-          <div className="mt-6 flex flex-col gap-3">
-            {ready.status === 'closed' ? (
-              <ButtonLink to={`/game/${id}/debrief`} size="lg" block>
-                This case is closed — read the debrief ▸
-              </ButtonLink>
-            ) : (
-              <Button size="lg" block onClick={() => navigate(`/game/${id}`)}>
-                Begin investigation ▸
-              </Button>
-            )}
-            <p className="text-center ink-soft" style={{ margin: 0, fontSize: 13 }}>
-              {ready.difficulty} difficulty · {ready.llm_mode === 'gemini' ? 'Live Gemini suspects' : 'Scripted suspects'} · the clock starts at {formatClock12(ready.clock)}
-            </p>
-          </div>
-        </section>
-      ) : null}
+  return (
+    <div className="screen screen--story">
+      <StoryShell bg={bg} onAdvance={advance} canAdvance={canAdvance}>
+        {progress.chapter === 'what' ? <WhatChapter text={ready.case.briefing} /> : null}
+        {progress.chapter === 'victim' ? (
+          <VictimChapter
+            name={ready.case.victim.name}
+            description={ready.case.victim.description}
+            cause={ready.case.victim.cause_of_death_public}
+            deathLabel={death?.label ?? null}
+            clock={ready.clock}
+          />
+        ) : null}
+        {progress.chapter === 'timeline' ? (
+          <TimelineChapter entries={ready.case.timeline_public} shown={progress.timelineShown} />
+        ) : null}
+        {progress.chapter === 'meet' && ready.cast[progress.meetIndex] ? (
+          <MeetChapter suspect={ready.cast[progress.meetIndex]!} caseId={caseId} />
+        ) : null}
+        {progress.chapter === 'evidence' && firstEvidence ? (
+          <EvidenceChapter
+            item={firstEvidence}
+            caseId={caseId}
+            locationName={evidenceLocationName(firstEvidence, ready.locations)}
+          />
+        ) : null}
+        {progress.chapter === 'evidence' && !firstEvidence ? (
+          <article className="story-card fade-in">
+            <h1 className="story-title">No evidence yet</h1>
+            <p className="story-body">Search the rooms once the investigation begins.</p>
+            <Button size="lg" onClick={() => setProgress((p) => ({ ...p, chapter: 'ready' }))}>
+              Continue
+            </Button>
+          </article>
+        ) : null}
+        {progress.chapter === 'ready' ? (
+          <ReadyChapter
+            closed={ready.status === 'closed'}
+            debriefPath={`/game/${id}/debrief`}
+            onBegin={() => navigate(`/game/${id}`)}
+          />
+        ) : null}
+      </StoryShell>
+      <div className="story-progress" aria-hidden="true">
+        {(['what', 'victim', 'timeline', 'meet', 'evidence', 'ready'] as const).map((c) => (
+          <span key={c} className={cn('story-progress__dot', progress.chapter === c && 'is-active')} />
+        ))}
+      </div>
     </div>
   )
 }

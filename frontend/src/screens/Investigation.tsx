@@ -9,16 +9,17 @@ import { Button } from '@/components/common/Button'
 import { ClockFace } from '@/components/common/ClockFace'
 import { ErrorNotice } from '@/components/common/ErrorNotice'
 import { EvidenceIcon } from '@/components/common/EvidenceIcon'
-import { Marquee } from '@/components/common/Marquee'
 import { Modal } from '@/components/common/Modal'
 import { BackdropThumb } from '@/components/common/BackdropThumb'
 import { SectionTitle } from '@/components/common/SectionTitle'
 import JudgePanel from '@/components/judge/JudgePanel'
 import { NotebookPanel } from '@/components/notebook/NotebookPanel'
 import { PaintedPortrait } from '@/components/portrait/PaintedPortrait'
+import { ComposureMeter } from '@/components/sensors/ComposureMeter'
 import { cn } from '@/lib/cn'
 import { clockPhase, formatClock12 } from '@/lib/clock'
 import { selectPrimarySuspect, selectSecondarySuspect, speakerIndex, turnsForSuspect, useGame } from '@/store/game'
+import { useSensors } from '@/store/sensors'
 import { useUI, type ActionTab } from '@/store/ui'
 import { speak } from '@/voice'
 
@@ -125,8 +126,16 @@ export function Investigation() {
   const setTab = useUI((s) => s.setActionTab)
   const toggleJudge = useUI((s) => s.toggleJudge)
   const voiceOn = useUI((s) => s.a11y.voice)
+  const consent = useSensors((s) => s.consent)
+  const cameraEnabled = useSensors((s) => s.enabled)
+  const startCamera = useSensors((s) => s.start)
   const interject = useGame((s) => s.interject)
   const spokenRef = useRef<string>('')
+
+  useEffect(() => {
+    if (consent && !cameraEnabled) void startCamera()
+  }, [consent, cameraEnabled, startCamera])
+
   useEffect(() => {
     if (!voiceOn || !game) return
     const last = [...game.turns].reverse().find((t) => t.spoken && t.actor !== 'detective' && t.actor !== 'director')
@@ -237,7 +246,6 @@ export function Investigation() {
   return (
     <div className="screen screen--wide">
       <header className="flex items-center justify-between gap-4 flex-wrap">
-        <Marquee small />
         <h1 className="display display--gold" style={{ fontSize: 20, margin: 0 }}>
           Investigation
         </h1>
@@ -538,6 +546,7 @@ export function Investigation() {
         </div>
 
         <div className="flex flex-col gap-3 min-w-0">
+          <ComposureMeter />
           <NotebookPanel cast={game.cast} evidence={game.evidence} turns={game.turns} notebook={game.notebook} timeline={game.case.timeline_public} />
           <div className="mt-auto">
             <Button variant="red" size="lg" block onClick={() => setAccuseOpen(true)}>

@@ -11,7 +11,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import type { Honesty, PublicSuspect, ReelNode } from '@/api/types'
 import { ButtonLink, Button } from '@/components/common/Button'
 import { ErrorNotice } from '@/components/common/ErrorNotice'
-import { Marquee } from '@/components/common/Marquee'
 import { SectionTitle } from '@/components/common/SectionTitle'
 import { RumorMap } from '@/components/debrief/RumorMap'
 import { PaintedPortrait } from '@/components/portrait/PaintedPortrait'
@@ -136,9 +135,6 @@ export function Debrief() {
   if (!debrief) {
     return (
       <div className="screen">
-        <header className="flex justify-center">
-          <Marquee />
-        </header>
         {error ? (
           <div className="mt-6">
             <ErrorNotice message={error} onRetry={() => void loadDebrief(id)} />
@@ -153,9 +149,6 @@ export function Debrief() {
   const d = debrief
   return (
     <div className="screen screen--wide">
-      <header className="flex justify-center">
-        <Marquee />
-      </header>
 
       <section className="lacquer mt-6 text-center" style={{ borderColor: 'var(--marquee)' }}>
         <h1 className="display display--gold" style={{ fontSize: 26, margin: 0 }}>

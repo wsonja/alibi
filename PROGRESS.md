@@ -66,3 +66,21 @@
 - Owner rejected pixel faces; supplied noir / tabletop / crime-scene refs → `docs/art-direction/refs/`.
 - Plan in `docs/IMMERSIVE_REDESIGN.md`: painted cast pack (owner delivers files), MediaPipe camera (free, no key),
   low-text arrive→crime→meet cast→room hotspots with the same verbs. FIX_PLAN Phase 5 unblocked as 5a–5e.
+
+## 2026-10-28 — Phase 5a: painted Vane Hall portraits (neutral)
+- Owner uploaded concept-board character pack (portraits + avatars + cards). Manifest notes alternate board names;
+  UI uses label-free portraits only. Installed webp under `frontend/public/portraits/vane_hall/`.
+- `PaintedPortrait` prefers pack art (avatar ≤64px, bust otherwise); missing emotion → `_neutral.webp`; else pixel fallback.
+- Briefing / Investigation / Accuse / Debrief switched to PaintedPortrait. Backdrops still pending owner zip.
+
+## 2026-10-28 — Phase 5a: Vane Hall backdrops
+- Installed concept-board webps under `frontend/public/backdrops/{landscape_16x9,ultrawide_21x9,mobile_9x16,scene_originals}/`.
+- `RoomBackdrop` uses responsive `<picture>`; Investigation follows the selected suspect's `last_seen_location`.
+- Crime-scene / search modals use `BackdropThumb` (scene_originals). PNG sources omitted from the repo (webp only).
+
+## 2026-10-28 — Briefing polish + live camera
+- Removed Marquee logo from Briefing / Investigation / Debrief; briefing parchment wider; equal-height light
+  suspect cards (no black lacquer); sticky notes use body serif not Caveat.
+- Camera was a no-op: consent never called `start()`, face pipeline was a stub, ComposureMeter missing from
+  Investigation. Consent checkbox now requests the webcam; MediaPipe FaceLandmarker samples composure/gaze;
+  Investigation shows ComposureMeter and restarts the camera if consent was saved.

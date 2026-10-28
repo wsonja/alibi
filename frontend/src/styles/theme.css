@@ -466,13 +466,14 @@ button.placard:hover {
   display: inline-block;
   background: #f5e6a3;
   color: var(--ink);
-  font-family: var(--font-hand);
-  font-size: 20px;
-  line-height: 1.2;
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.35;
+  font-style: italic;
   padding: 18px 16px 14px;
   transform: rotate(-2.5deg);
   box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.45);
-  max-width: 260px;
+  max-width: 280px;
 }
 .sticky--right {
   transform: rotate(2.5deg);
@@ -1760,6 +1761,66 @@ html[data-screen-reader] .pixel-portrait {
 .screen--wide {
   max-width: 1500px;
 }
+.screen--briefing {
+  max-width: none;
+  width: min(96vw, 1680px);
+  margin: 0 auto;
+  padding: 12px 12px 28px;
+}
+.parchment--briefing {
+  min-height: calc(100vh - 40px);
+  padding: 28px 32px 32px;
+}
+.suspect-brief-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  align-items: stretch;
+}
+@media (min-width: 640px) {
+  .suspect-brief-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.suspect-brief-card {
+  height: 100%;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 16px 14px;
+  background: linear-gradient(180deg, var(--paper-100) 0%, var(--paper-300) 100%);
+  color: var(--ink);
+  border: 2px solid var(--wood-500);
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px var(--gold-500);
+}
+.suspect-brief-card__bio {
+  margin: 0;
+  flex: 1 1 auto;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ink);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+}
+.brief-panel {
+  background: linear-gradient(180deg, var(--paper-100) 0%, var(--paper-200) 100%);
+  color: var(--ink);
+  border: 1px solid var(--wood-500);
+  border-radius: 4px;
+  padding: 12px 14px;
+  box-shadow: inset 0 0 0 1px rgba(201, 162, 75, 0.45);
+}
+.evidence-card--paper {
+  background: linear-gradient(180deg, var(--paper-100) 0%, var(--paper-300) 100%) !important;
+  color: var(--ink) !important;
+  border-color: var(--wood-500) !important;
+}
 .hr-gold {
   border: 0;
   height: 1px;
@@ -1801,22 +1862,42 @@ html[data-screen-reader] .pixel-portrait {
 }
 
 
-/* ---- painted backdrops (public/art/*.jpg) ------------------------------------------------ */
+/* ---- painted backdrops (/backdrops/*.webp, fallback /art/*.jpg) --------------------------- */
 .room-bg--art {
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
   background-color: #1a0f0a;
+  overflow: hidden;
 }
 .room-bg--art::before,
 .room-bg--art::after {
   display: none;
+}
+.room-bg__picture {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: block;
+}
+.room-bg__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  pointer-events: none;
+  user-select: none;
 }
 .room-bg__dim {
   position: absolute;
   inset: 0;
   background: radial-gradient(ellipse at 50% 30%, rgba(20, 10, 6, 0.55) 0%, rgba(14, 7, 4, 0.82) 70%, rgba(10, 5, 3, 0.9) 100%);
   backdrop-filter: blur(3px);
+}
+.room-bg__dim--setup {
+  background: radial-gradient(ellipse at 55% 40%, rgba(20, 10, 6, 0.25) 0%, rgba(14, 7, 4, 0.55) 75%, rgba(10, 5, 3, 0.72) 100%);
+  backdrop-filter: blur(1.5px);
 }
 /* the setup card sits over the card painted in the artwork, leaving the detective and marquee visible */
 @media (min-width: 1024px) {

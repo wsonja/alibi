@@ -1,7 +1,6 @@
 /**
  * Briefing — route "/game/:id/briefing" (docs/DESIGN.md §5.2), from GET /games/:id.
- * Left: what happened, public timeline, time of death, crime scene. Right: the suspects (2×2, alibi bubbles).
- * Bottom: initial evidence strip and BEGIN INVESTIGATION.
+ * Wide parchment case file: crime left, equal-height light suspect cards right, evidence strip, begin.
  */
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -10,43 +9,44 @@ import { Button, ButtonLink } from '@/components/common/Button'
 import { ClockFace } from '@/components/common/ClockFace'
 import { ErrorNotice } from '@/components/common/ErrorNotice'
 import { EvidenceIcon } from '@/components/common/EvidenceIcon'
-import { Marquee } from '@/components/common/Marquee'
-import { SceneThumb } from '@/components/common/SceneThumb'
+import { BackdropThumb } from '@/components/common/BackdropThumb'
 import { SectionTitle } from '@/components/common/SectionTitle'
 import { Sticky } from '@/components/common/Sticky'
 import { Modal } from '@/components/common/Modal'
-import { PixelPortrait } from '@/components/portrait/PixelPortrait'
+import { PaintedPortrait } from '@/components/portrait/PaintedPortrait'
 import { cn } from '@/lib/cn'
 import { formatClock12 } from '@/lib/clock'
-import { presetFromSetting } from '@/lib/presets'
 import { deriveCrimeScene, deriveDeathWindow, extractAlibi, numberWord } from '@/lib/text'
 import { useGame } from '@/store/game'
 
-function SuspectCard({ suspect }: { suspect: PublicSuspect }) {
+function SuspectCard({ suspect, caseId }: { suspect: PublicSuspect; caseId: string }) {
   const [open, setOpen] = useState(false)
   const alibi = useMemo(() => extractAlibi(suspect.public_description), [suspect.public_description])
   return (
-    <li>
-      <article className="lacquer lacquer--soft flex flex-col items-center text-center gap-2 fade-in" style={{ padding: '14px 12px' }} aria-label={`${suspect.name}, ${suspect.role}`}>
-        <PixelPortrait suspect={suspect} emotion={suspect.emotion} size={96} />
-        <h3 className="display display--gold" style={{ fontSize: 13, margin: 0 }}>
+    <li className="h-full min-h-0">
+      <article
+        className="suspect-brief-card fade-in"
+        aria-label={`${suspect.name}, ${suspect.role}`}
+      >
+        <PaintedPortrait suspect={suspect} emotion={suspect.emotion} size={96} caseId={caseId} />
+        <h3 className="display" style={{ fontSize: 13, margin: 0, color: 'var(--wood-700)' }}>
           {suspect.name}
         </h3>
-        <p className="muted" style={{ margin: 0, fontStyle: 'italic', fontSize: 14 }}>
+        <p style={{ margin: 0, fontStyle: 'italic', fontSize: 14, color: 'var(--ink-soft)' }}>
           {suspect.role}
         </p>
-        <p style={{ margin: 0, fontSize: 13, lineHeight: 1.4, color: 'rgba(243,231,203,.85)' }}>{suspect.public_description}</p>
-        <button type="button" className="btn btn-black btn--sm" onClick={() => setOpen(true)} aria-label={`Show the stated alibi of ${suspect.name}`}>
+        <p className="suspect-brief-card__bio">{suspect.public_description}</p>
+        <button type="button" className="btn btn-black btn--sm mt-auto" onClick={() => setOpen(true)} aria-label={`Show the stated alibi of ${suspect.name}`}>
           <span aria-hidden="true">🔍</span> Alibi
         </button>
       </article>
       <Modal open={open} onClose={() => setOpen(false)} title={`${suspect.name} — alibi (public)`} width={520}>
         <div className="flex gap-4 items-start">
-          <PixelPortrait suspect={suspect} emotion={suspect.emotion} size={96} />
+          <PaintedPortrait suspect={suspect} emotion={suspect.emotion} size={96} caseId={caseId} />
           <div>
-            <p className="muted" style={{ margin: '0 0 6px', fontStyle: 'italic' }}>{suspect.role}</p>
-            <p style={{ margin: 0, fontSize: 18, fontFamily: 'var(--font-hand, Caveat, cursive)' }}>“{alibi}”</p>
-            <p className="muted" style={{ margin: '10px 0 0', fontSize: 13 }}>This is what they told everyone. Whether it holds up is for you to find out.</p>
+            <p style={{ margin: '0 0 6px', fontStyle: 'italic', color: 'var(--ink-soft)' }}>{suspect.role}</p>
+            <p style={{ margin: 0, fontSize: 18, fontFamily: 'var(--font-body)' }}>“{alibi}”</p>
+            <p style={{ margin: '10px 0 0', fontSize: 13, color: 'var(--ink-soft)' }}>This is what they told everyone. Whether it holds up is for you to find out.</p>
           </div>
         </div>
       </Modal>
@@ -78,11 +78,11 @@ function EvidenceStrip({ evidence, locations }: { evidence: PublicEvidence[]; lo
       <div ref={ref} className="scroll-x flex gap-3 py-2 px-1" role="list" aria-label="Initial evidence">
         {evidence.length === 0 ? <p className="ink-soft">No evidence is known yet. Search the rooms.</p> : null}
         {evidence.map((e) => (
-          <div key={e.id} className={cn('evidence-card', e.state === 'examined' && 'evidence-card--examined')} role="listitem">
-            <EvidenceIcon name={e.name} description={e.description} size={30} color="#e0bc63" />
-            <span className="evidence-card__name">{e.name}</span>
-            <span className="evidence-card__where">📍 {locName(e.location)}</span>
-            <span style={{ fontSize: 12, color: 'rgba(243,231,203,.75)' }}>{e.state === 'examined' && e.examined_detail ? e.examined_detail : e.description}</span>
+          <div key={e.id} className={cn('evidence-card evidence-card--paper', e.state === 'examined' && 'evidence-card--examined')} role="listitem">
+            <EvidenceIcon name={e.name} description={e.description} size={30} color="#7a4b22" />
+            <span className="evidence-card__name" style={{ color: 'var(--ink)' }}>{e.name}</span>
+            <span className="evidence-card__where" style={{ color: 'var(--ink-soft)' }}>📍 {locName(e.location)}</span>
+            <span style={{ fontSize: 12, color: 'var(--ink-soft)' }}>{e.state === 'examined' && e.examined_detail ? e.examined_detail : e.description}</span>
           </div>
         ))}
       </div>
@@ -112,17 +112,12 @@ export function Briefing() {
   const death = useMemo(() => (ready ? deriveDeathWindow(ready.case.timeline_public, ready.case.victim.cause_of_death_public) : null), [ready])
   const scene = useMemo(() => (ready ? deriveCrimeScene(ready.locations, ready.evidence, ready.case.briefing) : null), [ready])
   const initialEvidence = useMemo(() => (ready ? ready.evidence.filter((e) => e.state === 'known' || e.state === 'examined') : []), [ready])
-  const preset = ready ? presetFromSetting(ready.case.setting) : 'other'
   const n = ready?.cast.length ?? 0
 
   return (
-    <div className="screen screen--wide">
-      <header className="flex justify-center">
-        <Marquee />
-      </header>
-
+    <div className="screen screen--briefing">
       {!ready && loading ? (
-        <div className="lacquer mono muted mt-8 text-center" aria-busy="true" style={{ maxWidth: 480, margin: '32px auto' }}>
+        <div className="parchment mono muted mt-8 text-center" aria-busy="true" style={{ maxWidth: 480, margin: '32px auto' }}>
           Opening the case file…
         </div>
       ) : null}
@@ -133,7 +128,7 @@ export function Briefing() {
       ) : null}
 
       {ready ? (
-        <section className="parchment mt-6 slide-up" aria-labelledby="briefing-title">
+        <section className="parchment parchment--briefing slide-up" aria-labelledby="briefing-title">
           <SectionTitle id="briefing-title" as="h1" subtitle="Same roof. Different truths.">
             Briefing — The Crime
           </SectionTitle>
@@ -141,8 +136,7 @@ export function Briefing() {
             {ready.case.title} · {ready.case.setting}
           </p>
 
-          <div className="grid gap-6 lg:grid-cols-[55fr_45fr]">
-            {/* LEFT */}
+          <div className="grid gap-6 lg:grid-cols-[52fr_48fr]">
             <div className="min-w-0">
               <h2 className="label-caps" style={{ fontSize: 13, marginTop: 0 }}>
                 ✜ What happened?
@@ -153,14 +147,14 @@ export function Briefing() {
                 </p>
               ))}
 
-              <div className="lacquer lacquer--soft mt-3 flex gap-3 items-start" style={{ padding: '10px 12px' }}>
+              <div className="brief-panel mt-3 flex gap-3 items-start">
                 <span aria-hidden="true" style={{ fontSize: 22 }}>
                   ☠
                 </span>
                 <div>
-                  <span className="label-caps label-caps--gold">The victim — {ready.case.victim.name}</span>
+                  <span className="label-caps">The victim — {ready.case.victim.name}</span>
                   <p style={{ margin: '2px 0 4px', fontSize: 14 }}>{ready.case.victim.description}</p>
-                  <p className="muted" style={{ margin: 0, fontSize: 13, fontStyle: 'italic' }}>
+                  <p className="ink-soft" style={{ margin: 0, fontSize: 13, fontStyle: 'italic' }}>
                     {ready.case.victim.cause_of_death_public}
                   </p>
                 </div>
@@ -179,22 +173,22 @@ export function Briefing() {
               </ol>
 
               <div className="grid gap-3 sm:grid-cols-2 mt-4">
-                <div className="lacquer lacquer--soft flex items-center gap-3">
+                <div className="brief-panel flex items-center gap-3">
                   <ClockFace time={death?.to ?? ready.clock} size={64} />
                   <div>
-                    <span className="label-caps label-caps--gold">Time of death</span>
+                    <span className="label-caps">Time of death</span>
                     <div style={{ fontSize: 16 }}>{death ? `Between ${death.label}` : 'Not yet established'}</div>
-                    <div className="muted" style={{ fontSize: 12 }}>
+                    <div className="ink-soft" style={{ fontSize: 12 }}>
                       Your clock: {formatClock12(ready.clock)}
                     </div>
                   </div>
                 </div>
-                <div className="lacquer lacquer--soft flex items-center gap-3">
-                  <SceneThumb preset={preset} className="rounded" style={{ width: 96, height: 60, flex: '0 0 auto', border: '1px solid var(--gold-500)' }} />
+                <div className="brief-panel flex items-center gap-3">
+                  <BackdropThumb locationId={scene?.id} className="rounded" style={{ width: 96, height: 60, flex: '0 0 auto', border: '1px solid var(--wood-500)' }} title={scene?.name} />
                   <div className="min-w-0">
-                    <span className="label-caps label-caps--gold">Crime scene: {scene?.name ?? 'unknown'}</span>
+                    <span className="label-caps">Crime scene: {scene?.name ?? 'unknown'}</span>
                     <div>
-                      <button type="button" className="underline cursor-pointer" style={{ color: 'var(--gold-300)', fontSize: 14 }} onClick={() => setSceneOpen((o) => !o)} aria-expanded={sceneOpen}>
+                      <button type="button" className="underline cursor-pointer" style={{ color: 'var(--wood-700)', fontSize: 14 }} onClick={() => setSceneOpen((o) => !o)} aria-expanded={sceneOpen}>
                         📍 View location
                       </button>
                     </div>
@@ -203,31 +197,30 @@ export function Briefing() {
                 <Modal open={sceneOpen && !!scene} onClose={() => setSceneOpen(false)} title={`Crime scene: ${scene?.name ?? ''}`} width={560}>
                   {scene ? (
                     <div className="flex flex-col gap-3">
-                      <SceneThumb preset={preset} className="rounded" style={{ width: '100%', height: 200, border: '1px solid var(--gold-500)' }} />
+                      <BackdropThumb locationId={scene.id} className="rounded" style={{ width: '100%', height: 200, border: '1px solid var(--wood-500)' }} title={scene.name} />
                       <p style={{ margin: 0, fontSize: 17 }}>{scene.description}</p>
                       {ready.evidence.filter((e) => e.location === scene.id && e.state !== 'hidden').length ? (
-                        <p className="muted" style={{ margin: 0, fontSize: 14 }}>
+                        <p className="ink-soft" style={{ margin: 0, fontSize: 14 }}>
                           Noted here: {ready.evidence.filter((e) => e.location === scene.id && e.state !== 'hidden').map((e) => e.name).join(', ')}
                         </p>
                       ) : null}
-                      <p className="muted" style={{ margin: 0, fontSize: 13 }}>You can search this room during the investigation.</p>
+                      <p className="ink-soft" style={{ margin: 0, fontSize: 13 }}>You can search this room during the investigation.</p>
                     </div>
                   ) : null}
                 </Modal>
               </div>
             </div>
 
-            {/* RIGHT */}
             <div className="min-w-0">
               <SectionTitle as="h2" align="left" subtitle={`${numberWord(n)} people. ${numberWord(n)} versions.`}>
                 The suspects
               </SectionTitle>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none p-0 m-0 pb-10">
+              <ul className="suspect-brief-grid list-none p-0 m-0">
                 {ready.cast.map((s) => (
-                  <SuspectCard key={s.id} suspect={s} />
+                  <SuspectCard key={s.id} suspect={s} caseId={ready.case.id} />
                 ))}
               </ul>
-              <div className="hidden xl:flex justify-end mt-2">
+              <div className="hidden xl:flex justify-end mt-3">
                 <Sticky>Hover a suspect to hear their story. Then doubt it.</Sticky>
               </div>
             </div>

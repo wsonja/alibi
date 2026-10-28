@@ -115,9 +115,9 @@ export const useSensors = create<SensorsState>()((set, get) => ({
     const s = get()
     if (s.enabled) return true
     if (s.starting) return false
+    // ConsentGate sets consent then calls start(); also allow an explicit start after a prior consent.
     if (!s.consent) {
-      set({ error: 'Camera consent is required before sensors can start.' })
-      return false
+      set({ consent: true, error: null })
     }
     if (typeof navigator === 'undefined' || !navigator.mediaDevices?.getUserMedia) {
       set({ error: 'This browser does not support camera access.' })

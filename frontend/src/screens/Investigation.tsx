@@ -9,17 +9,17 @@ import { Button } from '@/components/common/Button'
 import { ClockFace } from '@/components/common/ClockFace'
 import { ErrorNotice } from '@/components/common/ErrorNotice'
 import { EvidenceIcon } from '@/components/common/EvidenceIcon'
-import { Marquee } from '@/components/common/Marquee'
 import { Modal } from '@/components/common/Modal'
-import { SceneThumb } from '@/components/common/SceneThumb'
+import { BackdropThumb } from '@/components/common/BackdropThumb'
 import { SectionTitle } from '@/components/common/SectionTitle'
 import JudgePanel from '@/components/judge/JudgePanel'
 import { NotebookPanel } from '@/components/notebook/NotebookPanel'
-import { PixelPortrait } from '@/components/portrait/PixelPortrait'
+import { PaintedPortrait } from '@/components/portrait/PaintedPortrait'
+import { ComposureMeter } from '@/components/sensors/ComposureMeter'
 import { cn } from '@/lib/cn'
-import { presetFromSetting } from '@/lib/presets'
 import { clockPhase, formatClock12 } from '@/lib/clock'
 import { selectPrimarySuspect, selectSecondarySuspect, speakerIndex, turnsForSuspect, useGame } from '@/store/game'
+import { useSensors } from '@/store/sensors'
 import { useUI, type ActionTab } from '@/store/ui'
 import { speak } from '@/voice'
 
@@ -126,8 +126,16 @@ export function Investigation() {
   const setTab = useUI((s) => s.setActionTab)
   const toggleJudge = useUI((s) => s.toggleJudge)
   const voiceOn = useUI((s) => s.a11y.voice)
+  const consent = useSensors((s) => s.consent)
+  const cameraEnabled = useSensors((s) => s.enabled)
+  const startCamera = useSensors((s) => s.start)
   const interject = useGame((s) => s.interject)
   const spokenRef = useRef<string>('')
+
+  useEffect(() => {
+    if (consent && !cameraEnabled) void startCamera()
+  }, [consent, cameraEnabled, startCamera])
+
   useEffect(() => {
     if (!voiceOn || !game) return
     const last = [...game.turns].reverse().find((t) => t.spoken && t.actor !== 'detective' && t.actor !== 'director')
@@ -238,7 +246,6 @@ export function Investigation() {
   return (
     <div className="screen screen--wide">
       <header className="flex items-center justify-between gap-4 flex-wrap">
-        <Marquee small />
         <h1 className="display display--gold" style={{ fontSize: 20, margin: 0 }}>
           Investigation
         </h1>
@@ -264,7 +271,7 @@ export function Investigation() {
                     onClick={(e) => select(s.id, e.shiftKey)}
                     aria-pressed={selection.primary === s.id}
                   >
-                    <PixelPortrait suspect={s} emotion={s.emotion} size={56} dim={pending?.suspectId === s.id} />
+                    <PaintedPortrait suspect={s} emotion={s.emotion} size={56} dim={pending?.suspectId === s.id} caseId={game.case.id} />
                     <span className="flex-1 min-w-0">
                       <span className="suspect-card__name block truncate">{s.name}</span>
                       <span className="suspect-card__meta block truncate">{s.role}</span>
@@ -359,7 +366,7 @@ export function Investigation() {
                   if (!who) return null
                   return (
                     <div key={sid} className="flex flex-col items-center gap-1" style={{ minWidth: 120 }}>
-                      <PixelPortrait suspect={who} emotion={who.emotion} size={96} dim={confrontation.speaking === sid} />
+                      <PaintedPortrait suspect={who} emotion={who.emotion} size={96} dim={confrontation.speaking === sid} caseId={game.case.id} />
                       <span className="display display--gold" style={{ fontSize: 11 }}>
                         {who.name}
                       </span>
@@ -413,7 +420,7 @@ export function Investigation() {
           ) : null}
 
           <div className="flex items-start gap-4 flex-wrap">
-            <PixelPortrait suspect={primary} emotion={primary.emotion} size={160} dim={primaryPending} />
+            <PaintedPortrait suspect={primary} emotion={primary.emotion} size={160} dim={primaryPending} caseId={game.case.id} />
             <div className="min-w-0 flex-1">
               <h3 className="display display--gold" style={{ fontSize: 16, margin: 0 }}>
                 {primary.name}
@@ -539,6 +546,7 @@ export function Investigation() {
         </div>
 
         <div className="flex flex-col gap-3 min-w-0">
+          <ComposureMeter />
           <NotebookPanel cast={game.cast} evidence={game.evidence} turns={game.turns} notebook={game.notebook} timeline={game.case.timeline_public} />
           <div className="mt-auto">
             <Button variant="red" size="lg" block onClick={() => setAccuseOpen(true)}>
@@ -551,7 +559,7 @@ export function Investigation() {
       <Modal open={!!searchResult} onClose={() => setSearchResult(null)} title={`Searched: ${game.locations.find((l) => l.id === searchResult?.locationId)?.name ?? ''}`} width={560}>
         {searchResult ? (
           <div className="flex flex-col gap-3">
-            <SceneThumb preset={presetFromSetting(game.case.setting)} className="rounded" style={{ width: '100%', height: 200, border: '1px solid var(--gold-500)' }} />
+            <BackdropThumb locationId={searchResult.locationId} className="rounded" style={{ width: '100%', height: 200, border: '1px solid var(--gold-500)' }} />
             <p style={{ margin: 0, fontSize: 16, color: 'var(--ink)' }}>{game.locations.find((l) => l.id === searchResult.locationId)?.description}</p>
             {searchResult.found.length ? (
               <div className="flex flex-col gap-2">
@@ -575,6 +583,7 @@ export function Investigation() {
         open={accuseOpen}
         onClose={() => setAccuseOpen(false)}
         cast={game.cast}
+        caseId={game.case.id}
         methodEvidence={methodEvidence}
         pending={isPending}
         onAccuse={async (payload) => {
@@ -595,12 +604,13 @@ interface AccuseModalProps {
   open: boolean
   onClose: () => void
   cast: PublicSuspect[]
+  caseId: string
   methodEvidence: PublicEvidence[]
   pending: boolean
   onAccuse: (payload: { suspect_id: string; method_evidence_ids: string[]; motive_text: string; confidence: number }) => Promise<void>
 }
 
-function AccuseModal({ open, onClose, cast, methodEvidence, pending, onAccuse }: AccuseModalProps) {
+function AccuseModal({ open, onClose, cast, caseId, methodEvidence, pending, onAccuse }: AccuseModalProps) {
   const [suspectId, setSuspectId] = useState<string | null>(null)
   const [evidenceIds, setEvidenceIds] = useState<string[]>([])
   const [motive, setMotive] = useState('')
@@ -631,7 +641,7 @@ function AccuseModal({ open, onClose, cast, methodEvidence, pending, onAccuse }:
           <div className="flex gap-3 flex-wrap">
             {cast.map((s) => (
               <button key={s.id} type="button" className={cn('suspect-card', suspectId === s.id && 'selected')} style={{ width: 140, flexDirection: 'column', textAlign: 'center' }} onClick={() => setSuspectId(s.id)}>
-                <PixelPortrait suspect={s} emotion={s.emotion} size={56} />
+                <PaintedPortrait suspect={s} emotion={s.emotion} size={56} caseId={caseId} />
                 <span className="suspect-card__name">{s.name}</span>
               </button>
             ))}

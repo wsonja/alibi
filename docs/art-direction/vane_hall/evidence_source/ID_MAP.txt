@@ -1,0 +1,10 @@
+Zip filename → game evidence id (served as /evidence/vane_hall/<id>.webp)
+unsent_solicitor_letter → solicitor_letter
+partnership_ledger → ledger
+potassium_cyanide_jar → cyanide_jar
+cigar_ash → cigar_ash
+pell_cigar_case → cigar_case
+broken_necklace_clasp → necklace_clasp
+ada_torn_reference → torn_reference
+(decater already from prior drop → decanter)
+(missing) ashes_in_grate — dynamic clue, no plate yet

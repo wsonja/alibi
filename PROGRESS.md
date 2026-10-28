@@ -105,3 +105,9 @@
 - Briefing victim chapter shows `/art/vane_hall/victim.webp` (crime scene).
 - Decanter plate at `/evidence/vane_hall/decanter.webp` used in story first-evidence,
   Present chips, notebook Evidence tab, Accuse method chips, and room hotspots via `EvidenceArt`.
+
+## 2026-10-28 — Transparent evidence pack
+- Installed remapped webps for solicitor_letter, ledger, cyanide_jar, cigar_ash,
+  cigar_case, necklace_clasp, torn_reference (zip names → case ids).
+- Source pack kept under `docs/art-direction/vane_hall/evidence_source/`.
+- Still missing plate: `ashes_in_grate` (dynamic).

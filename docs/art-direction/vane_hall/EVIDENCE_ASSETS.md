@@ -18,30 +18,30 @@ frontend/public/evidence/vane_hall/<evidence_id>.webp
 
 Until a file exists, the UI shows the gold line icon. Clicking a hotspot still collects the clue; art is visual only.
 
+Transparent RGBA plates preferred (black/dark UI falls behind them). Handwritten dates/text on letter/ledger art are illustrative — canonical wording stays in case JSON / UI copy.
+
+Source pack (png + lossless webp + contact sheet + id map): `docs/art-direction/vane_hall/evidence_source/`.
+
 ## Landed
 
-| id | Name | Status |
-|----|------|--------|
-| `decanter` | The brandy decanter | **in** — crystal still on black |
+| id | Name | File |
+|----|------|------|
+| `decanter` | The brandy decanter | `decanter.webp` |
+| `solicitor_letter` | Unsent letter to his solicitor | `solicitor_letter.webp` |
+| `ledger` | Partnership ledger | `ledger.webp` |
+| `cyanide_jar` | Jar of potassium cyanide | `cyanide_jar.webp` |
+| `cigar_ash` | Cigar ash | `cigar_ash.webp` |
+| `cigar_case` | Pell’s cigar case | `cigar_case.webp` |
+| `necklace_clasp` | Broken necklace clasp | `necklace_clasp.webp` |
+| `torn_reference` | Torn letter of reference | `torn_reference.webp` |
 
-## Later (when you search rooms)
+## Still open
 
-| id | Name | Where |
+| id | Name | Notes |
 |----|------|-------|
-| `solicitor_letter` | Unsent letter to his solicitor | Study drawer |
-| `ledger` | Partnership ledger | Study desk |
-| `cyanide_jar` | Jar of potassium cyanide | Darkroom shelf |
-| `cigar_ash` | Cigar ash | Darkroom floor |
-| `cigar_case` | Pell’s cigar case | Billiard room mantel |
-| `necklace_clasp` | Broken necklace clasp | Garden bench |
-| `torn_reference` | Torn letter of reference | Servants’ corridor |
-| `ashes_in_grate` | Burned papers | Study grate (dynamic) |
+| `ashes_in_grate` | Burned papers | Dynamic clue — no plate yet |
 
 ## Spec
 
-- Format: **WebP** (PNG source ok; we convert). Square or 4:5 crop, ~900–1200px.
-- Style: same amber/teal still-life mood as the character pack — not flat icons, not stock photos with watermarks.
-- Transparent background preferred; dark vignette / black plate acceptable.
+- Format: **WebP** (PNG source ok). Transparent background preferred.
 - Filename must match the `id` column exactly (`decanter.webp`, not `brandy.png`).
-
-Drop more pngs/webps when ready and we will wire them the same way.

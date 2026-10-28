@@ -1,0 +1,136 @@
+{
+  "source": "Approved second concept board",
+  "notice": "Exported panel art is from approved concept board; visible character names in cards differ from Vane Hall canonical names. Portraits are NOT verified character matches. Landscape and mobile backdrops use blurred padding to avoid crop loss; pixel dimensions exceed actual source detail.",
+  "characters": {
+    "margaret": {
+      "canonicalName": "Lady Margaret Vane",
+      "conceptBoardName": "Lady Elizabeth Blackwood",
+      "files": [
+        "characters/cards/margaret_card.png",
+        "characters/cards/margaret_card.webp",
+        "characters/portraits/margaret_neutral.png",
+        "characters/portraits/margaret_neutral.webp",
+        "characters/avatars/margaret_avatar.png",
+        "characters/avatars/margaret_avatar.webp"
+      ],
+      "expression": "neutral only",
+      "backgroundTransparent": false
+    },
+    "pell": {
+      "canonicalName": "Thomas Pell",
+      "conceptBoardName": "Sir Jonathan Vale",
+      "files": [
+        "characters/cards/pell_card.png",
+        "characters/cards/pell_card.webp",
+        "characters/portraits/pell_neutral.png",
+        "characters/portraits/pell_neutral.webp",
+        "characters/avatars/pell_avatar.png",
+        "characters/avatars/pell_avatar.webp"
+      ],
+      "expression": "neutral only",
+      "backgroundTransparent": false
+    },
+    "ada": {
+      "canonicalName": "Ada Finch",
+      "conceptBoardName": "Miss Evelyn Hart",
+      "files": [
+        "characters/cards/ada_card.png",
+        "characters/cards/ada_card.webp",
+        "characters/portraits/ada_neutral.png",
+        "characters/portraits/ada_neutral.webp",
+        "characters/avatars/ada_avatar.png",
+        "characters/avatars/ada_avatar.webp"
+      ],
+      "expression": "neutral only",
+      "backgroundTransparent": false
+    },
+    "crane": {
+      "canonicalName": "Dr. Elias Crane",
+      "conceptBoardName": "Dr. Alexander Reed",
+      "files": [
+        "characters/cards/crane_card.png",
+        "characters/cards/crane_card.webp",
+        "characters/portraits/crane_neutral.png",
+        "characters/portraits/crane_neutral.webp",
+        "characters/avatars/crane_avatar.png",
+        "characters/avatars/crane_avatar.webp"
+      ],
+      "expression": "neutral only",
+      "backgroundTransparent": false
+    }
+  },
+  "backdrops": {
+    "manor_exterior": {
+      "displayName": "Blackwood Manor",
+      "files": [
+        "backdrops/scene_originals/manor_exterior.png",
+        "backdrops/scene_originals/manor_exterior.webp",
+        "backdrops/landscape_16x9/manor_exterior.png",
+        "backdrops/landscape_16x9/manor_exterior.webp",
+        "backdrops/ultrawide_21x9/manor_exterior.png",
+        "backdrops/ultrawide_21x9/manor_exterior.webp",
+        "backdrops/mobile_9x16/manor_exterior.png",
+        "backdrops/mobile_9x16/manor_exterior.webp"
+      ],
+      "sourceCrop": [
+        368,
+        334
+      ],
+      "method": "Source panel enlarged, with darkened blurred extension to fit aspect ratio"
+    },
+    "library": {
+      "displayName": "Library",
+      "files": [
+        "backdrops/scene_originals/library.png",
+        "backdrops/scene_originals/library.webp",
+        "backdrops/landscape_16x9/library.png",
+        "backdrops/landscape_16x9/library.webp",
+        "backdrops/ultrawide_21x9/library.png",
+        "backdrops/ultrawide_21x9/library.webp",
+        "backdrops/mobile_9x16/library.png",
+        "backdrops/mobile_9x16/library.webp"
+      ],
+      "sourceCrop": [
+        368,
+        334
+      ],
+      "method": "Source panel enlarged, with darkened blurred extension to fit aspect ratio"
+    },
+    "dining_room": {
+      "displayName": "Dining Room",
+      "files": [
+        "backdrops/scene_originals/dining_room.png",
+        "backdrops/scene_originals/dining_room.webp",
+        "backdrops/landscape_16x9/dining_room.png",
+        "backdrops/landscape_16x9/dining_room.webp",
+        "backdrops/ultrawide_21x9/dining_room.png",
+        "backdrops/ultrawide_21x9/dining_room.webp",
+        "backdrops/mobile_9x16/dining_room.png",
+        "backdrops/mobile_9x16/dining_room.webp"
+      ],
+      "sourceCrop": [
+        368,
+        334
+      ],
+      "method": "Source panel enlarged, with darkened blurred extension to fit aspect ratio"
+    },
+    "bedroom": {
+      "displayName": "Bedroom",
+      "files": [
+        "backdrops/scene_originals/bedroom.png",
+        "backdrops/scene_originals/bedroom.webp",
+        "backdrops/landscape_16x9/bedroom.png",
+        "backdrops/landscape_16x9/bedroom.webp",
+        "backdrops/ultrawide_21x9/bedroom.png",
+        "backdrops/ultrawide_21x9/bedroom.webp",
+        "backdrops/mobile_9x16/bedroom.png",
+        "backdrops/mobile_9x16/bedroom.webp"
+      ],
+      "sourceCrop": [
+        368,
+        334
+      ],
+      "method": "Source panel enlarged, with darkened blurred extension to fit aspect ratio"
+    }
+  }
+}

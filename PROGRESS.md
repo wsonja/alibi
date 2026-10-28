@@ -66,3 +66,9 @@
 - Owner rejected pixel faces; supplied noir / tabletop / crime-scene refs → `docs/art-direction/refs/`.
 - Plan in `docs/IMMERSIVE_REDESIGN.md`: painted cast pack (owner delivers files), MediaPipe camera (free, no key),
   low-text arrive→crime→meet cast→room hotspots with the same verbs. FIX_PLAN Phase 5 unblocked as 5a–5e.
+
+## 2026-10-28 — Phase 5a: painted Vane Hall portraits (neutral)
+- Owner uploaded concept-board character pack (portraits + avatars + cards). Manifest notes alternate board names;
+  UI uses label-free portraits only. Installed webp under `frontend/public/portraits/vane_hall/`.
+- `PaintedPortrait` prefers pack art (avatar ≤64px, bust otherwise); missing emotion → `_neutral.webp`; else pixel fallback.
+- Briefing / Investigation / Accuse / Debrief switched to PaintedPortrait. Backdrops still pending owner zip.

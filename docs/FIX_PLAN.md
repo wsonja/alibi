@@ -70,7 +70,7 @@ Kill pixel faces; noir painted cast; room-first low-text spine; MediaPipe gaze (
 **Why.** Pixel portraits + text-heavy Setup/Briefing fight the product the owner wants (tabletop mystery + noir characters). Camera stub emits nothing today.
 
 Split PRs (see IMMERSIVE_REDESIGN §E):
-- **5a** PaintedPortrait + Vane Hall emotion pack (needs owner portrait files — §A1).
+- **5a** PaintedPortrait + Vane Hall pack — **partial**: owner concept-board neutrals + avatars wired; emotion variants + backdrops still pending.
 - **5b** Arrive → time/crime → meet cast scene-by-scene → roam; icon action dock (all verbs kept).
 - **5c** Room hotspots → search/examine.
 - **5d** Real `@mediapipe/tasks-vision` FaceLandmarker → `player_signal` (no API key; video never leaves device).

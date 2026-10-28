@@ -14,7 +14,7 @@ import { ErrorNotice } from '@/components/common/ErrorNotice'
 import { Marquee } from '@/components/common/Marquee'
 import { SectionTitle } from '@/components/common/SectionTitle'
 import { RumorMap } from '@/components/debrief/RumorMap'
-import { PixelPortrait } from '@/components/portrait/PixelPortrait'
+import { PaintedPortrait } from '@/components/portrait/PaintedPortrait'
 import { cn } from '@/lib/cn'
 import { useGame } from '@/store/game'
 
@@ -87,11 +87,11 @@ function ReelRow({ node }: { node: ReelNode }) {
   )
 }
 
-function ReelColumn({ suspect, nodes }: { suspect: PublicSuspect; nodes: ReelNode[] }) {
+function ReelColumn({ suspect, nodes, caseId }: { suspect: PublicSuspect; nodes: ReelNode[]; caseId?: string | null }) {
   return (
     <div className="min-w-0" style={{ flex: '0 0 320px' }}>
       <div className="flex items-center gap-2 mb-2">
-        <PixelPortrait suspect={suspect} emotion={suspect.emotion} size={48} />
+        <PaintedPortrait suspect={suspect} emotion={suspect.emotion} size={48} caseId={caseId} />
         <div className="min-w-0">
           <div className="display display--gold" style={{ fontSize: 13 }}>
             {suspect.name}

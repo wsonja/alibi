@@ -15,20 +15,20 @@ import { SceneThumb } from '@/components/common/SceneThumb'
 import { SectionTitle } from '@/components/common/SectionTitle'
 import { Sticky } from '@/components/common/Sticky'
 import { Modal } from '@/components/common/Modal'
-import { PixelPortrait } from '@/components/portrait/PixelPortrait'
+import { PaintedPortrait } from '@/components/portrait/PaintedPortrait'
 import { cn } from '@/lib/cn'
 import { formatClock12 } from '@/lib/clock'
 import { presetFromSetting } from '@/lib/presets'
 import { deriveCrimeScene, deriveDeathWindow, extractAlibi, numberWord } from '@/lib/text'
 import { useGame } from '@/store/game'
 
-function SuspectCard({ suspect }: { suspect: PublicSuspect }) {
+function SuspectCard({ suspect, caseId }: { suspect: PublicSuspect; caseId: string }) {
   const [open, setOpen] = useState(false)
   const alibi = useMemo(() => extractAlibi(suspect.public_description), [suspect.public_description])
   return (
     <li>
       <article className="lacquer lacquer--soft flex flex-col items-center text-center gap-2 fade-in" style={{ padding: '14px 12px' }} aria-label={`${suspect.name}, ${suspect.role}`}>
-        <PixelPortrait suspect={suspect} emotion={suspect.emotion} size={96} />
+        <PaintedPortrait suspect={suspect} emotion={suspect.emotion} size={96} caseId={caseId} />
         <h3 className="display display--gold" style={{ fontSize: 13, margin: 0 }}>
           {suspect.name}
         </h3>
@@ -42,7 +42,7 @@ function SuspectCard({ suspect }: { suspect: PublicSuspect }) {
       </article>
       <Modal open={open} onClose={() => setOpen(false)} title={`${suspect.name} — alibi (public)`} width={520}>
         <div className="flex gap-4 items-start">
-          <PixelPortrait suspect={suspect} emotion={suspect.emotion} size={96} />
+          <PaintedPortrait suspect={suspect} emotion={suspect.emotion} size={96} caseId={caseId} />
           <div>
             <p className="muted" style={{ margin: '0 0 6px', fontStyle: 'italic' }}>{suspect.role}</p>
             <p style={{ margin: 0, fontSize: 18, fontFamily: 'var(--font-hand, Caveat, cursive)' }}>“{alibi}”</p>
@@ -224,7 +224,7 @@ export function Briefing() {
               </SectionTitle>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none p-0 m-0 pb-10">
                 {ready.cast.map((s) => (
-                  <SuspectCard key={s.id} suspect={s} />
+                  <SuspectCard key={s.id} suspect={s} caseId={ready.case.id} />
                 ))}
               </ul>
               <div className="hidden xl:flex justify-end mt-2">

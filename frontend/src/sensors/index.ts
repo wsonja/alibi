@@ -1,15 +1,14 @@
 /**
  * Face / voice sensors (PLAN §11). FaceLandmarker runs in the browser; nothing is uploaded.
  * Emits a FaceSample about every 2s while the video is playing.
+ * GPU WebGL often fails (kGpuService); createBrowserFaceLandmarker falls back to CPU.
  */
-import { FaceLandmarker, FilesetResolver, type FaceLandmarkerResult } from '@mediapipe/tasks-vision'
+import { type FaceLandmarker, type FaceLandmarkerResult } from '@mediapipe/tasks-vision'
 import type { FaceSample, VoiceSample } from '@/store/sensors'
 import type { Composure, Gaze } from '@/api/types'
+import { createBrowserFaceLandmarker } from '@/sensors/faceLandmarker'
 
 const SAMPLE_MS = 2000
-const WASM_CDN = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.1.1/wasm'
-const MODEL_URL =
-  'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task'
 
 let landmarker: FaceLandmarker | null = null
 let raf = 0
@@ -69,14 +68,8 @@ function toSample(result: FaceLandmarkerResult, now: number): FaceSample {
 
 async function ensureLandmarker(): Promise<FaceLandmarker> {
   if (landmarker) return landmarker
-  const vision = await FilesetResolver.forVisionTasks(WASM_CDN)
-  landmarker = await FaceLandmarker.createFromOptions(vision, {
-    baseOptions: { modelAssetPath: MODEL_URL, delegate: 'GPU' },
-    runningMode: 'VIDEO',
-    numFaces: 1,
-    outputFaceBlendshapes: true,
-    outputFacialTransformationMatrixes: true,
-  })
+  const created = await createBrowserFaceLandmarker()
+  landmarker = created.landmarker
   return landmarker
 }
 

@@ -3,8 +3,8 @@ name: verify-alibi
 description: >-
   Verify Murder Mystery Mayhem / Alibi boots and the scripted Vane Hall loop still
   works. Use when checking the repo after changes, before a demo, after setup, or
-  when asked if the game works. Runs scripts/verify_alibi.sh gates against the
-  real servers, not guesses.
+  when asked if the game works. Runs scripts/verify_alibi.sh against real servers.
+  Also covers Vane Hall portrait/backdrop assets and MediaPipe CPU fallback tests.
 ---
 
 # Verify Alibi
@@ -13,49 +13,56 @@ Run the harness. Do not declare the game healthy from unit tests alone.
 
 ## When to use
 
-- After `make setup`, dependency changes, API/engine/frontend edits, or before a playtest.
+- After `make setup`, dependency changes, API/engine/frontend/sensor edits, or before a playtest.
 - When someone asks "does the app work?" or "what is broken?"
+- After camera / MediaPipe changes (GPU WebGL often fails; CPU fallback must stay covered).
 
 ## Command
 
-From the repo root, with nothing else required if servers are down (the script can start them):
+From the repo root:
 
 ```bash
 ./scripts/verify_alibi.sh
 ```
 
-Useful flags:
+Flags:
 
 ```bash
 ./scripts/verify_alibi.sh --skip-start    # servers already on :8000 and :5173
-./scripts/verify_alibi.sh --quick        # health + pytest + api playtest only
+./scripts/verify_alibi.sh --quick        # tooling → assets → unit → health → api playtest → restart
 ./scripts/verify_alibi.sh --keep-servers # leave tmux sessions up after pass
 ```
 
 Exit codes: `0` all gates passed, `1` a gate failed, `2` setup/environment blocked the run.
 
-Logs land in `.verify-alibi/` (gitignored) or `$VERIFY_ALIBI_OUT` if set.
+Logs: `.verify-alibi/` (gitignored) or `$VERIFY_ALIBI_OUT`.
 
 ## Gates (in order)
 
-1. **Tooling.** `backend/.venv` exists; `frontend/node_modules` exists. If missing, print `make setup` (needs `python3-venv` and `npm install --legacy-peer-deps` on this stack).
-2. **Unit.** `cd backend && .venv/bin/python -m pytest -q -m "not integration"`.
-3. **Servers.** `GET /api/health` → `ok: true`. `GET` frontend root → 200.
-4. **API playtest.** `backend/.venv/bin/python scripts/api_playtest.py` (scripted Vane Hall ask/search/present/flatter/search/confront/accuse/rewind; WS turn_result and notebook pushes; Watson notebook in GameState; forbids secret keys in game JSON).
-5. **Restart persistence.** Only when the script started the backend: Ctrl-C uvicorn, start it again, and `GET /api/games/{id}` must be byte-identical. A started backend uses `.verify-alibi/verify.db`, not `backend/alibi.db`.
-6. **Red team (full mode).** `LLM_MODE=scripted backend/.venv/bin/python scripts/redteam.py --case backend/app/cases/vane_hall.json` → 0 FAIL.
-7. **Frontend (full mode).** `cd frontend && npm test` and `npm run build`.
+1. **Tooling.** `backend/.venv` and `frontend/node_modules` exist.
+2. **Assets.** Vane Hall portrait + backdrop webps exist under `frontend/public/` (see gate body in the script).
+3. **Unit.** Backend pytest (`-m "not integration"`) and frontend vitest including `faceLandmarker` CPU-fallback tests.
+4. **Servers.** `GET /api/health` → `ok: true`. Frontend root → 200.
+5. **API playtest.** `scripts/api_playtest.py` (scripted Vane Hall ask/search/present/flatter/search/confront/accuse/rewind; WS; Watson; no secret keys in game JSON).
+6. **Restart persistence.** When this script started the backend: restart uvicorn; `GET /api/games/{id}` identical. Uses `.verify-alibi/verify.db`.
+7. **Red team (full).** `LLM_MODE=scripted … redteam.py` → 0 FAIL.
+8. **Frontend build (full).** `cd frontend && npm run build`.
 
-`--quick` stops after gate 5.
+`--quick` stops after gate 6.
+
+## Camera / sensors (manual; not fully automatable here)
+
+Harness proves the CPU-fallback *contract* in vitest. Live webcam needs a real browser:
+
+1. Setup → tick 📷 → allow camera when prompted. Status must not stay on a raw `kGpuService` / WebGL error.
+2. Begin → Investigation → Composure meter leaves "Camera off" within a few seconds with a face in frame.
+3. Deny permission → status shows denial; game still playable.
 
 ## How to report
 
-Print each gate as `PASS` or `FAIL` with the log path. Then list open product gaps from `docs/BROKEN.md` that the harness does **not** cover (WS updates rendered in the browser, live Gemini suspects, case generation, graphics). Never claim those are fine because the script exited 0.
+Print each gate as `PASS` / `FAIL` / `SKIP` with the log path. List open gaps the harness does **not** cover (browser WS paint, live Gemini, Author, immersive low-text UX). Never claim those are fine because the script exited 0.
 
-## Related docs
+## Related
 
-- `docs/BROKEN.md` — last measured inventory
-- `docs/FIX_PLAN.md` — phased repair order
-- `docs/DIAGNOSE_PLAYBOOK.md` — how that inventory was produced
-- `PLAYTEST.md` — human guided route
-- `docs/DESIGN.md` — visual contract
+- `docs/BROKEN.md`, `docs/FIX_PLAN.md`, `docs/IMMERSIVE_REDESIGN.md`
+- `docs/DIAGNOSE_PLAYBOOK.md`, `PLAYTEST.md`

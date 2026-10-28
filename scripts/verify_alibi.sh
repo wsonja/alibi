@@ -103,21 +103,50 @@ if [[ ! -d "$ROOT/frontend/node_modules" ]]; then
 fi
 pass "venv and node_modules present"
 
-gate "2 unit tests"
+gate "2 Vane Hall assets"
+ASSET_MISS=0
+for f in \
+  frontend/public/portraits/vane_hall/margaret_neutral.webp \
+  frontend/public/portraits/vane_hall/crane_neutral.webp \
+  frontend/public/portraits/vane_hall/pell_neutral.webp \
+  frontend/public/portraits/vane_hall/ada_neutral.webp \
+  frontend/public/backdrops/landscape_16x9/library.webp \
+  frontend/public/backdrops/landscape_16x9/manor_exterior.webp \
+  frontend/public/backdrops/mobile_9x16/library.webp \
+  frontend/public/backdrops/ultrawide_21x9/library.webp \
+  frontend/public/backdrops/scene_originals/library.webp
+do
+  if [[ ! -f "$ROOT/$f" ]]; then
+    fail "missing $f"
+    ASSET_MISS=1
+  fi
+done
+if [[ "$ASSET_MISS" -eq 0 ]]; then
+  pass "Vane Hall portraits + backdrop webps present"
+fi
+
+gate "3 unit tests"
 if (
   cd "$ROOT/backend"
   LLM_MODE=scripted "$PY" -m pytest -q -m "not integration"
 ) >"$OUT/pytest.log" 2>&1; then
-  pass "pytest (log $OUT/pytest.log)"
+  pass "backend pytest (log $OUT/pytest.log)"
 else
-  fail "pytest (log $OUT/pytest.log)"
+  fail "backend pytest (log $OUT/pytest.log)"
   tail -20 "$OUT/pytest.log" || true
+fi
+if (cd "$ROOT/frontend" && npx vitest run src/sensors/faceLandmarker.test.ts src/lib/paintedPortrait.test.ts src/lib/backdrops.test.ts) \
+    >"$OUT/vitest-sensors-assets.log" 2>&1; then
+  pass "frontend sensor/asset vitest (log $OUT/vitest-sensors-assets.log)"
+else
+  fail "frontend sensor/asset vitest (log $OUT/vitest-sensors-assets.log)"
+  tail -30 "$OUT/vitest-sensors-assets.log" || true
 fi
 
 # A backend this script starts keeps its games in $OUT, out of the player's Archive (backend/alibi.db).
 BACKEND_CMD="set -a && . ./.env && set +a && export LLM_MODE=scripted DATABASE_URL='sqlite+aiosqlite:///$OUT/verify.db' && .venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000 >>'$OUT/backend.log' 2>&1"
 
-gate "3 servers"
+gate "4 servers"
 if [[ "$SKIP_START" -eq 0 ]]; then
   if ! curl -fsS "$API/api/health" >/dev/null 2>&1; then
     rm -f "$OUT/verify.db" "$OUT/backend.log"
@@ -149,7 +178,7 @@ if wait_http "$WEB/" "frontend"; then
   fi
 fi
 
-gate "4 API playtest"
+gate "5 API playtest"
 rm -f "$OUT/game_id"
 if LLM_MODE=scripted PLAYTEST_GAME_FILE="$OUT/game_id" "$PY" "$ROOT/scripts/api_playtest.py" "$API" \
     >"$OUT/api-playtest.log" 2>&1; then
@@ -159,7 +188,7 @@ else
   tail -30 "$OUT/api-playtest.log" || true
 fi
 
-gate "5 restart persistence"
+gate "6 restart persistence"
 if [[ "$STARTED_BACKEND" -eq 1 && -s "$OUT/game_id" ]]; then
   gid="$(cat "$OUT/game_id")"
   curl -fsS "$API/api/games/$gid" >"$OUT/game-before-restart.json" || true
@@ -183,7 +212,7 @@ else
 fi
 
 if [[ "$QUICK" -eq 0 ]]; then
-  gate "6 redteam"
+  gate "7 redteam"
   if (
     cd "$ROOT"
     LLM_MODE=scripted "$PY" scripts/redteam.py --case backend/app/cases/vane_hall.json
@@ -198,11 +227,11 @@ if [[ "$QUICK" -eq 0 ]]; then
     tail -20 "$OUT/redteam.log" || true
   fi
 
-  gate "7 frontend test + build"
+  gate "8 frontend test + build"
   if (cd "$ROOT/frontend" && npm test) >"$OUT/vitest.log" 2>&1; then
-    pass "vitest (log $OUT/vitest.log)"
+    pass "vitest full (log $OUT/vitest.log)"
   else
-    fail "vitest (log $OUT/vitest.log)"
+    fail "vitest full (log $OUT/vitest.log)"
   fi
   if (cd "$ROOT/frontend" && npm run build) >"$OUT/frontend-build.log" 2>&1; then
     pass "frontend build (log $OUT/frontend-build.log)"
@@ -212,10 +241,11 @@ if [[ "$QUICK" -eq 0 ]]; then
 fi
 
 echo
-echo "Harness gaps (not checked here): WS updates rendered in the browser, live Gemini suspects, case generation,"
-echo "Alibi Board / graphs, sensors, cast art. See docs/BROKEN.md."
-echo "API playtest may print a GAP line (PLAYTEST study-admit) without failing."
+echo "Harness gaps (not checked here): WS updates painted in the browser, live Gemini, case Author,"
+echo "live webcam (manual — see verify-alibi skill), immersive low-text UX. See docs/BROKEN.md."
+echo "API playtest may print a GAP line without failing."
 echo
+
 
 if [[ "$FAILS" -eq 0 ]]; then
   echo "VERIFY ALIBI: ALL GATES PASSED"

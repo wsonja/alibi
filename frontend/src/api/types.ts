@@ -155,11 +155,18 @@ export interface PublicEvidence {
   examined_detail?: string
 }
 
+export interface ClueSpot {
+  id: string
+  label?: string | null
+  collected: boolean
+}
+
 export interface PublicLocation {
   id: string
   name: string
   description: string
   searched: boolean
+  spots?: ClueSpot[]
 }
 
 export interface PublicTurn {
@@ -288,11 +295,13 @@ export interface InterjectResponse {
 
 export interface SearchRequest {
   location_id: string
+  evidence_id?: string | null
 }
 
 export interface SearchResponse {
   evidence: PublicEvidence[]
   clock: string
+  spots?: ClueSpot[]
 }
 
 export interface AccuseRequest {

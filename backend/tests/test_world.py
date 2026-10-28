@@ -26,6 +26,23 @@ def test_search_examines_and_records(case, world):
     assert world["game"]["searched_locations"] == ["billiard_room"]
 
 
+def test_examine_at_collects_one_clue(case, world):
+    world["game"]["turn"] = 1
+    spots = world_mod.clue_spots(case, world, "study")
+    assert {s["id"] for s in spots} == {"decanter", "solicitor_letter", "ledger"}
+    assert next(s for s in spots if s["id"] == "decanter")["label"] == "The brandy decanter"
+    assert next(s for s in spots if s["id"] == "ledger")["label"] is None
+    newly = world_mod.examine_at(case, world, "study", "solicitor_letter")
+    assert newly == ["solicitor_letter"]
+    assert world["evidence"]["solicitor_letter"]["state"] == "examined"
+    assert world["evidence"]["ledger"]["state"] == "hidden"
+    assert world["game"]["searched_locations"] == ["study"]
+    assert world["game"]["clock_minutes"] == 25  # first find in room = search cost
+    newly2 = world_mod.examine_at(case, world, "study", "ledger")
+    assert newly2 == ["ledger"]
+    assert world["game"]["clock_minutes"] == 30  # later find = +5
+
+
 def test_search_study_examines_known_and_hidden(case, world):
     newly = world_mod.search(case, world, "study")
     assert newly == ["decanter", "solicitor_letter", "ledger"]
@@ -108,6 +125,8 @@ def test_burn_letter_respects_probability(case, world):
 def test_public_locations(case, world):
     world_mod.search(case, world, "garden")
     locs = public.public_locations(case, world)
-    assert {"id", "name", "description", "searched"} == set(locs[0])
+    assert {"id", "name", "description", "searched", "spots"} == set(locs[0])
     assert next(loc for loc in locs if loc["id"] == "garden")["searched"] is True
     assert next(loc for loc in locs if loc["id"] == "study")["searched"] is False
+    study_spots = next(loc for loc in locs if loc["id"] == "study")["spots"]
+    assert {s["id"] for s in study_spots} >= {"decanter", "solicitor_letter", "ledger"}

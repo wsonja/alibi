@@ -1,12 +1,12 @@
 # Evidence object art (optional next drop)
 
-The story briefing looks for painted object plates here:
+Story briefing **and** room Search hotspots look for painted object plates here:
 
 ```
 frontend/public/evidence/vane_hall/<evidence_id>.webp
 ```
 
-Until a file exists, the UI shows the gold line icon for that object.
+Until a file exists, the UI shows the gold line icon. Clicking a hotspot still collects the clue; art is visual only.
 
 ## First beat (already on screen)
 

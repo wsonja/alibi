@@ -27,6 +27,8 @@ __all__ = [
     "public_evidence",
     "public_evidence_item",
     "search",
+    "examine_at",
+    "clue_spots",
 ]
 
 CLOCK_START_MINUTES = 15  # 00:15, the night of the murder
@@ -173,6 +175,47 @@ def search(case: dict, world: dict, location_id: str) -> list[str]:
     if location_id not in game.setdefault("searched_locations", []):
         game["searched_locations"].append(location_id)
     advance_clock(world, CLOCK_COST["search"])
+    return newly
+
+
+def clue_spots(case: dict, world: dict, location_id: str) -> list[dict]:
+    """Hotspots for the room explorer. Hidden items keep ``label`` null until collected."""
+    if location_id not in location_index(case):
+        raise KeyError(f"unknown location {location_id!r}")
+    spots: list[dict] = []
+    for e in _evidence_present_at(case, world, location_id):
+        st = world["evidence"][e["id"]]
+        state = st.get("state", "hidden")
+        if state == "destroyed":
+            continue
+        spots.append({
+            "id": e["id"],
+            "label": e.get("name") if state in ("known", "examined") else None,
+            "collected": state == "examined",
+        })
+    return spots
+
+
+def examine_at(case: dict, world: dict, location_id: str, evidence_id: str) -> list[str]:
+    """Examine one clue in a room (click-to-collect). First find in a room costs a search; later finds cost 5."""
+    if location_id not in location_index(case):
+        raise KeyError(f"unknown location {location_id!r}")
+    present = {e["id"]: e for e in _evidence_present_at(case, world, location_id)}
+    if evidence_id not in present:
+        raise KeyError(f"evidence {evidence_id!r} is not in {location_id!r}")
+    game = world["game"]
+    turn = int(game.get("turn", 0))
+    st = world["evidence"][evidence_id]
+    newly: list[str] = []
+    if st.get("state") in ("hidden", "known"):
+        st["state"] = "examined"
+        st["examined_turn"] = turn
+        newly.append(evidence_id)
+    first_visit = location_id not in game.setdefault("searched_locations", [])
+    if first_visit:
+        game["searched_locations"].append(location_id)
+    if newly:
+        advance_clock(world, CLOCK_COST["search"] if first_visit else 5)
     return newly
 
 

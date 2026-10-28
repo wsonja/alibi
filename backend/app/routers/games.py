@@ -62,7 +62,7 @@ async def interject(game_id: str, body: InterjectRequest, svc: Service) -> dict:
 
 @router.post("/{game_id}/search", response_model=SearchResponse, **_PUBLIC)
 async def search(game_id: str, body: SearchRequest, background: BackgroundTasks, svc: Service) -> dict:
-    return await svc.search(game_id, body.location_id, background)
+    return await svc.search(game_id, body.location_id, background, body.evidence_id)
 
 
 @router.post("/{game_id}/accuse")

@@ -226,8 +226,11 @@ export function postInterject(gameId: string, text: string): Promise<InterjectRe
   return request<InterjectResponse>(`/games/${encodeURIComponent(gameId)}/confront/interject`, { body: { text }, timeoutMs: 15_000 })
 }
 
-export function postSearch(gameId: string, locationId: string): Promise<SearchResponse> {
-  return request<SearchResponse>(`/games/${encodeURIComponent(gameId)}/search`, { body: { location_id: locationId }, timeoutMs: 30_000 })
+export function postSearch(gameId: string, locationId: string, evidenceId?: string | null): Promise<SearchResponse> {
+  return request<SearchResponse>(`/games/${encodeURIComponent(gameId)}/search`, {
+    body: { location_id: locationId, ...(evidenceId ? { evidence_id: evidenceId } : {}) },
+    timeoutMs: 30_000,
+  })
 }
 
 export function postAccuse(gameId: string, req: AccuseRequest): Promise<Debrief> {

@@ -95,3 +95,8 @@
   public timeline one beat at a time → meet each suspect in a claimed-room plate with a spoken intro →
   first evidence (decanter) → Begin investigation. Sticky note removed.
 - Evidence object plates optional at `frontend/public/evidence/vane_hall/<id>.webp` (see EVIDENCE_ASSETS.md).
+
+## 2026-10-28 — Confront label + click-to-collect rooms
+- Suspect list Confront control is a high-contrast red ⚔ Confront button (opens Confront tab).
+- Search opens RoomExplore: room backdrop + clue hotspots; `POST /search` with `evidence_id` examines
+  one item. Locations carry `spots` (hidden clues unlabeled until collected).

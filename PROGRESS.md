@@ -100,3 +100,8 @@
 - Suspect list Confront control is a high-contrast red ⚔ Confront button (opens Confront tab).
 - Search opens RoomExplore: room backdrop + clue hotspots; `POST /search` with `evidence_id` examines
   one item. Locations carry `spots` (hidden clues unlabeled until collected).
+
+## 2026-10-28 — Victim + brandy art drop
+- Briefing victim chapter shows `/art/vane_hall/victim.webp` (crime scene).
+- Decanter plate at `/evidence/vane_hall/decanter.webp` used in story first-evidence,
+  Present chips, notebook Evidence tab, Accuse method chips, and room hotspots via `EvidenceArt`.

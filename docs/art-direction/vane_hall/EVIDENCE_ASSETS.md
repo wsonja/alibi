@@ -1,6 +1,16 @@
-# Evidence object art (optional next drop)
+# Evidence + victim art
 
-Story briefing **and** room Search hotspots look for painted object plates here:
+## Victim (story briefing)
+
+```
+frontend/public/art/vane_hall/victim.webp
+```
+
+Shown on the Briefing “The victim” chapter (crime-scene plate of Sir Reginald).
+
+## Evidence object plates
+
+Story briefing, Present chips, notebook, Accuse method picker, and room Search hotspots look for:
 
 ```
 frontend/public/evidence/vane_hall/<evidence_id>.webp
@@ -8,11 +18,11 @@ frontend/public/evidence/vane_hall/<evidence_id>.webp
 
 Until a file exists, the UI shows the gold line icon. Clicking a hotspot still collects the clue; art is visual only.
 
-## First beat (already on screen)
+## Landed
 
-| id | Name | Where | Suggested shot |
-|----|------|-------|----------------|
-| `decanter` | The brandy decanter | Study desk | Crystal decanter + one used glass, warm lamplight, noir still life |
+| id | Name | Status |
+|----|------|--------|
+| `decanter` | The brandy decanter | **in** — crystal still on black |
 
 ## Later (when you search rooms)
 
@@ -31,7 +41,7 @@ Until a file exists, the UI shows the gold line icon. Clicking a hotspot still c
 
 - Format: **WebP** (PNG source ok; we convert). Square or 4:5 crop, ~900–1200px.
 - Style: same amber/teal still-life mood as the character pack — not flat icons, not stock photos with watermarks.
-- Transparent background preferred; dark vignette acceptable.
+- Transparent background preferred; dark vignette / black plate acceptable.
 - Filename must match the `id` column exactly (`decanter.webp`, not `brandy.png`).
 
-Drop a zip of webps (or pngs) when ready and we will wire them the same way as portraits.
+Drop more pngs/webps when ready and we will wire them the same way.

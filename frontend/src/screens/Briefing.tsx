@@ -7,7 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import type { PublicEvidence, PublicSuspect } from '@/api/types'
 import { Button, ButtonLink } from '@/components/common/Button'
 import { ErrorNotice } from '@/components/common/ErrorNotice'
-import { EvidenceIcon } from '@/components/common/EvidenceIcon'
+import { EvidenceArt } from '@/components/common/EvidenceArt'
 import { PaintedPortrait } from '@/components/portrait/PaintedPortrait'
 import { cn } from '@/lib/cn'
 import { backdropUrls } from '@/lib/backdrops'
@@ -15,12 +15,12 @@ import {
   advanceStory,
   claimedPlaceLabel,
   claimedSceneFor,
-  evidenceArtUrl,
   evidenceLocationName,
   evidenceScene,
   initialEvidence,
   initialProgress,
   introLineFor,
+  victimArtUrl,
   type StoryProgress,
 } from '@/lib/briefingStory'
 import { formatClock12 as fmt12 } from '@/lib/clock'
@@ -78,21 +78,26 @@ function VictimChapter({
   cause,
   deathLabel,
   clock,
+  caseId,
 }: {
   name: string
   description: string
   cause: string
   deathLabel: string | null
   clock: string
+  caseId: string
 }) {
+  const [imgOk, setImgOk] = useState(true)
+  const src = victimArtUrl(caseId)
   return (
     <article className="story-card story-card--victim fade-in">
       <p className="story-kicker">The study</p>
       <h1 className="story-title">The victim</h1>
-      <div className="story-victim-figure" aria-hidden="true">
-        <div className="story-victim-figure__desk" />
-        <div className="story-victim-figure__body" />
-      </div>
+      {imgOk ? (
+        <figure className="story-victim-art">
+          <img src={src} alt={`${name}, found dead in the study`} onError={() => setImgOk(false)} draggable={false} />
+        </figure>
+      ) : null}
       <h2 className="story-name">{name}</h2>
       <p className="story-body">{description}</p>
       <p className="story-body story-body--soft">{cause}</p>
@@ -163,25 +168,21 @@ function EvidenceChapter({
   caseId: string
   locationName: string
 }) {
-  const [imgOk, setImgOk] = useState(true)
-  const src = evidenceArtUrl(caseId, item.id)
   return (
     <article className="story-card fade-in">
       <p className="story-kicker">Found in {locationName}</p>
       <h1 className="story-title">First evidence</h1>
       <div className="story-evidence">
-        {imgOk ? (
-          <img
-            className="story-evidence__art"
-            src={src}
-            alt={item.name}
-            onError={() => setImgOk(false)}
-          />
-        ) : (
-          <div className="story-evidence__fallback" aria-hidden="true">
-            <EvidenceIcon name={item.name} description={item.description} size={96} color="#7a4b22" />
-          </div>
-        )}
+        <EvidenceArt
+          className="story-evidence__art"
+          caseId={caseId}
+          evidenceId={item.id}
+          name={item.name}
+          description={item.description}
+          size={160}
+          fit="contain"
+          iconColor="#7a4b22"
+        />
         <div>
           <h2 className="story-name">{item.name}</h2>
           <p className="story-body">{item.description}</p>
@@ -307,6 +308,7 @@ export function Briefing() {
             cause={ready.case.victim.cause_of_death_public}
             deathLabel={death?.label ?? null}
             clock={ready.clock}
+            caseId={caseId}
           />
         ) : null}
         {progress.chapter === 'timeline' ? (

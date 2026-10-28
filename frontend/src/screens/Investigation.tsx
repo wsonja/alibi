@@ -8,7 +8,7 @@ import { TACTICS, type PublicEvidence, type PublicSuspect, type Tactic } from '@
 import { Button } from '@/components/common/Button'
 import { ClockFace } from '@/components/common/ClockFace'
 import { ErrorNotice } from '@/components/common/ErrorNotice'
-import { EvidenceIcon } from '@/components/common/EvidenceIcon'
+import { EvidenceArt } from '@/components/common/EvidenceArt'
 import { Modal } from '@/components/common/Modal'
 import { SectionTitle } from '@/components/common/SectionTitle'
 import JudgePanel from '@/components/judge/JudgePanel'
@@ -503,7 +503,15 @@ export function Investigation() {
                       onClick={() => setSelectedEvidence(e.id)}
                       title={e.state === 'examined' ? e.examined_detail : e.description}
                     >
-                      <EvidenceIcon name={e.name} description={e.description} size={16} />
+                      <EvidenceArt
+                        caseId={game.case.id}
+                        evidenceId={e.id}
+                        name={e.name}
+                        description={e.description}
+                        size={22}
+                        fit="contain"
+                        iconColor="currentColor"
+                      />
                       {e.name}
                     </button>
                   )
@@ -557,7 +565,14 @@ export function Investigation() {
 
         <div className="flex flex-col gap-3 min-w-0">
           <ComposureMeter />
-          <NotebookPanel cast={game.cast} evidence={game.evidence} turns={game.turns} notebook={game.notebook} timeline={game.case.timeline_public} />
+          <NotebookPanel
+            cast={game.cast}
+            evidence={game.evidence}
+            turns={game.turns}
+            notebook={game.notebook}
+            timeline={game.case.timeline_public}
+            caseId={game.case.id}
+          />
           <div className="mt-auto">
             <Button variant="red" size="lg" block onClick={() => setAccuseOpen(true)}>
               ⚖ Accuse
@@ -665,6 +680,15 @@ function AccuseModal({ open, onClose, cast, caseId, methodEvidence, pending, onA
             <div className="flex gap-2 flex-wrap">
               {methodEvidence.map((e) => (
                 <button key={e.id} type="button" className={cn('chip', evidenceIds.includes(e.id) && 'selected')} onClick={() => toggleEvidence(e.id)} title={e.examined_detail ?? e.description}>
+                  <EvidenceArt
+                    caseId={caseId}
+                    evidenceId={e.id}
+                    name={e.name}
+                    description={e.description}
+                    size={22}
+                    fit="contain"
+                    iconColor="currentColor"
+                  />
                   {e.name}
                   {e.state === 'known' ? ' (seen)' : ''}
                 </button>

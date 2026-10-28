@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import type { NotebookEntry, PublicEvidence, PublicSuspect, PublicTurn, TimelineEntry } from '@/api/types'
-import { EvidenceIcon } from '@/components/common/EvidenceIcon'
+import { EvidenceArt } from '@/components/common/EvidenceArt'
 import { SectionTitle } from '@/components/common/SectionTitle'
 import { Sticky } from '@/components/common/Sticky'
 import { cn } from '@/lib/cn'
@@ -100,7 +100,7 @@ function NotesTab({ cast, turns, notebook }: { cast: PublicSuspect[]; turns: Pub
   )
 }
 
-function EvidenceTab({ evidence }: { evidence: PublicEvidence[] }) {
+function EvidenceTab({ evidence, caseId }: { evidence: PublicEvidence[]; caseId: string }) {
   const visible = [...evidence].filter((item) => item.state === 'examined' || item.state === 'known' || item.state === 'destroyed').sort((a, b) => evidenceRank(a) - evidenceRank(b))
   if (visible.length === 0) {
     return (
@@ -114,7 +114,15 @@ function EvidenceTab({ evidence }: { evidence: PublicEvidence[] }) {
       {visible.map((item) => (
         <li key={item.id} style={{ opacity: item.state === 'examined' ? 1 : 0.55 }}>
           <div className="flex items-start gap-2">
-            <EvidenceIcon name={item.name} description={item.description} size={18} color="var(--wood-600)" />
+            <EvidenceArt
+              caseId={caseId}
+              evidenceId={item.id}
+              name={item.name}
+              description={item.description}
+              size={36}
+              fit="contain"
+              iconColor="var(--wood-600)"
+            />
             <div className="min-w-0">
               <div style={{ fontWeight: 700, fontSize: 13 }}>{item.name}</div>
               <div style={{ fontSize: 12 }}>{item.state === 'examined' && item.examined_detail ? item.examined_detail : item.description}</div>
@@ -142,12 +150,14 @@ export function NotebookPanel({
   turns,
   notebook,
   timeline,
+  caseId,
 }: {
   cast: PublicSuspect[]
   evidence: PublicEvidence[]
   turns: PublicTurn[]
   notebook: NotebookEntry | null
   timeline: TimelineEntry[]
+  caseId: string
 }) {
   const [tab, setTab] = useState<NotebookTab>('notes')
   const links = useMemo(() => witnessedLinks(turns, cast), [turns, cast])
@@ -173,7 +183,7 @@ export function NotebookPanel({
       <div role="tabpanel" id={`notebook-panel-${tab}`} aria-labelledby={`notebook-tab-${tab}`} className="flex flex-col gap-3 min-w-0 max-w-full">
         {tab === 'notes' ? <NotesTab cast={cast} turns={turns} notebook={notebook} /> : null}
         {tab === 'alibi' ? <AlibiBoard cast={cast} notebook={notebook} timeline={timeline} /> : null}
-        {tab === 'evidence' ? <EvidenceTab evidence={evidence} /> : null}
+        {tab === 'evidence' ? <EvidenceTab evidence={evidence} caseId={caseId} /> : null}
         {tab === 'graph' ? (
           <CastGraph
             people={graphCast}

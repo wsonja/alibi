@@ -1988,31 +1988,20 @@ html[data-screen-reader] .pixel-portrait {
   justify-content: center;
   flex: 0 0 auto;
 }
-.story-victim-figure {
-  position: relative;
-  height: 88px;
+.story-victim-art {
   margin: 8px 0 16px;
-  opacity: 0.85;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid var(--wood-500);
+  box-shadow: 0 10px 28px rgba(20, 10, 4, 0.35);
+  background: #0a0503;
 }
-.story-victim-figure__desk {
-  position: absolute;
-  left: 10%;
-  right: 10%;
-  bottom: 18px;
-  height: 14px;
-  background: #3b2116;
-  border-radius: 2px;
-  box-shadow: 0 8px 0 #2a1610;
-}
-.story-victim-figure__body {
-  position: absolute;
-  left: 28%;
-  right: 34%;
-  bottom: 28px;
-  height: 36px;
-  background: linear-gradient(90deg, #1b1410, #2a1a14 40%, #1b1410);
-  border-radius: 40% 40% 8px 8px;
-  transform: rotate(-4deg);
+.story-victim-art img {
+  display: block;
+  width: 100%;
+  max-height: min(42vh, 360px);
+  object-fit: cover;
+  object-position: center 42%;
 }
 .story-progress {
   position: fixed;
@@ -2169,7 +2158,8 @@ html[data-screen-reader] .pixel-portrait {
 .room-spot__art img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  background: #0a0503;
 }
 .room-spot:hover:not(:disabled) .room-spot__art,
 .room-spot:focus-visible .room-spot__art {

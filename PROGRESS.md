@@ -111,3 +111,8 @@
   cigar_case, necklace_clasp, torn_reference (zip names → case ids).
 - Source pack kept under `docs/art-direction/vane_hall/evidence_source/`.
 - Still missing plate: `ashes_in_grate` (dynamic).
+
+## 2026-10-28 — Room search discoverability
+- Location chips show glint counts; click opens the room immediately.
+- Mystery hotspots are large pulsing gold “?” orbs (not invisible transparent art).
+- Empty rooms (e.g. Drawing Room) point you to rooms that still have clues.

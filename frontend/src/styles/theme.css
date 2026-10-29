@@ -2118,6 +2118,9 @@ html[data-screen-reader] .pixel-portrait {
   background: radial-gradient(ellipse at 50% 45%, rgba(10, 5, 3, 0.2) 0%, rgba(10, 5, 3, 0.55) 70%, rgba(8, 4, 2, 0.75) 100%);
   pointer-events: none;
 }
+.room-explore__veil--soft {
+  background: radial-gradient(ellipse at 50% 40%, rgba(10, 5, 3, 0.08) 0%, rgba(10, 5, 3, 0.28) 65%, rgba(8, 4, 2, 0.5) 100%);
+}
 .room-explore__header {
   position: relative;
   z-index: 2;
@@ -2167,117 +2170,45 @@ html[data-screen-reader] .pixel-portrait {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
-  width: 120px;
   padding: 0;
   border: 0;
   background: transparent;
   cursor: pointer;
-  color: #fff8e7;
 }
-.room-spot__ring {
-  position: absolute;
-  top: 44px;
-  left: 50%;
-  width: 108px;
-  height: 108px;
-  margin: -54px 0 0 -54px;
-  border-radius: 50%;
-  border: 2px solid rgba(240, 212, 138, 0.55);
-  box-shadow: 0 0 24px rgba(240, 212, 138, 0.45), inset 0 0 18px rgba(240, 212, 138, 0.2);
-  pointer-events: none;
-  animation: room-spot-ring 1.8s ease-in-out infinite;
-}
-.room-spot--done .room-spot__ring {
-  display: none;
-}
-.room-spot__art {
-  position: relative;
-  z-index: 1;
-  width: 88px;
-  height: 88px;
-  border-radius: 50%;
-  border: 3px solid #f0d48a;
-  background: radial-gradient(circle at 40% 35%, #3a2a18 0%, #120c08 70%);
-  box-shadow: 0 0 0 4px rgba(201, 162, 75, 0.35), 0 10px 28px rgba(0, 0, 0, 0.65);
+.room-spot--object .room-spot__art {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  overflow: visible;
+  opacity: 0.72;
+  filter: saturate(0.85) brightness(0.9);
+  transition: opacity 0.15s ease, filter 0.15s ease, transform 0.15s ease;
 }
-.room-spot__art img {
+.room-spot--object .room-spot__art img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  padding: 8px;
-  background: radial-gradient(circle at 50% 45%, #2a1c10 0%, #0a0503 75%);
+  padding: 0;
+  background: transparent;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.45));
+  pointer-events: none;
 }
-.room-spot__glint {
-  font-family: var(--font-heading);
-  font-size: 36px;
-  font-weight: 700;
-  color: #fff3c4;
-  text-shadow: 0 0 12px rgba(240, 212, 138, 0.9);
-  line-height: 1;
-}
-.room-spot:hover:not(:disabled) .room-spot__art,
-.room-spot:focus-visible .room-spot__art {
-  transform: scale(1.1);
-  box-shadow: 0 0 0 5px rgba(240, 212, 138, 0.65), 0 12px 32px rgba(0, 0, 0, 0.7);
+.room-spot--object:hover:not(:disabled) .room-spot__art,
+.room-spot--object:focus-visible .room-spot__art {
+  opacity: 1;
+  filter: none;
+  transform: scale(1.04);
   outline: none;
 }
-.room-spot__label {
-  position: relative;
-  z-index: 1;
-  font-family: var(--font-heading);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  text-align: center;
-  text-shadow: 0 1px 6px #000, 0 0 8px rgba(0, 0, 0, 0.9);
-  max-width: 120px;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: rgba(10, 5, 3, 0.72);
-  border: 1px solid rgba(240, 212, 138, 0.45);
-}
-.room-spot--mystery .room-spot__art {
-  border-style: solid;
-  animation: room-spot-pulse 1.6s ease-in-out infinite;
-}
-.room-spot--known .room-spot__art {
-  border-radius: 12px;
-}
-.room-spot--done {
-  opacity: 0.6;
-  cursor: default;
-}
-.room-spot--done .room-spot__art {
-  border-color: var(--truth);
-  box-shadow: none;
-  animation: none;
-  border-radius: 12px;
-}
-@keyframes room-spot-pulse {
-  0%,
-  100% {
-    box-shadow: 0 0 0 4px rgba(201, 162, 75, 0.35), 0 0 22px rgba(240, 212, 138, 0.55);
-  }
-  50% {
-    box-shadow: 0 0 0 8px rgba(240, 212, 138, 0.55), 0 0 36px rgba(255, 230, 150, 0.75);
-  }
-}
-@keyframes room-spot-ring {
-  0%,
-  100% {
-    transform: scale(0.92);
-    opacity: 0.55;
-  }
-  50% {
-    transform: scale(1.08);
-    opacity: 1;
-  }
+.room-spot--object:focus-visible {
+  outline: none;
 }
 
 .hr-gold {

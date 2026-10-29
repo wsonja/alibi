@@ -311,43 +311,25 @@ export function Investigation() {
             Locations
           </SectionTitle>
           <ul className="flex flex-col gap-2 list-none p-0 m-0">
-            {game.locations.map((l) => {
-              const remaining = (l.spots ?? []).filter((s) => !s.collected).length
-              return (
-                <li key={l.id}>
-                  <button
-                    type="button"
-                    className={cn('chip chip--dark', selectedLocation === l.id && 'selected')}
-                    style={{ width: '100%', justifyContent: 'space-between', gap: 8 }}
-                    title={
-                      remaining > 0
-                        ? `${remaining} clue${remaining === 1 ? '' : 's'} to inspect — click to enter`
-                        : 'No hidden clues here'
-                    }
-                    onClick={() => {
-                      setSelectedLocation(l.id)
-                      setTab('search')
-                      setLastFound(null)
-                      setExploringId(l.id)
-                    }}
-                  >
-                    <span>
-                      {l.searched ? '✓ ' : ''}
-                      {l.name}
-                    </span>
-                    {remaining > 0 ? (
-                      <span className="mono" style={{ fontSize: 11, color: 'var(--gold-300)' }}>
-                        {remaining} glint{remaining === 1 ? '' : 's'}
-                      </span>
-                    ) : (
-                      <span className="muted" style={{ fontSize: 11 }}>
-                        empty
-                      </span>
-                    )}
-                  </button>
-                </li>
-              )
-            })}
+            {game.locations.map((l) => (
+              <li key={l.id}>
+                <button
+                  type="button"
+                  className={cn('chip chip--dark', selectedLocation === l.id && 'selected')}
+                  style={{ width: '100%', justifyContent: 'flex-start' }}
+                  title="Enter this room"
+                  onClick={() => {
+                    setSelectedLocation(l.id)
+                    setTab('search')
+                    setLastFound(null)
+                    setExploringId(l.id)
+                  }}
+                >
+                  {l.searched ? '✓ ' : ''}
+                  {l.name}
+                </button>
+              </li>
+            ))}
           </ul>
 
           <hr className="hr-wood" style={{ margin: '4px 0' }} />
@@ -570,14 +552,9 @@ export function Investigation() {
 
             {tab === 'search' ? (
               <p className="muted" style={{ margin: 0 }}>
-                {selectedLocation ? (
-                  <>
-                    {game.locations.find((l) => l.id === selectedLocation)?.name}: click glowing spots in the room to
-                    collect clues. Drawing Room has none — try the Study first.
-                  </>
-                ) : (
-                  'Pick a location on the left (look for “glints”) to enter the room.'
-                )}
+                {selectedLocation
+                  ? `In ${game.locations.find((l) => l.id === selectedLocation)?.name} — look carefully and click what you find.`
+                  : 'Pick a location on the left to enter the room.'}
               </p>
             ) : null}
 
@@ -611,19 +588,6 @@ export function Investigation() {
           caseId={game.case.id}
           pending={isPending}
           lastFound={lastFound}
-          otherClueRooms={game.locations
-            .filter((l) => l.id !== exploring.id)
-            .map((l) => ({
-              id: l.id,
-              name: l.name,
-              remaining: (l.spots ?? []).filter((s) => !s.collected).length,
-            }))
-            .filter((l) => l.remaining > 0)}
-          onGoToRoom={(locId) => {
-            setSelectedLocation(locId)
-            setLastFound(null)
-            setExploringId(locId)
-          }}
           onClose={() => {
             setExploringId(null)
             setLastFound(null)

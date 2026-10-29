@@ -121,3 +121,7 @@
 - Confront control is icon-only (⚔) with hover “Confront”; left column a bit wider.
 - “All clues collected” on every room was a stale uvicorn without `locations.spots`;
   restarted API so spots ship on GameState. Refresh / new game to see glints.
+
+## 2026-10-28 — Hidden room objects (no spoiler UI)
+- Room Search spots are plain evidence PNGs (no rings, glow, “?”, or glint counts).
+- Location list no longer hints which rooms have clues.

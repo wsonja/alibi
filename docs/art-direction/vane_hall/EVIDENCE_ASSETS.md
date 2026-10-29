@@ -39,7 +39,7 @@ Source pack (png + lossless webp + contact sheet + id map): `docs/art-direction/
 
 | id | Name | Notes |
 |----|------|-------|
-| `ashes_in_grate` | Burned papers | Dynamic clue — no plate yet |
+| `ashes_in_grate` | Burned papers in the study grate | Dynamic clue — **no plate yet** |
 
 ## Spec
 

@@ -126,3 +126,5 @@
 - Room Search spots are plain evidence PNGs (no rings, glow, “?”, or glint counts).
 - Location list no longer hints which rooms have clues.
 - Spot anchors are per evidence id on desk/shelf/floor/mantel surfaces (cyanide ≠ ash).
+- Landscape backdrops now serve pack PNG masters (not the over-compressed preview webps).
+- Still missing evidence art: `ashes_in_grate` only.

@@ -34,8 +34,8 @@ const SPOT_PLACEMENT: Record<string, SpotLayout> = {
   // Garden (manor exterior stand-in): ground / fountain rim
   necklace_clasp: { top: '78%', left: '38%', size: 42 }, // on the wet ground by the drive
 
-  // Servants' corridor (bedroom plate): floor by the door
-  torn_reference: { top: '82%', left: '10%', size: 52 }, // paper on the floor near the doorway
+  // Servants' corridor (bedroom plate): paper on the armchair / desk, not the floor
+  torn_reference: { top: '48%', left: '22%', size: 56 }, // seat of the upholstered chair by the desk
 }
 
 const FALLBACK_SURFACES: SpotLayout[] = [
@@ -87,7 +87,7 @@ export function RoomExplore({ location, caseId, pending, lastFound, onCollect, o
             key={spot.id}
             spot={spot}
             caseId={caseId}
-            layout={layoutFor(location.id, i)}
+            layout={layoutFor(spot.id, i)}
             disabled={pending}
             onCollect={onCollect}
           />

@@ -125,3 +125,4 @@
 ## 2026-10-28 — Hidden room objects (no spoiler UI)
 - Room Search spots are plain evidence PNGs (no rings, glow, “?”, or glint counts).
 - Location list no longer hints which rooms have clues.
+- Spot anchors are per evidence id on desk/shelf/floor/mantel surfaces (cyanide ≠ ash).

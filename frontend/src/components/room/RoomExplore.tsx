@@ -10,34 +10,42 @@ import { backdropUrls, sceneForLocation } from '@/lib/backdrops'
 import { evidenceArtUrl } from '@/lib/briefingStory'
 import { cn } from '@/lib/cn'
 
-/** Per-location anchors (percent of stage). */
-const ROOM_LAYOUT: Record<string, Array<{ top: string; left: string; size?: number }>> = {
-  study: [
-    { top: '64%', left: '56%', size: 78 },
-    { top: '52%', left: '74%', size: 64 },
-    { top: '46%', left: '38%', size: 70 },
-    { top: '80%', left: '26%', size: 56 },
-  ],
-  darkroom: [
-    { top: '40%', left: '70%', size: 68 },
-    { top: '74%', left: '44%', size: 58 },
-  ],
-  billiard_room: [{ top: '50%', left: '54%', size: 72 }],
-  garden: [{ top: '70%', left: '48%', size: 54 }],
-  servants_corridor: [{ top: '60%', left: '40%', size: 62 }],
-  drawing_room: [],
+/**
+ * Place each clue on a real surface for the painted plate behind it
+ * (study→library, darkroom/corridor→bedroom, billiard→dining, garden→manor).
+ * Keyed by evidence id so order never stacks two items on the same spot.
+ */
+type SpotLayout = { top: string; left: string; size: number }
+
+const SPOT_PLACEMENT: Record<string, SpotLayout> = {
+  // Study (library plate): desk right, grate left of the fire
+  decanter: { top: '56%', left: '70%', size: 72 }, // desk surface by the lamp
+  ledger: { top: '62%', left: '82%', size: 68 }, // open on the front of the desk
+  solicitor_letter: { top: '68%', left: '64%', size: 54 }, // desk drawer edge
+  ashes_in_grate: { top: '74%', left: '16%', size: 50 }, // hearth / grate
+
+  // Darkroom (bedroom plate stand-in): shelf/desk ≠ floor
+  cyanide_jar: { top: '36%', left: '20%', size: 56 }, // chemical shelf / side desk
+  cigar_ash: { top: '84%', left: '58%', size: 46 }, // floor by the workbench / ottoman
+
+  // Billiard room (dining plate stand-in): mantel / sideboard
+  cigar_case: { top: '40%', left: '14%', size: 60 }, // left sideboard / mantel shelf
+
+  // Garden (manor exterior stand-in): ground / fountain rim
+  necklace_clasp: { top: '78%', left: '38%', size: 42 }, // on the wet ground by the drive
+
+  // Servants' corridor (bedroom plate): floor by the door
+  torn_reference: { top: '82%', left: '10%', size: 52 }, // paper on the floor near the doorway
 }
 
-const EXTRA: Array<{ top: string; left: string; size?: number }> = [
-  { top: '60%', left: '24%', size: 64 },
-  { top: '44%', left: '66%', size: 60 },
-  { top: '72%', left: '52%', size: 58 },
+const FALLBACK_SURFACES: SpotLayout[] = [
+  { top: '72%', left: '30%', size: 56 }, // floor
+  { top: '58%', left: '70%', size: 60 }, // table
+  { top: '48%', left: '18%', size: 54 }, // shelf / side table
 ]
 
-function layoutFor(locationId: string, index: number): { top: string; left: string; size: number } {
-  const room = ROOM_LAYOUT[locationId]
-  const hit = room?.[index] ?? EXTRA[index % EXTRA.length]!
-  return { top: hit.top, left: hit.left, size: hit.size ?? 64 }
+function layoutFor(evidenceId: string, index: number): SpotLayout {
+  return SPOT_PLACEMENT[evidenceId] ?? FALLBACK_SURFACES[index % FALLBACK_SURFACES.length]!
 }
 
 export interface RoomExploreProps {

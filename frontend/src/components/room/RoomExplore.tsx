@@ -132,10 +132,10 @@ export function RoomExplore({
       <footer className="room-explore__footer">
         <span className="mono" style={{ fontSize: 12 }}>
           {spots.length === 0
-            ? 'No clues here'
+            ? 'This room has no hidden clues'
             : remaining === 0
-              ? 'All clues here collected.'
-              : `${remaining} clue${remaining === 1 ? '' : 's'} left — look for the pulsing gold spots`}
+              ? 'All clues in this room collected.'
+              : `${remaining} clue${remaining === 1 ? '' : 's'} left — click the pulsing gold spots`}
         </span>
         {lastFound ? (
           <span className="room-explore__found pop-in">

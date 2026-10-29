@@ -116,3 +116,8 @@
 - Location chips show glint counts; click opens the room immediately.
 - Mystery hotspots are large pulsing gold “?” orbs (not invisible transparent art).
 - Empty rooms (e.g. Drawing Room) point you to rooms that still have clues.
+
+## 2026-10-28 — Confront icon + spots backend restart
+- Confront control is icon-only (⚔) with hover “Confront”; left column a bit wider.
+- “All clues collected” on every room was a stale uvicorn without `locations.spots`;
+  restarted API so spots ship on GameState. Refresh / new game to see glints.

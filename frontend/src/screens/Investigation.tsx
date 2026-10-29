@@ -257,7 +257,7 @@ export function Investigation() {
         </span>
       </header>
 
-      <div className="grid gap-4 mt-4 lg:grid-cols-[20fr_55fr_25fr]">
+      <div className="grid gap-4 mt-4 lg:grid-cols-[minmax(280px,26fr)_minmax(0,49fr)_minmax(220px,25fr)]">
         {/* LEFT — suspects + locations */}
         <div className="lacquer flex flex-col gap-3 min-w-0">
           <SectionTitle as="h2" dark align="left">
@@ -288,7 +288,8 @@ export function Investigation() {
                   <button
                     type="button"
                     className={cn('btn-confront', selection.secondary === s.id && 'is-active')}
-                    title="Confront — put them in a room with the selected suspect"
+                    data-tip="Confront"
+                    title="Confront — put them face-to-face with the selected suspect"
                     aria-label={`Confront: pick ${s.name} to face the other suspect`}
                     onClick={(e) => {
                       e.stopPropagation()
@@ -299,7 +300,6 @@ export function Investigation() {
                     <span className="btn-confront__icon" aria-hidden="true">
                       ⚔
                     </span>
-                    Confront
                   </button>
                 </li>
               )

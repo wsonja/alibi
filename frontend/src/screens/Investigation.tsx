@@ -8,7 +8,7 @@ import { TACTICS, type PublicEvidence, type PublicSuspect, type Tactic } from '@
 import { Button } from '@/components/common/Button'
 import { ClockFace } from '@/components/common/ClockFace'
 import { ErrorNotice } from '@/components/common/ErrorNotice'
-import { EvidenceIcon } from '@/components/common/EvidenceIcon'
+import { EvidenceArt } from '@/components/common/EvidenceArt'
 import { Modal } from '@/components/common/Modal'
 import { SectionTitle } from '@/components/common/SectionTitle'
 import JudgePanel from '@/components/judge/JudgePanel'
@@ -257,7 +257,7 @@ export function Investigation() {
         </span>
       </header>
 
-      <div className="grid gap-4 mt-4 lg:grid-cols-[20fr_55fr_25fr]">
+      <div className="grid gap-4 mt-4 lg:grid-cols-[minmax(280px,26fr)_minmax(0,49fr)_minmax(220px,25fr)]">
         {/* LEFT — suspects + locations */}
         <div className="lacquer flex flex-col gap-3 min-w-0">
           <SectionTitle as="h2" dark align="left">
@@ -288,7 +288,8 @@ export function Investigation() {
                   <button
                     type="button"
                     className={cn('btn-confront', selection.secondary === s.id && 'is-active')}
-                    title="Confront — put them in a room with the selected suspect"
+                    data-tip="Confront"
+                    title="Confront — put them face-to-face with the selected suspect"
                     aria-label={`Confront: pick ${s.name} to face the other suspect`}
                     onClick={(e) => {
                       e.stopPropagation()
@@ -299,7 +300,6 @@ export function Investigation() {
                     <span className="btn-confront__icon" aria-hidden="true">
                       ⚔
                     </span>
-                    Confront
                   </button>
                 </li>
               )
@@ -317,9 +317,12 @@ export function Investigation() {
                   type="button"
                   className={cn('chip chip--dark', selectedLocation === l.id && 'selected')}
                   style={{ width: '100%', justifyContent: 'flex-start' }}
+                  title="Enter this room"
                   onClick={() => {
                     setSelectedLocation(l.id)
                     setTab('search')
+                    setLastFound(null)
+                    setExploringId(l.id)
                   }}
                 >
                   {l.searched ? '✓ ' : ''}
@@ -503,7 +506,15 @@ export function Investigation() {
                       onClick={() => setSelectedEvidence(e.id)}
                       title={e.state === 'examined' ? e.examined_detail : e.description}
                     >
-                      <EvidenceIcon name={e.name} description={e.description} size={16} />
+                      <EvidenceArt
+                        caseId={game.case.id}
+                        evidenceId={e.id}
+                        name={e.name}
+                        description={e.description}
+                        size={22}
+                        fit="contain"
+                        iconColor="currentColor"
+                      />
                       {e.name}
                     </button>
                   )
@@ -541,11 +552,9 @@ export function Investigation() {
 
             {tab === 'search' ? (
               <p className="muted" style={{ margin: 0 }}>
-                {selectedLocation ? (
-                  <>Enter {game.locations.find((l) => l.id === selectedLocation)?.name} and click clues yourself — nothing is handed to you.</>
-                ) : (
-                  'Pick a location on the left, then enter the room.'
-                )}
+                {selectedLocation
+                  ? `In ${game.locations.find((l) => l.id === selectedLocation)?.name} — look carefully and click what you find.`
+                  : 'Pick a location on the left to enter the room.'}
               </p>
             ) : null}
 
@@ -557,7 +566,14 @@ export function Investigation() {
 
         <div className="flex flex-col gap-3 min-w-0">
           <ComposureMeter />
-          <NotebookPanel cast={game.cast} evidence={game.evidence} turns={game.turns} notebook={game.notebook} timeline={game.case.timeline_public} />
+          <NotebookPanel
+            cast={game.cast}
+            evidence={game.evidence}
+            turns={game.turns}
+            notebook={game.notebook}
+            timeline={game.case.timeline_public}
+            caseId={game.case.id}
+          />
           <div className="mt-auto">
             <Button variant="red" size="lg" block onClick={() => setAccuseOpen(true)}>
               ⚖ Accuse
@@ -665,6 +681,15 @@ function AccuseModal({ open, onClose, cast, caseId, methodEvidence, pending, onA
             <div className="flex gap-2 flex-wrap">
               {methodEvidence.map((e) => (
                 <button key={e.id} type="button" className={cn('chip', evidenceIds.includes(e.id) && 'selected')} onClick={() => toggleEvidence(e.id)} title={e.examined_detail ?? e.description}>
+                  <EvidenceArt
+                    caseId={caseId}
+                    evidenceId={e.id}
+                    name={e.name}
+                    description={e.description}
+                    size={22}
+                    fit="contain"
+                    iconColor="currentColor"
+                  />
                   {e.name}
                   {e.state === 'known' ? ' (seen)' : ''}
                 </button>

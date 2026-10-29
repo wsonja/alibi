@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { advanceStory, initialProgress } from './briefingStory'
+import { advanceStory, evidenceArtUrl, initialProgress, victimArtUrl } from './briefingStory'
 
 const TIMELINE = [
   { time: '22:30', event: 'a' },
@@ -30,5 +30,13 @@ describe('advanceStory', () => {
     p = advanceStory(p, TIMELINE, 2)
     expect(p.chapter).toBe('ready')
     expect(advanceStory(p, TIMELINE, 2).chapter).toBe('ready')
+  })
+})
+
+describe('art urls', () => {
+  it('maps vane_hall evidence and victim plates', () => {
+    expect(evidenceArtUrl('vane_hall', 'decanter')).toBe('/evidence/vane_hall/decanter.webp')
+    expect(victimArtUrl('vane_hall')).toBe('/art/vane_hall/victim.webp')
+    expect(evidenceArtUrl('vane_hall_v2', 'ledger')).toBe('/evidence/vane_hall/ledger.webp')
   })
 })

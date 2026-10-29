@@ -56,10 +56,18 @@ export function evidenceLocationName(ev: PublicEvidence, locations: PublicLocati
   return locations.find((l) => l.id === ev.location)?.name ?? 'the house'
 }
 
-/** Path for a future painted object plate; UI falls back to EvidenceIcon when missing. */
+function artPack(caseId: string): string {
+  return caseId.startsWith('vane_hall') ? 'vane_hall' : caseId
+}
+
+/** Path for a painted object plate; UI falls back to EvidenceIcon when missing. */
 export function evidenceArtUrl(caseId: string, evidenceId: string): string {
-  const pack = caseId.startsWith('vane_hall') ? 'vane_hall' : caseId
-  return `/evidence/${pack}/${evidenceId}.webp`
+  return `/evidence/${artPack(caseId)}/${evidenceId}.webp`
+}
+
+/** Crime-scene plate for the victim chapter (optional until art lands). */
+export function victimArtUrl(caseId: string): string {
+  return `/art/${artPack(caseId)}/victim.webp`
 }
 
 export interface StoryProgress {

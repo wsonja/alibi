@@ -36,7 +36,8 @@ export function backdropUrls(scene: BackdropScene): {
   original: string
 } {
   return {
-    landscape: `/backdrops/landscape_16x9/${scene}.webp`,
+    // PNG = source fidelity from the concept pack (the bundled .webp was over-compressed).
+    landscape: `/backdrops/landscape_16x9/${scene}.png`,
     ultrawide: `/backdrops/ultrawide_21x9/${scene}.webp`,
     mobile: `/backdrops/mobile_9x16/${scene}.webp`,
     original: `/backdrops/scene_originals/${scene}.webp`,

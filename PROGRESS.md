@@ -100,3 +100,32 @@
 - Suspect list Confront control is a high-contrast red ⚔ Confront button (opens Confront tab).
 - Search opens RoomExplore: room backdrop + clue hotspots; `POST /search` with `evidence_id` examines
   one item. Locations carry `spots` (hidden clues unlabeled until collected).
+
+## 2026-10-28 — Victim + brandy art drop
+- Briefing victim chapter shows `/art/vane_hall/victim.webp` (crime scene).
+- Decanter plate at `/evidence/vane_hall/decanter.webp` used in story first-evidence,
+  Present chips, notebook Evidence tab, Accuse method chips, and room hotspots via `EvidenceArt`.
+
+## 2026-10-28 — Transparent evidence pack
+- Installed remapped webps for solicitor_letter, ledger, cyanide_jar, cigar_ash,
+  cigar_case, necklace_clasp, torn_reference (zip names → case ids).
+- Source pack kept under `docs/art-direction/vane_hall/evidence_source/`.
+- Still missing plate: `ashes_in_grate` (dynamic).
+
+## 2026-10-28 — Room search discoverability
+- Location chips show glint counts; click opens the room immediately.
+- Mystery hotspots are large pulsing gold “?” orbs (not invisible transparent art).
+- Empty rooms (e.g. Drawing Room) point you to rooms that still have clues.
+
+## 2026-10-28 — Confront icon + spots backend restart
+- Confront control is icon-only (⚔) with hover “Confront”; left column a bit wider.
+- “All clues collected” on every room was a stale uvicorn without `locations.spots`;
+  restarted API so spots ship on GameState. Refresh / new game to see glints.
+
+## 2026-10-28 — Hidden room objects (no spoiler UI)
+- Room Search spots are plain evidence PNGs (no rings, glow, “?”, or glint counts).
+- Location list no longer hints which rooms have clues.
+- Spot anchors are per evidence id on desk/shelf/floor/mantel surfaces (cyanide ≠ ash).
+- Landscape backdrops now serve pack PNG masters (not the over-compressed preview webps).
+- `ashes_in_grate` plate landed; Vane Hall evidence set complete.
+- Art brief for other cases + Vane placement cheatsheet: `docs/art-direction/ART_BRIEF.md`.

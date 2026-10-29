@@ -114,7 +114,17 @@ for f in \
   frontend/public/backdrops/landscape_16x9/manor_exterior.webp \
   frontend/public/backdrops/mobile_9x16/library.webp \
   frontend/public/backdrops/ultrawide_21x9/library.webp \
-  frontend/public/backdrops/scene_originals/library.webp
+  frontend/public/backdrops/scene_originals/library.webp \
+  frontend/public/art/vane_hall/victim.webp \
+  frontend/public/evidence/vane_hall/decanter.webp \
+  frontend/public/evidence/vane_hall/solicitor_letter.webp \
+  frontend/public/evidence/vane_hall/ledger.webp \
+  frontend/public/evidence/vane_hall/cyanide_jar.webp \
+  frontend/public/evidence/vane_hall/cigar_ash.webp \
+  frontend/public/evidence/vane_hall/cigar_case.webp \
+  frontend/public/evidence/vane_hall/necklace_clasp.webp \
+  frontend/public/evidence/vane_hall/torn_reference.webp \
+  frontend/public/evidence/vane_hall/ashes_in_grate.webp
 do
   if [[ ! -f "$ROOT/$f" ]]; then
     fail "missing $f"
@@ -122,7 +132,7 @@ do
   fi
 done
 if [[ "$ASSET_MISS" -eq 0 ]]; then
-  pass "Vane Hall portraits + backdrop webps present"
+  pass "Vane Hall portraits + backdrop + victim + evidence webps present"
 fi
 
 gate "3 unit tests"

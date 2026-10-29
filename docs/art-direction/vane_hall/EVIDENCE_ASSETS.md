@@ -1,37 +1,37 @@
-# Evidence object art (optional next drop)
+# Evidence + victim art
 
-Story briefing **and** room Search hotspots look for painted object plates here:
+## Victim (story briefing)
+
+```
+frontend/public/art/vane_hall/victim.webp
+```
+
+Shown on the Briefing “The victim” chapter (crime-scene plate of Sir Reginald).
+
+## Evidence object plates
 
 ```
 frontend/public/evidence/vane_hall/<evidence_id>.webp
 ```
 
-Until a file exists, the UI shows the gold line icon. Clicking a hotspot still collects the clue; art is visual only.
+Transparent RGBA preferred. Filename must match the evidence `id` exactly.
 
-## First beat (already on screen)
+Source pack: `docs/art-direction/vane_hall/evidence_source/`.
 
-| id | Name | Where | Suggested shot |
-|----|------|-------|----------------|
-| `decanter` | The brandy decanter | Study desk | Crystal decanter + one used glass, warm lamplight, noir still life |
+## Landed (all 9)
 
-## Later (when you search rooms)
+| id | Name | File |
+|----|------|------|
+| `decanter` | The brandy decanter | `decanter.webp` |
+| `solicitor_letter` | Unsent letter to his solicitor | `solicitor_letter.webp` |
+| `ledger` | Partnership ledger | `ledger.webp` |
+| `cyanide_jar` | Jar of potassium cyanide | `cyanide_jar.webp` |
+| `cigar_ash` | Cigar ash | `cigar_ash.webp` |
+| `cigar_case` | Pell’s cigar case | `cigar_case.webp` |
+| `necklace_clasp` | Broken necklace clasp | `necklace_clasp.webp` |
+| `torn_reference` | Torn letter of reference | `torn_reference.webp` |
+| `ashes_in_grate` | Burned papers in the study grate | `ashes_in_grate.webp` |
 
-| id | Name | Where |
-|----|------|-------|
-| `solicitor_letter` | Unsent letter to his solicitor | Study drawer |
-| `ledger` | Partnership ledger | Study desk |
-| `cyanide_jar` | Jar of potassium cyanide | Darkroom shelf |
-| `cigar_ash` | Cigar ash | Darkroom floor |
-| `cigar_case` | Pell’s cigar case | Billiard room mantel |
-| `necklace_clasp` | Broken necklace clasp | Garden bench |
-| `torn_reference` | Torn letter of reference | Servants’ corridor |
-| `ashes_in_grate` | Burned papers | Study grate (dynamic) |
+## Room placement (runtime)
 
-## Spec
-
-- Format: **WebP** (PNG source ok; we convert). Square or 4:5 crop, ~900–1200px.
-- Style: same amber/teal still-life mood as the character pack — not flat icons, not stock photos with watermarks.
-- Transparent background preferred; dark vignette acceptable.
-- Filename must match the `id` column exactly (`decanter.webp`, not `brandy.png`).
-
-Drop a zip of webps (or pngs) when ready and we will wire them the same way as portraits.
+See `frontend/src/components/room/RoomExplore.tsx` → `SPOT_PLACEMENT`, and the art brief canvas / `docs/art-direction/ART_BRIEF.md`.

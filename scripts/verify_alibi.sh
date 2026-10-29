@@ -123,7 +123,8 @@ for f in \
   frontend/public/evidence/vane_hall/cigar_ash.webp \
   frontend/public/evidence/vane_hall/cigar_case.webp \
   frontend/public/evidence/vane_hall/necklace_clasp.webp \
-  frontend/public/evidence/vane_hall/torn_reference.webp
+  frontend/public/evidence/vane_hall/torn_reference.webp \
+  frontend/public/evidence/vane_hall/ashes_in_grate.webp
 do
   if [[ ! -f "$ROOT/$f" ]]; then
     fail "missing $f"

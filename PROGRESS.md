@@ -127,4 +127,5 @@
 - Location list no longer hints which rooms have clues.
 - Spot anchors are per evidence id on desk/shelf/floor/mantel surfaces (cyanide ≠ ash).
 - Landscape backdrops now serve pack PNG masters (not the over-compressed preview webps).
-- Still missing evidence art: `ashes_in_grate` only.
+- `ashes_in_grate` plate landed; Vane Hall evidence set complete.
+- Art brief for other cases + Vane placement cheatsheet: `docs/art-direction/ART_BRIEF.md`.

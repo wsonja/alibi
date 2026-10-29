@@ -12,5 +12,6 @@ Served as `/evidence/vane_hall/<evidence_id>.webp`. Filenames must match case ev
 | `cigar_case.webp` | `cigar_case` |
 | `necklace_clasp.webp` | `necklace_clasp` |
 | `torn_reference.webp` | `torn_reference` |
+| `ashes_in_grate.webp` | `ashes_in_grate` |
 
-Missing: `ashes_in_grate` (dynamic). See `docs/art-direction/vane_hall/EVIDENCE_ASSETS.md`.
+See `docs/art-direction/vane_hall/EVIDENCE_ASSETS.md`.
